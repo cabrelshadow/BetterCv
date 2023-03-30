@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.bettercvapp.screens.LoginScreen
 import com.example.bettercvapp.screens.RegisterScreen
 import com.example.bettercvapp.ui.theme.BackgroundColor
@@ -23,11 +26,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
 
                 ) {
-                    LoginScreen()
+                    LogApplication()
+                    //LoginScreen()
                     //RegisterScreen()
 
                 }
             }
         }
+    }
+
+    @Composable
+    fun LogApplication() {
+        val navController = rememberNavController()
+
+        NavHost(navController = navController, startDestination = "LoginScreen", builder = {
+            composable("LoginScreen", content = { LoginScreen(navController = navController) })
+            composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
+        })
     }
 }

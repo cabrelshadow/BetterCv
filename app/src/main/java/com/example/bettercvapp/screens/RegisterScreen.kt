@@ -15,11 +15,12 @@
  import androidx.compose.ui.text.style.TextAlign
  import androidx.compose.ui.unit.dp
  import androidx.compose.ui.unit.sp
+ import androidx.navigation.NavController
  import com.example.bettercvapp.R
  import com.example.bettercvapp.ui.theme.*
 
  @Composable
- fun RegisterScreen() {
+ fun RegisterScreen(navController: NavController) {
      var username by remember { mutableStateOf("") }
      var email by remember { mutableStateOf("") }
      var password by remember { mutableStateOf("") }
@@ -267,7 +268,11 @@
 
          SocialMediaSignInButtons()
 
-         TextButton(onClick = { /*TODO*/ },
+         TextButton(onClick = {
+             navController.navigate("LoginScreen"){
+             popUpTo(navController.graph.startDestinationId)
+             launchSingleTop = true
+         } },
              modifier = Modifier
                  .fillMaxWidth()
                  .padding(top = 20.dp)
