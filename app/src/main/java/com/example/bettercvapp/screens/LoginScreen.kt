@@ -26,24 +26,25 @@ fun LoginScreen() {
     var isPasswordOpen by remember { mutableStateOf(false) }
     Box(contentAlignment = Alignment.TopCenter) {
         Image(
-            painter = painterResource(id = R.drawable.login_illustration), contentDescription = "",
+            painter = painterResource(id = R.drawable.ko), contentDescription = "",
             modifier = Modifier.fillMaxWidth()
+        )
+        Text(
+            text = "BIENVENUE SUR BETTERCV",
+            fontSize = 28.sp,
+            color = Color.White,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .padding(top = 20.dp),
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold,
+            fontFamily = Poppins
         )
     }
     Box(contentAlignment = Alignment.BottomCenter) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = "WELCOME TO MONUMENTAL HABITS",
-                fontSize = 28.sp,
-                color = Color.White,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 20.dp),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                fontFamily = ReemKufi
-            )
+
 
 
 
