@@ -16,11 +16,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordOpen by remember { mutableStateOf(false) }
@@ -175,7 +176,12 @@ fun LoginScreen() {
                         )
                     }
                     TextButton(
-                        onClick = {},
+                        onClick = {
+                            navController.navigate("RegisterScreen"){
+                                popUpTo(navController.graph.startDestinationId)
+                                launchSingleTop = true
+                            }
+                        },
                         contentPadding = PaddingValues(vertical = 0.dp)
                     ) {
                         Text(
@@ -191,3 +197,6 @@ fun LoginScreen() {
         }
     }
 }
+
+
+
