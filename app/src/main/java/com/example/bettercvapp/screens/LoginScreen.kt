@@ -46,10 +46,6 @@ fun LoginScreen(navController: NavController) {
     Box(contentAlignment = Alignment.BottomCenter) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
-
-
-
-
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -147,7 +143,13 @@ fun LoginScreen(navController: NavController) {
                     )
 
                     Button(
-                        onClick = {},
+                        onClick = {
+
+                            navController.navigate("HomeScreen"){
+                                popUpTo(navController.graph.startDestinationId)
+                                launchSingleTop = true
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 20.dp)

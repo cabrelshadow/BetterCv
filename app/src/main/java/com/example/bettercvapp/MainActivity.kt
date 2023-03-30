@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.bettercvapp.screens.HomeScreen
 import com.example.bettercvapp.screens.LoginScreen
 import com.example.bettercvapp.screens.RegisterScreen
 import com.example.bettercvapp.ui.theme.BackgroundColor
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
         NavHost(navController = navController, startDestination = "LoginScreen", builder = {
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
+            composable("HomeScreen", content = { HomeScreen(navController = navController) })
         })
     }
 }
