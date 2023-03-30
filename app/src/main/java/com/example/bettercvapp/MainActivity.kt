@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.bettercvapp.screens.ForgotPasswordScreen
 import com.example.bettercvapp.screens.HomeScreen
 import com.example.bettercvapp.screens.LoginScreen
 import com.example.bettercvapp.screens.RegisterScreen
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
             composable("HomeScreen", content = { HomeScreen(navController = navController) })
+            composable("ForgotPasswordScreen", content = { ForgotPasswordScreen(navController = navController) })
         })
     }
 }
