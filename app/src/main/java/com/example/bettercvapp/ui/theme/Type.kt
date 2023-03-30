@@ -10,7 +10,7 @@ import com.example.bettercvapp.R
 
 val ReemKufi = FontFamily(Font(R.font.reemkufi))
 val Poppins = FontFamily(Font(R.font.poppins))
-// Set of Material typography styles to start with
+
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = FontFamily.Default,
