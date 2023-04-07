@@ -81,4 +81,11 @@ dependencies {
 //pager and indicator
     implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
     implementation "com.google.accompanist:accompanist-pager-indicators:$accompanist_version"
+
+
+    implementation "androidx.compose.ui:ui:$compose_ui_version"
+    implementation "androidx.compose.material:material:$compose_ui_version"
+    implementation "androidx.compose.foundation:foundation-layout:$compose_ui_version"
+    implementation "androidx.compose.foundation:foundation:$compose_ui_version" // nécessaire pour ScrollableColumn et ScrollableRow
+    implementation "androidx.compose.runtime:runtime:$compose_ui_version"
 }

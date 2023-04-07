@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
 
                 ) {
-                    LogApplication()
+                   LogApplication()
                     //LoginScreen()
                     //RegisterScreen()
 
@@ -41,9 +42,14 @@ class MainActivity : ComponentActivity() {
         val navController = rememberNavController()
 
         NavHost(navController = navController, startDestination = "LoginScreen", builder = {
-            composable("LoginScreen", content = { LoginScreen(navController = navController) })
+             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
-            composable("HomeScreen", content = { HomeScreen(navController = navController) })
+            composable("HomeScreen", content = { HomeScreen(navController = navController ,
+
+
+                ) })
         })
     }
 }
+
+
