@@ -1,8 +1,10 @@
 package com.example.bettercvapp
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -10,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.bettercvapp.screens.ForgotPasswordScreen
-import com.example.bettercvapp.screens.HomeScreen
-import com.example.bettercvapp.screens.LoginScreen
-import com.example.bettercvapp.screens.RegisterScreen
+import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.ui.theme.BackgroundColor
 import com.example.bettercvapp.ui.theme.BetterCvAppTheme
 
@@ -46,6 +45,7 @@ class MainActivity : ComponentActivity() {
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
             composable("HomeScreen", content = { HomeScreen(navController = navController) })
             composable("ForgotPasswordScreen", content = { ForgotPasswordScreen(navController = navController) })
+            composable("AddProject", content = { AddProject(navController = navController)})
         })
     }
 }
