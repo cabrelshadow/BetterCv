@@ -242,7 +242,10 @@
          }
 
          Button(
-             onClick = {},
+             onClick = {navController.navigate("LoginScreen"){
+                 popUpTo(navController.graph.startDestinationId)
+                 launchSingleTop = true
+             }},
              colors = ButtonDefaults.buttonColors(
                  backgroundColor = PrimaryColor
              ),

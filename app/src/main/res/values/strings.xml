@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BetterCvApp</string>
+    <string name="select_date">"date "</string>
+    <string name="date">dates</string>
+    <string name="add_another_formation">Add another formation</string>
+    <string name="arrow">arrow</string>
 </resources>

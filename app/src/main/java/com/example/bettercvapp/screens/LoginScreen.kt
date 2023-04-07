@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
 
+
 @Composable
 fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
@@ -30,21 +31,42 @@ fun LoginScreen(navController: NavController) {
             painter = painterResource(id = R.drawable.ko), contentDescription = "",
             modifier = Modifier.fillMaxWidth()
         )
-        Text(
-            text = "BIENVENUE SUR BETTERCV",
-            fontSize = 28.sp,
-            color = Color.White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 20.dp),
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            fontFamily = Poppins
-        )
     }
     Box(contentAlignment = Alignment.BottomCenter) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "WELCOME TO MONUMENTAL HABITS",
+                fontSize = 28.sp,
+                color = Color.White,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .padding(top = 20.dp),
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                fontFamily = ReemKufi
+            )
+
+            Button(
+                onClick = { },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.White
+                ),
+                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
+                modifier = Modifier.padding(top = 20.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_google),
+                        contentDescription = "",
+                        tint = Color.Unspecified,
+                        modifier = Modifier.size(26.dp)
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Text(text = "Continue with Google", color = PrimaryColor, fontSize = 16.sp)
+                }
+            }
+
 
             Card(
                 modifier = Modifier
@@ -57,7 +79,7 @@ fun LoginScreen(navController: NavController) {
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "Se Connecter Avec Son EMAIL",
+                        text = "Log In with Email",
                         color = LightTextColor,
                         fontFamily = Poppins,
                         fontSize = 12.sp,
@@ -69,7 +91,7 @@ fun LoginScreen(navController: NavController) {
                             email = it
                         },
                         label = {
-                            Text(text = "Addresse Email", color = PrimaryColor)
+                            Text(text = "Email Address", color = PrimaryColor)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -77,7 +99,7 @@ fun LoginScreen(navController: NavController) {
                             .padding(top = 10.dp),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             unfocusedBorderColor = PrimaryColor,
-                            textColor = Textcolor
+                            textColor = PrimaryColor
 
                         ),
                         keyboardOptions = KeyboardOptions(
@@ -100,7 +122,7 @@ fun LoginScreen(navController: NavController) {
                             password = it
                         },
                         label = {
-                            Text(text = "Mot de Passe", color = PrimaryColor)
+                            Text(text = "Password", color = PrimaryColor)
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -108,7 +130,7 @@ fun LoginScreen(navController: NavController) {
                             .padding(top = 10.dp),
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             unfocusedBorderColor = PrimaryColor,
-                            textColor =  Textcolor
+                            textColor = PrimaryColor
                         ),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         singleLine = true,
@@ -144,7 +166,6 @@ fun LoginScreen(navController: NavController) {
 
                     Button(
                         onClick = {
-
                             navController.navigate("HomeScreen"){
                                 popUpTo(navController.graph.startDestinationId)
                                 launchSingleTop = true
@@ -166,11 +187,14 @@ fun LoginScreen(navController: NavController) {
 
 
                     TextButton(
-                        onClick = {},
+                        onClick = {navController.navigate("ForgotPasswordScreen"){
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true
+                        }},
                         contentPadding = PaddingValues(vertical = 0.dp)
                     ) {
                         Text(
-                            text = "Mot de passe oublie ?",
+                            text = "Forgot Password ?",
                             color = LightTextColor,
                             fontFamily = Poppins,
                             fontSize = 12.sp,
@@ -187,7 +211,7 @@ fun LoginScreen(navController: NavController) {
                         contentPadding = PaddingValues(vertical = 0.dp)
                     ) {
                         Text(
-                            text = "Avez-vous un comptes ? Se connecter",
+                            text = "Don't have an Account ? Sign Up",
                             color = LightTextColor,
                             fontFamily = Poppins,
                             fontSize = 12.sp,
@@ -199,6 +223,3 @@ fun LoginScreen(navController: NavController) {
         }
     }
 }
-
-
-
