@@ -213,7 +213,7 @@ fun RoundedCardList() {
                 .verticalScroll(rememberScrollState())
                 .padding(top = 300.dp),
         ) {
-            for (i in 1..4) {
+            for (i in 1..2) {
                 RoundedCard(
                     modifier = Modifier.fillMaxWidth(),
                     imageResId = R.drawable.ko,
