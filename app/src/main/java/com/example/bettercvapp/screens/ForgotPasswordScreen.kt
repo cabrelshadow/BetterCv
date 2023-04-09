@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,7 +86,7 @@ fun ForgotPasswordScreen(navController: NavController) {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_email_outline),
+                                Icons.Rounded.Menu,
                                 contentDescription = "",
                                 tint = PrimaryColor,
                                 modifier = Modifier.size(20.dp)
