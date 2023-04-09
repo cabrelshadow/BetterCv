@@ -1,6 +1,5 @@
 package com.example.bettercvapp.screens
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 
@@ -11,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyRow
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -25,100 +23,76 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.bettercvapp.R
 import com.example.bettercvapp.R.*
-import com.example.bettercvapp.ui.theme.BackgroundColor
 import com.example.bettercvapp.ui.theme.Gray
 import com.example.bettercvapp.ui.theme.Poppins
 
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
-    TopAppbar()
-
-
-}
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun TopAppbar() {
-    val scrollState = rememberScrollState()
-
-    Scaffold(
-        topBar = {
-
-            Surface(
-                elevation = 100.dp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .height(55.dp)
-                    .clip(shape = RoundedCornerShape(10.dp))
-
-            ) {
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .background(color = Gray)
-
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                ) {
-
-                    Text(
-                        text = "BetterCv",
-                        textAlign = TextAlign.Left,
-
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(start = 12.dp)
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Image(
-                        painter = painterResource(id = drawable.usetr),
-                        contentDescription ="photo",
-
-                        modifier = Modifier
-                            .height(50.dp)
-                            .width(50.dp)
-                            .clip(shape = RoundedCornerShape(50.dp))
-                            .padding(end = 12.dp)
-
-                    )
-                }
-
-            }
-
-        },
-
-        content = {
-            Column(modifier = Modifier.verticalScroll(scrollState)){
-                textCv()
-                CardList()
-               RoundedCardList()
-             //   NavigationBar()
-            }
-
-        }
-
-    )
-}
-@Composable
-fun textCv(){
+    TopBarApp()
     Text(text = "Cv Template",
         fontFamily = Poppins,
-        modifier = Modifier.padding(start = 13.dp)
+        modifier = Modifier.padding(vertical = 100.dp, horizontal = 30.dp)
+
     )
+    CardList1()
+    Box(modifier = Modifier.fillMaxWidth()){
+        RoundedCardList()
+    }
+
+    BottomNavigation()
 }
 @Composable
-fun CardList() {
+fun TopBarApp(
+
+) {
+    Surface(
+        color = Gray,
+        elevation = 4.dp,
+
+        modifier = Modifier
+            .padding(top = 28.dp, start = 16.dp, end = 16.dp)
+            .height(48.dp)
+            .fillMaxWidth()
+
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+        ) {
+            Text(
+                text = "BetterCv",
+                textAlign = TextAlign.Left,
+
+                modifier = Modifier.weight(1f)
+            )
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(32.dp)
+                    .background(color = Gray, CircleShape)
+
+            ) {
+                Image(
+                    painter = painterResource(id = drawable.m1),
+                    contentDescription ="photo",
+
+                    modifier = Modifier.height(50.dp)
+
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CardList1() {
     val cardData = listOf(
         CardData(drawable.m1, "Design cv"),
         CardData(drawable.ko, "Developper "),
@@ -134,11 +108,8 @@ fun CardList() {
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
-         // .padding(vertical = 35.dp, horizontal = 15.dp)
-
-    )
-
-    {
+            .padding(vertical = 150.dp, horizontal = 10.dp)
+    ) {
         items(cardData.size) { index ->
             Card(
                 cardData[index],
@@ -182,36 +153,55 @@ fun Card(cardData: CardData, modifier: Modifier, shape: Shape) {
     }
 }
 @Composable
+fun BottomNavigation(
+    shape: Shape = RoundedCornerShape(16.dp)
+) {
+    val navItems = listOf(
+        BottomNavItem.Home,
+        BottomNavItem.Profile,
+        BottomNavItem.Favorites,
 
-fun NavigationBar() {
-    BottomNavigation {
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Home, contentDescription = "Home") },
-            selected = true,
-            onClick = {}
         )
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
-            selected = false,
-            onClick = {}
-        )
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Favorite, contentDescription = "Favorite") },
-            selected = false,
-            onClick = {}
-        )
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "Cart") },
-            selected = false,
-            onClick = {}
-        )
-        BottomNavigationItem(
-            icon = { Icon(Icons.Filled.Person, contentDescription = "Profile") },
-            selected = false,
-            onClick = {}
-        )
+    val selectedIndex = remember { mutableStateOf(1) }
+
+    BottomNavigation(
+        backgroundColor = Color.White,
+        elevation = 8.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+
+            .padding(top = 700.dp),
+
+
+
+
+        ) {
+        navItems.forEachIndexed { index, item ->
+            BottomNavigationItem(
+                icon = { Icon(item.icon, null) },
+                label = { Text(item.title) },
+                selected = selectedIndex.value == index,
+                onClick = { selectedIndex.value = index },
+                selectedContentColor = Color.Blue,
+                unselectedContentColor = Color.Gray
+            )
+        }
     }
 }
+
+sealed class BottomNavItem(
+    val icon: ImageVector,
+    val title: String
+) {
+    object Home : BottomNavItem(Icons.Filled.Home, "Home")
+    object Profile : BottomNavItem(Icons.Filled.AddCircle, "Creer un cv"
+        ,
+    )
+    object Favorites : BottomNavItem(Icons.Filled.Favorite, "Favorites")
+
+}
+
+
 
 @Composable
 fun RoundedCardList() {
@@ -276,5 +266,3 @@ fun RoundedCard(
         }
     }
 }
-
-
