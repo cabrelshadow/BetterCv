@@ -41,7 +41,7 @@ fun Country(navController: NavController){
             contentPadding = PaddingValues(bottom = 40.dp)
         ) {
             stickyHeader {
-                TopBar()
+                TopBar(navController)
                 Spacer(modifier = Modifier.height(30.dp))
                 TopTitleBar()
             }
@@ -56,13 +56,13 @@ fun Country(navController: NavController){
         Modifier
             .offset(0.dp,600.dp)
     ) {
-        Footer(" Add new Information")
+        Footer("   Add new Information",navController,"AddressNumber")
     }
 }
 
 
 @Composable
-private fun TopBar(){
+private fun TopBar(navController: NavController){
     Surface{
         Row(
             Modifier
@@ -72,7 +72,9 @@ private fun TopBar(){
 
         ) {
             TextButton(
-                onClick = {/*TODO*/ },
+                onClick = {navController.navigate("ProfileScreen"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true }},
                 //contentPadding = PaddingValues(vertical = 0.dp)
             ) {
                 Icon(

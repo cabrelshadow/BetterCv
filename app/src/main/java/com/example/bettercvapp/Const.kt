@@ -14,13 +14,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.bettercvapp.ui.theme.InputBoxShape
 
 val MyShape = RoundedCornerShape(50)
 val Height = 55.dp
 
 @Composable
-fun Footer( nom : String) {
+fun Footer(nom : String, navController: NavController, route:String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,7 +36,7 @@ fun Footer( nom : String) {
         }
         Row(
             Modifier
-                .offset(130.dp, (-40).dp)
+                .offset(140.dp, (-40).dp)
                 .clip(CircleShape)
                 .size(45.dp),
         ) {
@@ -58,15 +59,17 @@ fun Footer( nom : String) {
                 .offset(80.dp, (-40).dp)
         )
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate("$route"){
+                popUpTo(navController.graph.startDestinationId)
+                launchSingleTop = true } },
             modifier = Modifier
-                .offset(75.dp, 0.dp)
+                .offset(115.dp, 0.dp)
                 //.background(MaterialTheme.colors.primary)
                 .height(35.dp),
             shape = InputBoxShape.medium,
         ) {
             Text(
-                text = "Save and Continue",
+                text = "Continue",
                 color = Color.White,
             )
         }

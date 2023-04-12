@@ -31,7 +31,7 @@ fun ProfileScreen(navController: NavController) {
             contentPadding = PaddingValues(bottom = 40.dp)
         ) {
             stickyHeader {
-                TopBar()
+                TopBar(navController)
                 TopTitleBar()
             }
             items(1) {
@@ -45,13 +45,13 @@ fun ProfileScreen(navController: NavController) {
         Modifier
             .offset(0.dp,600.dp)
     ) {
-        Footer("")
+        Footer(navController)
     }
 
 }
 
 @Composable
-private fun TopBar(){
+private fun TopBar(navController: NavController){
     Surface{
         Row(
             Modifier
@@ -61,7 +61,9 @@ private fun TopBar(){
 
         ) {
             TextButton(
-                onClick = {/*TODO*/ },
+                onClick = {navController.navigate("HomeScreen"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true } },
                 //contentPadding = PaddingValues(vertical = 0.dp)
             ) {
                 Icon(
@@ -345,7 +347,7 @@ fun EnterInfo() {
 }
 
 @Composable
-fun Footer( nom : String) {
+fun Footer( navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -359,15 +361,17 @@ fun Footer( nom : String) {
             BlueHorizontalLine()
         }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { navController.navigate("Country"){
+                popUpTo(navController.graph.startDestinationId)
+                launchSingleTop = true } },
             modifier = Modifier
-                .offset(75.dp, 0.dp)
+                .offset(115.dp, 0.dp)
                 //.background(MaterialTheme.colors.primary)
                 .height(35.dp),
             shape = InputBoxShape.medium,
         ) {
             Text(
-                text = "Save and Continue",
+                text = "Continue",
                 color = Color.White,
             )
         }

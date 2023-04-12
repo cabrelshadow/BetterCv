@@ -2,17 +2,13 @@ package com.example.bettercvapp.screens
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-
-
-
 import androidx.compose.foundation.lazy.LazyRow
-
-
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,11 +17,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.bettercvapp.R
 import com.example.bettercvapp.R.*
@@ -34,7 +30,7 @@ import com.example.bettercvapp.ui.theme.Poppins
 
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavController) {
     TopBarApp()
     Text(text = "Cv Template",
         fontFamily = Poppins,
@@ -46,7 +42,7 @@ fun HomeScreen(navController: NavHostController) {
         RoundedCardList()
     }
 
-    BottomNavigation()
+    BottomNavigation(navController)
 }
 @Composable
 fun TopBarApp(
@@ -100,7 +96,6 @@ fun CardList1() {
         CardData(drawable.ko, "Big data"),
         CardData(drawable.ko, "Scrum master"),
         CardData(drawable.ko, "Infograhe"),
-
         )
 
     LazyRow(
@@ -114,8 +109,6 @@ fun CardList1() {
             Card(
                 cardData[index],
                 Modifier.width(150.dp),
-
-
                 RoundedCornerShape(20.dp)
             )
         }
@@ -154,13 +147,13 @@ fun Card(cardData: CardData, modifier: Modifier, shape: Shape) {
 }
 @Composable
 fun BottomNavigation(
+    navController: NavController,
     shape: Shape = RoundedCornerShape(16.dp)
 ) {
     val navItems = listOf(
         BottomNavItem.Home,
-        BottomNavItem.Profile,
+       // BottomNavItem.Profile,
         BottomNavItem.Favorites,
-
         )
     val selectedIndex = remember { mutableStateOf(1) }
 
@@ -169,22 +162,31 @@ fun BottomNavigation(
         elevation = 8.dp,
         modifier = Modifier
             .fillMaxWidth()
-
             .padding(top = 700.dp),
-
-
-
-
         ) {
         navItems.forEachIndexed { index, item ->
             BottomNavigationItem(
                 icon = { Icon(item.icon, null) },
                 label = { Text(item.title) },
                 selected = selectedIndex.value == index,
+                /*onClick = {
+                    navController.navigate("HomeScreen"){
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    },*/
                 onClick = { selectedIndex.value = index },
                 selectedContentColor = Color.Blue,
                 unselectedContentColor = Color.Gray
             )
+        }
+        Button(onClick = { navController.navigate("ProfileScreen"){
+            popUpTo(navController.graph.startDestinationId)
+            launchSingleTop = true } },
+                Modifier.height(55.dp)
+        ) {
+            Icon(Icons.Rounded.AddCircle, contentDescription = "")
+            Text(text = "Creer un Cv")
+
         }
     }
 }
@@ -194,9 +196,7 @@ sealed class BottomNavItem(
     val title: String
 ) {
     object Home : BottomNavItem(Icons.Filled.Home, "Home")
-    object Profile : BottomNavItem(Icons.Filled.AddCircle, "Creer un cv"
-        ,
-    )
+    /*object Profile : BottomNavItem(Icons.Filled.AddCircle, "Creer un cv")*/
     object Favorites : BottomNavItem(Icons.Filled.Favorite, "Favorites")
 
 }

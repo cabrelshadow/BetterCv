@@ -34,7 +34,7 @@ fun Formation(navController: NavController){
             contentPadding = PaddingValues(bottom = 40.dp)
         ) {
             stickyHeader {
-                TopBar()
+                TopBar(navController)
                 TopTitleBar()
             }
             items(1) {
@@ -48,7 +48,7 @@ fun Formation(navController: NavController){
         Modifier
             .offset(0.dp,600.dp)
     ) {
-        Footer("   Add new Formation")
+        Footer("   Add new Formation",navController,"ProfessionalExpScreen")
     }
 
 }
@@ -56,7 +56,7 @@ fun Formation(navController: NavController){
 
 
 @Composable
-private fun TopBar(){
+private fun TopBar(navController: NavController){
     Surface{
         Row(
             Modifier
@@ -66,7 +66,9 @@ private fun TopBar(){
 
         ) {
             TextButton(
-                onClick = {/*TODO*/ },
+                onClick = {navController.navigate("AddressNumber"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true }},
                 //contentPadding = PaddingValues(vertical = 0.dp)
             ) {
                 Icon(

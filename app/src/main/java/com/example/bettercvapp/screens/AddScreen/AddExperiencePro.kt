@@ -37,13 +37,13 @@ fun ProfessionalExpScreen(navController: NavController) {
             contentPadding = PaddingValues(bottom = 40.dp)
         ) {
             stickyHeader {
-                TopBar()
+                TopBar(navController)
                 TopTitleBar()
             }
             items(1) {
                 Spacer(modifier = Modifier.height(30.dp))
                 EnterInfo()
-                Spacer(modifier = Modifier.height(150.dp))
+                //Spacer(modifier = Modifier.height(150.dp))
             }
         }
     }
@@ -51,13 +51,13 @@ fun ProfessionalExpScreen(navController: NavController) {
         Modifier
             .offset(0.dp,600.dp)
     ) {
-        Footer("Add new Experiences")
+        Footer(" Add new Experiences",navController,"AddProject")
     }
 
 }
 
 @Composable
-private fun TopBar(){
+private fun TopBar(navController: NavController){
     Surface{
         Row(
             Modifier
@@ -67,7 +67,9 @@ private fun TopBar(){
 
         ) {
             TextButton(
-                onClick = {/*TODO*/ },
+                onClick = {navController.navigate("Formation"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true } },
                 //contentPadding = PaddingValues(vertical = 0.dp)
             ) {
                 Icon(
@@ -128,7 +130,6 @@ private fun EnterInfo(){
     var startDate by remember{ mutableStateOf("") }
     var endDate by remember{ mutableStateOf("") }
 
-Spacer(modifier = Modifier.height(70.dp))
     Row(
         Modifier
             .fillMaxWidth()

@@ -40,7 +40,7 @@ fun AddProject(navController: NavController) {
             contentPadding = PaddingValues(bottom = 40.dp)
         ) {
             stickyHeader {
-                TopBar()
+                TopBar(navController)
                 TopTitleBar()
             }
             items(1) {
@@ -54,7 +54,7 @@ fun AddProject(navController: NavController) {
         Modifier
             .offset(0.dp,600.dp)
     ) {
-        Footer("    Add new project")
+        Footer("     Add new project",navController,"Recommendation")
     }
 
 }
@@ -96,7 +96,7 @@ fun DateTextField(selectedDate: LocalDate?, onDateSelected: (LocalDate?) -> Unit
 }
 
 @Composable
-private fun TopBar(){
+private fun TopBar(navController: NavController){
     Surface{
         Row(
             Modifier
@@ -106,7 +106,9 @@ private fun TopBar(){
 
         ) {
             TextButton(
-                onClick = {/*TODO*/ },
+                onClick = {navController.navigate("ProfessionalExpScreen"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true } },
                 //contentPadding = PaddingValues(vertical = 0.dp)
             ) {
                 Icon(
