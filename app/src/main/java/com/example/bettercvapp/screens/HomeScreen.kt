@@ -27,15 +27,12 @@ import com.example.bettercvapp.R
 import com.example.bettercvapp.R.*
 import com.example.bettercvapp.ui.theme.Gray
 import com.example.bettercvapp.ui.theme.Poppins
-
-
 @Composable
 fun HomeScreen(navController: NavController) {
     TopBarApp()
     Text(text = "Cv Template",
         fontFamily = Poppins,
         modifier = Modifier.padding(vertical = 100.dp, horizontal = 30.dp)
-
     )
     CardList1()
     Box(modifier = Modifier.fillMaxWidth()){
@@ -44,6 +41,8 @@ fun HomeScreen(navController: NavController) {
 
     BottomNavigation(navController)
 }
+
+
 @Composable
 fun TopBarApp(
 
@@ -87,16 +86,19 @@ fun TopBarApp(
     }
 }
 
+
+
+val cardData = listOf(
+    CardData(drawable.ko, "Design cv"),
+    CardData(drawable.ko, "Developer "),
+    CardData(drawable.ko, "Data annalist 3"),
+    CardData(drawable.ko, "Big data"),
+    CardData(drawable.ko, "Scrum master"),
+    CardData(drawable.ko, "Infographic"),
+)
 @Composable
 fun CardList1() {
-    val cardData = listOf(
-        CardData(drawable.m1, "Design cv"),
-        CardData(drawable.ko, "Developper "),
-        CardData(drawable.ko, "Data analiste 3"),
-        CardData(drawable.ko, "Big data"),
-        CardData(drawable.ko, "Scrum master"),
-        CardData(drawable.ko, "Infograhe"),
-        )
+
 
     LazyRow(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
@@ -122,7 +124,7 @@ fun Card(cardData: CardData, modifier: Modifier, shape: Shape) {
     Box(
         modifier = modifier
             .background(Color.White, shape)
-            .clickable { /* Gérer le clic de la carte ici */ }
+            .clickable {/* Gérer le clic de la carte ici */}
     ) {
         Image(
             painter = painterResource(id = cardData.image),
@@ -141,7 +143,6 @@ fun Card(cardData: CardData, modifier: Modifier, shape: Shape) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(20.dp)
-
         )
     }
 }
