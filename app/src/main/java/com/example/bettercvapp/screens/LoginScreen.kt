@@ -1,5 +1,7 @@
 package com.example.bettercvapp.screens
 
+import android.content.ContentValues
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,6 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 @Composable
@@ -26,6 +30,7 @@ fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordOpen by remember { mutableStateOf(false) }
+    var showMessage by remember { mutableStateOf(false) }
     Box(contentAlignment = Alignment.TopCenter) {
         Image(
             painter = painterResource(id = R.drawable.ko), contentDescription = "",
@@ -166,10 +171,24 @@ fun LoginScreen(navController: NavController) {
 
                     Button(
                         onClick = {
-                            navController.navigate("HomeScreen"){
-                                popUpTo(navController.graph.startDestinationId)
-                                launchSingleTop = true
-                            }
+                            //navController.navigate("HomeScreen"){
+                               // popUpTo(navController.graph.startDestinationId)
+                               // launchSingleTop = true
+
+                            //}
+                            val auth = Firebase.auth
+                            auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener { task ->
+                                    showMessage = if (task.isSuccessful) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(ContentValues.TAG, "signInWithEmail:success")
+                                        navController.navigate("HomeScreen") // naviguer vers la page de connexion
+                                        false
+                                    } else {
+                                        Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
+                                        true
+                                    }
+                                }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -185,6 +204,25 @@ fun LoginScreen(navController: NavController) {
                         Text(text = "Login", fontFamily = Poppins)
                     }
 
+                    if (showMessage) {
+                        AlertDialog(
+                            onDismissRequest = { showMessage = false },
+                            title = { Text("Authentification invalide") },
+                            text = {
+                                Text("Email ou mot de passe incorrect")
+                            },
+                            confirmButton = {
+                                Button(
+                                    onClick = { showMessage = false },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = Color.Blue
+                                    )
+                                ) {
+                                    Text("OK")
+                                }
+                            }
+                        )
+                    }
 
                     TextButton(
                         onClick = {navController.navigate("ForgotPasswordScreen"){

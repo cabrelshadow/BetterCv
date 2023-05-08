@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
     fun LogApplication() {
         val navController = rememberNavController()
 
-        NavHost(navController = navController, startDestination = "HomeScreen", builder = {
+        NavHost(navController = navController, startDestination = "RegisterScreen", builder = {
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
             composable("HomeScreen", content = { HomeScreen(navController = navController) })

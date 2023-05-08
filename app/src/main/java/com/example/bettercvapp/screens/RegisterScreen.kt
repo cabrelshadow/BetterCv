@@ -1,5 +1,7 @@
  package com.example.bettercvapp.screens
 
+ import android.content.ContentValues.TAG
+ import android.util.Log
  import androidx.compose.foundation.Image
  import androidx.compose.foundation.background
  import androidx.compose.foundation.layout.*
@@ -18,6 +20,8 @@
  import androidx.navigation.NavController
  import com.example.bettercvapp.R
  import com.example.bettercvapp.ui.theme.*
+ import com.google.firebase.auth.ktx.auth
+ import com.google.firebase.ktx.Firebase
 
  @Composable
  fun RegisterScreen(navController: NavController) {
@@ -242,10 +246,7 @@
          }
 
          Button(
-             onClick = {navController.navigate("LoginScreen"){
-                 popUpTo(navController.graph.startDestinationId)
-                 launchSingleTop = true
-             }},
+             onClick = {createUser(email, password , navController)},
              colors = ButtonDefaults.buttonColors(
                  backgroundColor = PrimaryColor
              ),
@@ -346,5 +347,31 @@
                  )
              }
          }
+     }
+ }
+
+ fun createUser(
+     email: String,
+     password: String,
+     navController: NavController
+
+ ){
+     println("L'email est $email, et le mot de passe est $password")
+
+     val auth = Firebase.auth
+     try {
+         auth.createUserWithEmailAndPassword(email, password)
+             .addOnCompleteListener { task ->
+                 if (task.isSuccessful) {
+                     Log.d(TAG, "createUserWithEmail:success")
+                     navController.navigate("LoginScreen") // naviguer vers la page de connexion
+
+
+                 } else {
+                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                 }
+             }
+     } catch (e: Exception) {
+         println("Erreur : $e.message")
      }
  }

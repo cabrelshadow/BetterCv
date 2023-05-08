@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "334317136673",
+    "project_id": "bettercv-b982b",
+    "storage_bucket": "bettercv-b982b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334317136673:android:f33a6cb87220b7c9b1ec60",
+        "android_client_info": {
+          "package_name": "com.example.bettercvapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "334317136673-cdh4albch4lu2lgtq8k0nqcqcr4c5crn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR6OpzTUVaWQfOjW125Hht500t9Tjl0e0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334317136673-cdh4albch4lu2lgtq8k0nqcqcr4c5crn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
