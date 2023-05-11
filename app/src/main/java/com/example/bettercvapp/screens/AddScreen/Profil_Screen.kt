@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bettercvapp.Height
 import com.example.bettercvapp.R
+import com.example.bettercvapp.data.DataProfil
 import com.example.bettercvapp.ui.theme.*
 
 
@@ -51,48 +52,7 @@ fun ProfileScreen(navController: NavController) {
 }
 
 @Composable
-private fun TopBar(navController: NavController){
-    Surface{
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            TextButton(
-                onClick = {navController.navigate("HomeScreen"){
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true } },
-                //contentPadding = PaddingValues(vertical = 0.dp)
-            ) {
-                Icon(
-                    Icons.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.app_name)
-                )
-                Text(
-                    text = "back",
-                    color = Color.Black,
-                    fontFamily = Poppins,
-                    fontSize = 15.sp,
-                )
-                Spacer(Modifier.weight(1f))
-                //texte save
-                TextButton(onClick = { /*TODO*/ }) {
-                    Text(
-                        text = "save Draf",
-                        fontFamily = Poppins,
-                        fontSize = 15.sp,
-                    )
-                }
-            }
-
-        }
-    }
-}
-
-@Composable
-private fun TopTitleBar(){
+fun TopTitleBar(){
     Surface() {
         Row(
             Modifier
@@ -110,6 +70,40 @@ private fun TopTitleBar(){
         }
     }
 }
+
+@Composable
+ fun TopBar(navController: NavController){
+    Surface{
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            TextButton(
+                onClick = {navController.navigate("HomeScreens"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true } },
+                //contentPadding = PaddingValues(vertical = 0.dp)
+            ) {
+                Icon(
+                    Icons.Rounded.ArrowBack,
+                    contentDescription = stringResource(R.string.app_name)
+                )
+                Text(
+                    text = "back",
+                    color = Color.Black,
+                    fontFamily = Poppins,
+                    fontSize = 15.sp,
+                )
+                Spacer(Modifier.weight(1f))
+                //texte save
+            }
+        }
+    }
+}
+
 @Composable
 fun EnterInfo() {
     var firstname by remember { mutableStateOf("") }
@@ -119,8 +113,6 @@ fun EnterInfo() {
     var maritalstatus by remember { mutableStateOf("") }
     var numberChild by remember { mutableStateOf("") }
     var drivinglicence by remember { mutableStateOf("") }
-
-
     Row(
         Modifier
             .fillMaxWidth()
@@ -139,7 +131,8 @@ fun EnterInfo() {
             .padding(horizontal = 18.dp)
     ) {
         OutlinedTextField(
-            value = firstname, onValueChange = { firstname = it },
+            value = firstname,
+            onValueChange = { firstname = it },
             Modifier
                 .width(350.dp),
             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -365,13 +358,13 @@ fun Footer( navController: NavController) {
                 popUpTo(navController.graph.startDestinationId)
                 launchSingleTop = true } },
             modifier = Modifier
-                .offset(115.dp, 0.dp)
+                .offset(90.dp, 0.dp)
                 //.background(MaterialTheme.colors.primary)
                 .height(35.dp),
             shape = InputBoxShape.medium,
         ) {
             Text(
-                text = "Continue",
+                text = "Save & Continue",
                 color = Color.White,
             )
         }

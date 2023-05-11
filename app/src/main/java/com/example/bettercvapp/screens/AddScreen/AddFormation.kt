@@ -82,14 +82,6 @@ private fun TopBar(navController: NavController){
                     fontSize = 15.sp,
                 )
                 Spacer(Modifier.weight(1f))
-                //texte save
-                TextButton(onClick = { /*TODO*/ }) {
-                    Text(
-                        text = "save Draf",
-                        fontFamily = Poppins,
-                        fontSize = 15.sp,
-                    )
-                }
             }
 
         }
@@ -143,7 +135,8 @@ private fun EnterInfo() {
             .padding(horizontal = 18.dp)
     ) {
         OutlinedTextField(
-            value = school, onValueChange = { school = it },
+            value = school,
+            onValueChange = { school = it },
             Modifier
                 .width(350.dp),
             colors = TextFieldDefaults.outlinedTextFieldColors(

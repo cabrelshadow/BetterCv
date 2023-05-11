@@ -1,5 +1,6 @@
 package com.example.bettercvapp.screens
 
+import android.app.AlertDialog
 import android.content.ContentValues
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bettercvapp.R
+import com.example.bettercvapp.screens.AddScreen.LoadingButton
 import com.example.bettercvapp.ui.theme.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -27,6 +29,7 @@ import com.google.firebase.ktx.Firebase
 
 @Composable
 fun LoginScreen(navController: NavController) {
+    var isLoad:Boolean
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordOpen by remember { mutableStateOf(false) }
@@ -40,7 +43,7 @@ fun LoginScreen(navController: NavController) {
     Box(contentAlignment = Alignment.BottomCenter) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                text = "WELCOME TO MONUMENTAL HABITS",
+                text = "WELCOME TO BETTER CV",
                 fontSize = 28.sp,
                 color = Color.White,
                 modifier = Modifier
@@ -168,27 +171,34 @@ fun LoginScreen(navController: NavController) {
                             }
                         }
                     )
-
+                    var load by remember { mutableStateOf(false) }
+                    val showDialog = remember { mutableStateOf(false) }
                     Button(
                         onClick = {
                             //navController.navigate("HomeScreen"){
                                // popUpTo(navController.graph.startDestinationId)
                                // launchSingleTop = true
-
                             //}
+                                load = true
                             val auth = Firebase.auth
-                            auth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener { task ->
-                                    showMessage = if (task.isSuccessful) {
-                                        // Sign in success, update UI with the signed-in user's information
-                                        Log.d(ContentValues.TAG, "signInWithEmail:success")
-                                        navController.navigate("HomeScreen") // naviguer vers la page de connexion
-                                        false
-                                    } else {
-                                        Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
-                                        true
+                            if(email.isEmpty() || password.isEmpty()){
+                                showDialog.value = true
+                                load = false
+                            }else{
+                                auth.signInWithEmailAndPassword(email,password)
+                                    .addOnCompleteListener { task ->
+                                        showMessage = if (task.isSuccessful) {
+                                            // Sign in success, update UI with the signed-in user's information
+                                            Log.d(ContentValues.TAG,"signInWithEmail:success")
+                                            navController.navigate("HomeScreens") // naviguer vers la page de connexion
+                                            false
+                                        } else {
+                                            load = false
+                                            Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
+                                            true
+                                        }
                                     }
-                                }
+                            }
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -200,14 +210,31 @@ fun LoginScreen(navController: NavController) {
                         ),
                         contentPadding = PaddingValues(vertical = 14.dp)
                     ) {
-
                         Text(text = "Login", fontFamily = Poppins)
+                        if(load){
+                            CircularProgressIndicator()
+                        }
                     }
 
+                    if (showDialog.value) {
+                        AlertDialog(
+                            onDismissRequest = { showDialog.value = false },
+                            title = { Text(text = "Information") },
+                            text = { Text(text = "veuillez remplir tout les champs") },
+                            confirmButton = {
+                                Button(
+                                    onClick = { showDialog.value = false },
+                                    colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                                ) {
+                                    Text(text = "OK")
+                                }
+                            }
+                        )
+                    }
                     if (showMessage) {
                         AlertDialog(
                             onDismissRequest = { showMessage = false },
-                            title = { Text("Authentification invalide") },
+                            title = { Text("Authentication invalid") },
                             text = {
                                 Text("Email ou mot de passe incorrect")
                             },
@@ -223,7 +250,6 @@ fun LoginScreen(navController: NavController) {
                             }
                         )
                     }
-
                     TextButton(
                         onClick = {navController.navigate("ForgotPasswordScreen"){
                             popUpTo(navController.graph.startDestinationId)

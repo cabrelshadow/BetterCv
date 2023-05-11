@@ -24,12 +24,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ModelScreen() {
+fun ModelScreen(navController: NavController) {
     var search by remember { mutableStateOf("") }
     Scaffold(
         topBar = {
@@ -43,7 +44,9 @@ fun ModelScreen() {
                     .fillMaxWidth()
                 ) {
 
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = {navController.navigate("HomeScreens"){
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true } }) {
 
                         Icon(Icons.Rounded.ArrowBack, contentDescription = stringResource(R.string.arrow))
                     }

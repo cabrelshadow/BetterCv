@@ -34,42 +34,18 @@ fun Footer(nom : String, navController: NavController, route:String) {
         ) {
             BlueHorizontalLine()
         }
-        Row(
-            Modifier
-                .offset(140.dp, (-40).dp)
-                .clip(CircleShape)
-                .size(45.dp),
-        ) {
-            Button(
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    Icons.Rounded.Add,
-                    contentDescription = stringResource(R.string.app_name),
-                    Modifier
-                        .size(200.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colors.primary),
-                )
-            }
-        }
-        Text(
-            text = "$nom",
-            modifier = Modifier
-                .offset(80.dp, (-40).dp)
-        )
         Button(
             onClick = { navController.navigate("$route"){
                 popUpTo(navController.graph.startDestinationId)
                 launchSingleTop = true } },
             modifier = Modifier
-                .offset(115.dp, 0.dp)
+                .offset(90.dp, 0.dp)
                 //.background(MaterialTheme.colors.primary)
                 .height(35.dp),
             shape = InputBoxShape.medium,
         ) {
             Text(
-                text = "Continue",
+                text = "Save & Continue",
                 color = Color.White,
             )
         }

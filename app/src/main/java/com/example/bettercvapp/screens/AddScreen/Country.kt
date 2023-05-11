@@ -88,14 +88,6 @@ private fun TopBar(navController: NavController){
                     fontSize = 15.sp,
                 )
                 Spacer(Modifier.weight(1f))
-                //texte save
-                TextButton(onClick = { /*TODO*/ }) {
-                    Text(
-                        text = "save Draf",
-                        fontFamily = Poppins,
-                        fontSize = 15.sp,
-                    )
-                }
             }
 
         }
