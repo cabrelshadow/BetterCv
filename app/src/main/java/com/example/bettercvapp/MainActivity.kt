@@ -12,10 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.better_cv.screens.ProfileScreen
 import com.example.bettercvapp.screens.*
-import com.example.bettercvapp.screens.AddScreen.EditCv
-import com.example.bettercvapp.screens.AddScreen.Formation
-import com.example.bettercvapp.screens.AddScreen.LoadingButton
-import com.example.bettercvapp.screens.AddScreen.ShareCv
+import com.example.bettercvapp.screens.AddScreen.*
 import com.example.bettercvapp.ui.theme.BackgroundColor
 import com.example.bettercvapp.ui.theme.BetterCvAppTheme
 import com.example.expprofessionelle.ProfessionalExpScreen
@@ -36,12 +33,11 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
 
-        NavHost(navController = navController, startDestination = "HomeScreens", builder = {
+        NavHost(navController = navController, startDestination = "EditCv", builder = {
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
             composable("ForgotPasswordScreen", content = { ForgotPasswordScreen(navController = navController) })
@@ -56,7 +52,7 @@ class MainActivity : ComponentActivity() {
             composable("HomeScreens", content = { HomeScreens(navController = navController)})
             composable("ShareCv", content = { ShareCv(navController = navController)})
             composable("ModelScreen", content = { ModelScreen(navController = navController)})
-            composable("LoadingButton", content = { LoadingButton(onClick = {}, isLoading = true)})
+            composable("Splashscreen",){ Splashscreen(navController = navController) }
         })
     }
 }

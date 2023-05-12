@@ -5,6 +5,7 @@
  import androidx.compose.foundation.Image
  import androidx.compose.foundation.background
  import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.text.KeyboardOptions
  import androidx.compose.material.*
  import androidx.compose.runtime.*
  import androidx.compose.ui.Alignment
@@ -14,6 +15,9 @@
  import androidx.compose.ui.res.painterResource
  import androidx.compose.ui.text.TextStyle
  import androidx.compose.ui.text.font.FontWeight
+ import androidx.compose.ui.text.input.KeyboardType
+ import androidx.compose.ui.text.input.PasswordVisualTransformation
+ import androidx.compose.ui.text.input.VisualTransformation
  import androidx.compose.ui.text.style.TextAlign
  import androidx.compose.ui.unit.dp
  import androidx.compose.ui.unit.sp
@@ -25,6 +29,7 @@
 
  @Composable
  fun RegisterScreen(navController: NavController) {
+     var isPasswordOpen by remember { mutableStateOf(false) }
      var username by remember { mutableStateOf("") }
      var email by remember { mutableStateOf("") }
      var password by remember { mutableStateOf("") }
@@ -161,6 +166,8 @@
                  focusedIndicatorColor = Color.Transparent,
                  unfocusedIndicatorColor = Color.Transparent
              ),
+             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+             visualTransformation = if (!isPasswordOpen) PasswordVisualTransformation() else VisualTransformation.None,
              shape = InputBoxShape.medium,
              singleLine = true,
              leadingIcon = {
@@ -192,7 +199,28 @@
                  fontSize = 14.sp,
                  fontWeight = FontWeight.SemiBold,
                  fontFamily = Poppins
-             )
+             ),
+                     trailingIcon = {
+                 IconButton(onClick = { isPasswordOpen = !isPasswordOpen }) {
+                     if (!isPasswordOpen) {
+                         Icon(
+                             painter = painterResource(id = R.drawable.ic_eye_open),
+                             contentDescription = "",
+                             tint = PrimaryColor,
+                             modifier = Modifier.size(24.dp)
+                         )
+                     } else {
+                         Icon(
+                             painter = painterResource(id = R.drawable.ic_eye_close),
+                             contentDescription = "",
+                             tint = PrimaryColor,
+                             modifier = Modifier.size(24.dp)
+                         )
+                     }
+                 }
+             }
+
+
          )
 
          Row(
@@ -244,9 +272,18 @@
                  fontSize = 12.sp
              )
          }
-
+         var load by remember { mutableStateOf(false) }
+         val showDialog = remember { mutableStateOf(false) }
          Button(
-             onClick = {createUser(email, password , navController)},
+             onClick = {
+                 if(email.isEmpty() || password.isEmpty()){
+                     showDialog.value = true
+                     load = false
+                 }else{
+                     load = true
+                     createUser(email, password , navController)
+                 }
+                       },
              colors = ButtonDefaults.buttonColors(
                  backgroundColor = PrimaryColor
              ),
@@ -267,6 +304,24 @@
                  color = SecondaryColor,
                  fontSize = 12.sp,
                  fontWeight = FontWeight.Bold
+             )
+             if(load){
+                 CircularProgressIndicator()
+             }
+         }
+         if (showDialog.value) {
+             AlertDialog(
+                 onDismissRequest = { showDialog.value = false },
+                 title = { Text(text = "Information") },
+                 text = { Text(text = "veuillez remplir tout les champs") },
+                 confirmButton = {
+                     Button(
+                         onClick = { showDialog.value = false },
+                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                     ) {
+                         Text(text = "OK")
+                     }
+                 }
              )
          }
 
