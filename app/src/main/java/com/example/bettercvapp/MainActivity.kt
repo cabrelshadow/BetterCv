@@ -37,7 +37,19 @@ class MainActivity : ComponentActivity() {
     fun LogApplication() {
         val navController = rememberNavController()
 
+<<<<<<< HEAD
         NavHost(navController = navController, startDestination = "Recommendation", builder = {
+=======
+<<<<<<< HEAD
+        NavHost(navController = navController, startDestination = "ShareCv", builder = {
+=======
+<<<<<<< HEAD
+        NavHost(navController = navController, startDestination = "EditCv", builder = {
+=======
+        NavHost(navController = navController, startDestination = "Recommendation", builder = {
+>>>>>>> 4e3a5417f47f68452e9de19d070ea9111e59f739
+>>>>>>> 6fa811a2343e8acfcba8dd56ab5a1192f72c362f
+>>>>>>> f9d529343ae2498513d15fb81a00ea737bf7481b
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
             composable("ForgotPasswordScreen", content = { ForgotPasswordScreen(navController = navController) })
