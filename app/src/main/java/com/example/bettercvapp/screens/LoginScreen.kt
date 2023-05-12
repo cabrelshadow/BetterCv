@@ -29,7 +29,6 @@ import com.google.firebase.ktx.Firebase
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    var isLoad:Boolean
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isPasswordOpen by remember { mutableStateOf(false) }

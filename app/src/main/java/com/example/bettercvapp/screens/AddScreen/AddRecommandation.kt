@@ -18,16 +18,39 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bettercvapp.BlueHorizontalLine
 import com.example.bettercvapp.Footer
 import com.example.bettercvapp.Height
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.InputBoxShape
 import com.example.bettercvapp.ui.theme.Poppins
 import com.example.bettercvapp.ui.theme.PrimaryColor
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Recommendation(navController: NavController) {
+    var PersonName by remember { mutableStateOf("") }
+    var Relationship by remember { mutableStateOf("") }
+    var ResearchPost by remember{ mutableStateOf("") }
+    var Message by remember{ mutableStateOf("") }
+    var Number by remember{ mutableStateOf("") }
+
+
+    val db = Firebase.firestore
+    val recom = db.collection("recommandation")
+
+    fun saveRecom(){
+        val newRecom = hashMapOf(
+            "PersonName" to PersonName,
+            "Relationship" to Relationship,
+            "ResearchPost" to ResearchPost,
+            "Message" to Message,
+            "Number" to Number
+        )
+        recom.add(newRecom)
+    }
     Box(
         Modifier
             .background(Color.White)
@@ -42,16 +65,216 @@ fun Recommendation(navController: NavController) {
             }
             items(1) {
                 Spacer(modifier = Modifier.height(30.dp))
-                EnterInfo()
+                //EnterInfo()
+
+                    val notification = remember{ mutableStateOf("") }
+                    if(notification.value.isNotEmpty()){
+                        Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
+                        notification.value=""
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "your recommender Name",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = PersonName, onValueChange = { PersonName = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Your Relation Ship",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = Relationship, onValueChange = { Relationship = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Research Post",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = ResearchPost, onValueChange = { ResearchPost = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Message of your recommendation",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = Message, onValueChange = { Message = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Number of your Recommender",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = Number, onValueChange = {Number = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+
                 Spacer(modifier = Modifier.height(150.dp))
             }
         }
     }
     Box(
         Modifier
-            .offset(0.dp,600.dp)
+            .offset(0.dp,400.dp)
     ) {
-        Footer("Add new Recommendation",navController,"HomeScreens")
+        //Footer("Add new Recommendation",navController,"HomeScreens")
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 70.dp, horizontal = 32.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    BlueHorizontalLine()
+                }
+                Button(
+                    onClick = { navController.navigate("HomeScreens"){
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true }
+                        saveRecom()
+                              },
+                    modifier = Modifier
+                        .offset(90.dp, 0.dp)
+                        //.background(MaterialTheme.colors.primary)
+                        .height(35.dp),
+                    shape = InputBoxShape.medium,
+                ) {
+                    Text(
+                        text = "Save & Continue",
+                        color = Color.White,
+                    )
+                }
+
+            }
+
     }
 
 }
@@ -107,179 +330,5 @@ private fun TopTitleBar(){
             )
         }
     }
-}
-
-@Composable
-private fun EnterInfo (){
-    val notification = remember{ mutableStateOf("") }
-    if(notification.value.isNotEmpty()){
-        Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
-        notification.value=""
-    }
-    var PersonName by remember { mutableStateOf("") }
-    var Relationship by remember { mutableStateOf("") }
-    var ResearchPost by remember{ mutableStateOf("") }
-    var Message by remember{ mutableStateOf("") }
-    var Number by remember{ mutableStateOf("") }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "your recommender Name",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = PersonName, onValueChange = { PersonName = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Your Relation Ship",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = Relationship, onValueChange = { Relationship = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Research Post",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = ResearchPost, onValueChange = { ResearchPost = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Message of your recommendation",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = Message, onValueChange = { Message = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Number of your Recommender",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = Number, onValueChange = { Number = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
 }
 

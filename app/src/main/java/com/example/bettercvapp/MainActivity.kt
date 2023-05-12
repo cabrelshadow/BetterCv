@@ -12,10 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.better_cv.screens.ProfileScreen
 import com.example.bettercvapp.screens.*
-import com.example.bettercvapp.screens.AddScreen.EditCv
-import com.example.bettercvapp.screens.AddScreen.Formation
-import com.example.bettercvapp.screens.AddScreen.LoadingButton
-import com.example.bettercvapp.screens.AddScreen.ShareCv
+import com.example.bettercvapp.screens.AddScreen.*
 import com.example.bettercvapp.ui.theme.BackgroundColor
 import com.example.bettercvapp.ui.theme.BetterCvAppTheme
 import com.example.expprofessionelle.ProfessionalExpScreen
@@ -36,12 +33,19 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
 
+<<<<<<< HEAD
         NavHost(navController = navController, startDestination = "ShareCv", builder = {
+=======
+<<<<<<< HEAD
+        NavHost(navController = navController, startDestination = "EditCv", builder = {
+=======
+        NavHost(navController = navController, startDestination = "Recommendation", builder = {
+>>>>>>> 4e3a5417f47f68452e9de19d070ea9111e59f739
+>>>>>>> 6fa811a2343e8acfcba8dd56ab5a1192f72c362f
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
             composable("ForgotPasswordScreen", content = { ForgotPasswordScreen(navController = navController) })
@@ -56,7 +60,7 @@ class MainActivity : ComponentActivity() {
             composable("HomeScreens", content = { HomeScreens(navController = navController)})
             composable("ShareCv", content = { ShareCv(navController = navController)})
             composable("ModelScreen", content = { ModelScreen(navController = navController)})
-            composable("LoadingButton", content = { LoadingButton(onClick = {}, isLoading = true)})
+            composable("Splashscreen",){ Splashscreen(navController = navController) }
         })
     }
 }
