@@ -18,11 +18,36 @@ import com.example.bettercvapp.Height
 import com.example.bettercvapp.R
 import com.example.bettercvapp.data.DataProfil
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProfileScreen(navController: NavController) {
+    var firstname by remember { mutableStateOf("") }
+    var lastname by remember { mutableStateOf("") }
+    var borndate by remember { mutableStateOf("") }
+    var bornat by remember { mutableStateOf("") }
+    var maritalstatus by remember { mutableStateOf("") }
+    var numberChild by remember { mutableStateOf("") }
+    var drivinglicence by remember { mutableStateOf("") }
+
+    val db = Firebase.firestore
+    val profil = db.collection("Profile")
+
+    fun saveProfile(){
+        val newProfil = hashMapOf(
+            "firstname" to firstname,
+            "lastname" to lastname,
+            "borndate" to borndate,
+            "maritalstatus" to maritalstatus,
+            "numberChild" to numberChild,
+            "drivinglicence" to drivinglicence,
+
+        )
+        profil.add(newProfil)
+    }
     Box(
         Modifier
             .background(Color.White)
@@ -37,7 +62,233 @@ fun ProfileScreen(navController: NavController) {
             }
             items(1) {
                 Spacer(modifier = Modifier.height(30.dp))
-                EnterInfo()
+                //EnterInfo()
+
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Your First Name",
+                            fontFamily = Poppins,
+                            fontSize =14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = firstname,
+                            onValueChange = { firstname = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Your Last Name",
+                            fontFamily = Poppins,
+                            fontSize =14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = lastname, onValueChange = { lastname = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Your Born Date",
+                            fontFamily = Poppins,
+                            fontSize =14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = borndate, onValueChange = { borndate = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Place Of Birth",
+                            fontFamily = Poppins,
+                            fontSize =14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = bornat, onValueChange = { bornat = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Your Marital Status",
+                            fontFamily = Poppins,
+                            fontSize =14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = maritalstatus, onValueChange = { maritalstatus = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Number of your Child",
+                            fontFamily = Poppins,
+                            fontSize =14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = numberChild, onValueChange = { numberChild = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Your Type Of Driving License",
+                            fontFamily = Poppins,
+                            fontSize =14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = drivinglicence, onValueChange = { drivinglicence = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
                 Spacer(modifier = Modifier.height(150.dp))
             }
         }
@@ -46,10 +297,40 @@ fun ProfileScreen(navController: NavController) {
         Modifier
             .offset(0.dp,600.dp)
     ) {
-        Footer(navController)
-    }
+        //Footer(navController)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 70.dp, horizontal = 32.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    BlueHorizontalLine()
+                }
+                Button(
+                    onClick = { navController.navigate("Country"){
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true }
+                        saveProfile()
+                    },
+                    modifier = Modifier
+                        .offset(90.dp, 0.dp)
+                        //.background(MaterialTheme.colors.primary)
+                        .height(35.dp),
+                    shape = InputBoxShape.medium,
+                ) {
+                    Text(
+                        text = "Save & Continue",
+                        color = Color.White,
+                    )
+                }
 
-}
+            }
+        }
+    }
 
 @Composable
 fun TopTitleBar(){
@@ -98,246 +379,12 @@ fun TopTitleBar(){
                     fontSize = 15.sp,
                 )
                 Spacer(Modifier.weight(1f))
-                //texte save
+
             }
         }
     }
 }
 
-@Composable
-fun EnterInfo() {
-    var firstname by remember { mutableStateOf("") }
-    var lastname by remember { mutableStateOf("") }
-    var borndate by remember { mutableStateOf("") }
-    var bornat by remember { mutableStateOf("") }
-    var maritalstatus by remember { mutableStateOf("") }
-    var numberChild by remember { mutableStateOf("") }
-    var drivinglicence by remember { mutableStateOf("") }
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Your First Name",
-            fontFamily = Poppins,
-            fontSize =14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = firstname,
-            onValueChange = { firstname = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Your Last Name",
-            fontFamily = Poppins,
-            fontSize =14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = lastname, onValueChange = { lastname = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Your Born Date",
-            fontFamily = Poppins,
-            fontSize =14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = borndate, onValueChange = { borndate = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Place Of Birth",
-            fontFamily = Poppins,
-            fontSize =14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = bornat, onValueChange = { bornat = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Your Marital Status",
-            fontFamily = Poppins,
-            fontSize =14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = maritalstatus, onValueChange = { maritalstatus = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Number of your Child",
-            fontFamily = Poppins,
-            fontSize =14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = numberChild, onValueChange = { numberChild = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Your Type Of Driving License",
-            fontFamily = Poppins,
-            fontSize =14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = drivinglicence, onValueChange = { drivinglicence = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-}
 
 @Composable
 fun Footer( navController: NavController) {
@@ -356,7 +403,8 @@ fun Footer( navController: NavController) {
         Button(
             onClick = { navController.navigate("Country"){
                 popUpTo(navController.graph.startDestinationId)
-                launchSingleTop = true } },
+                launchSingleTop = true }
+                      },
             modifier = Modifier
                 .offset(90.dp, 0.dp)
                 //.background(MaterialTheme.colors.primary)
