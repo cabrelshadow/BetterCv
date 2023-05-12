@@ -18,12 +18,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bettercvapp.BlueHorizontalLine
 import com.example.bettercvapp.Footer
 import com.example.bettercvapp.Height
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.InputBoxShape
 import com.example.bettercvapp.ui.theme.Poppins
 import com.example.bettercvapp.ui.theme.PrimaryColor
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -31,6 +34,30 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AddProject(navController: NavController) {
+    var NameProject by remember { mutableStateOf("") }
+    var Status by remember { mutableStateOf("") }
+    var StartDate by remember { mutableStateOf("") }
+    var EndDate by remember { mutableStateOf("") }
+    var Partner by remember { mutableStateOf("") }
+    var UrlProject by remember { mutableStateOf("") }
+    var DescriptionOfProject by remember { mutableStateOf("") }
+
+    val db = Firebase.firestore
+    val project = db.collection("project")
+
+    fun saveProject(){
+        val newExpro = hashMapOf(
+            "NameProject" to NameProject,
+            "Status" to Status,
+            "StartDate" to StartDate,
+            "EndDate" to EndDate,
+            "Partner" to Partner,
+            "UrlProject" to UrlProject,
+            "DescriptionOfProject" to DescriptionOfProject,
+        )
+        project.add(newExpro)
+    }
+
     Box(
         Modifier
             .background(Color.White)
@@ -45,16 +72,282 @@ fun AddProject(navController: NavController) {
             }
             items(1) {
                 Spacer(modifier = Modifier.height(30.dp))
-                EnterInfo()
+                //EnterInfo()
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Name of Project",
+                            fontFamily = Poppins,
+                            fontSize =14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = NameProject, onValueChange = { NameProject = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    //Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Your status in Project",
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                        )
+                    }
+                    //(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = Status, onValueChange = { Status = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+                    // Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Start date",
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = StartDate, onValueChange = { StartDate = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "End date",
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = EndDate, onValueChange = { EndDate = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(16.dp))
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Partner in Project",
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = Partner, onValueChange = { Partner = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "URL of project",
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp),
+
+                        ) {
+                        OutlinedTextField(
+                            value = UrlProject, onValueChange = { UrlProject = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true,
+
+                            )
+                    }
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "Description of project",
+                            fontFamily = Poppins,
+                            fontSize = 14.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(150.dp)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = DescriptionOfProject, onValueChange = { DescriptionOfProject = it },
+                            Modifier
+                                .width(350.dp)
+                                .height(150.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = false
+                        )
+                    }
+
+
                 Spacer(modifier = Modifier.height(150.dp))
             }
         }
     }
     Box(
         Modifier
-            .offset(0.dp,600.dp)
+            .offset(0.dp,400.dp)
     ) {
-        Footer("     Add new project",navController,"Recommendation")
+        //Footer(" Add new project",navController,"Recommendation")
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 70.dp, horizontal = 32.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    BlueHorizontalLine()
+                }
+                Button(
+                    onClick = { navController.navigate("Recommendation"){
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true }
+                        saveProject()
+                              },
+                    modifier = Modifier
+                        .offset(90.dp, 0.dp)
+                        //.background(MaterialTheme.colors.primary)
+                        .height(35.dp),
+                    shape = InputBoxShape.medium,
+                ) {
+                    Text(
+                        text = "Save & Continue",
+                        color = Color.White,
+                    )
+                }
+
+            }
+
+
     }
 
 }
@@ -148,247 +441,5 @@ private fun TopTitleBar(){
    }
 }
 
-@Composable
-private fun EnterInfo(){
-    var NameProject by remember { mutableStateOf("") }
-    var Status by remember { mutableStateOf("") }
-    var StartDate by remember { mutableStateOf("") }
-    var EndDate by remember { mutableStateOf("") }
-    var Partner by remember { mutableStateOf("") }
-    var UrlProject by remember { mutableStateOf("") }
-    var DescriptionOfProject by remember { mutableStateOf("") }
 
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Name of Project",
-            fontFamily = Poppins,
-            fontSize =14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = NameProject, onValueChange = { NameProject = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    //Spacer(modifier = Modifier.height(16.dp))
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Your status in Project",
-            fontFamily = Poppins,
-            fontSize = 14.sp,
-        )
-    }
-    //(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = Status, onValueChange = { Status = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-   // Spacer(modifier = Modifier.height(16.dp))
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Start date",
-            fontFamily = Poppins,
-            fontSize = 14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = StartDate, onValueChange = { StartDate = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-    //Spacer(modifier = Modifier.height(16.dp))
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "End date",
-            fontFamily = Poppins,
-            fontSize = 14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = EndDate, onValueChange = { EndDate = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-    //Spacer(modifier = Modifier.height(16.dp))
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Partner in Project",
-            fontFamily = Poppins,
-            fontSize = 14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = Partner, onValueChange = { Partner = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "URL of project",
-            fontFamily = Poppins,
-            fontSize = 14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp),
-
-    ) {
-       OutlinedTextField(
-            value = UrlProject, onValueChange = { UrlProject = it },
-           Modifier
-               .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true,
-
-        )
-    }
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Description of project",
-            fontFamily = Poppins,
-            fontSize = 14.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(150.dp)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = DescriptionOfProject, onValueChange = { DescriptionOfProject = it },
-            Modifier
-                .width(350.dp)
-                .height(150.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = false
-        )
-    }
-
-}
 

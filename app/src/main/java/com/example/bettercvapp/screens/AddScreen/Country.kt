@@ -23,15 +23,35 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.bettercvapp.BlueHorizontalLine
 import com.example.bettercvapp.Footer
 import com.example.bettercvapp.Height
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Country(navController: NavController){
+    var country by remember{ mutableStateOf("") }
+    var city by remember{ mutableStateOf("") }
+    var language by remember{ mutableStateOf("") }
+    var level by remember{ mutableStateOf("") }
+
+    val db = Firebase.firestore
+    val count = db.collection("Country")
+
+    fun saveCountry(){
+        val newCountry = hashMapOf(
+            "country" to country,
+            "city" to city,
+            "language" to language,
+            "level" to level
+        )
+        count.add(newCountry)
+    }
     Box(
         Modifier
             .background(Color.White)
@@ -47,7 +67,136 @@ fun Country(navController: NavController){
             }
             items(1) {
                 Spacer(modifier = Modifier.height(60.dp))
-                EnterInfo()
+                //EnterInfo()
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "your Country",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = country, onValueChange = { country = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "your City",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = city, onValueChange = { city = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "your Language",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = language, onValueChange = { language = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                    ) {
+                        Text(
+                            text = "your Level in this language",
+                            fontFamily = Poppins,
+                            fontSize =16.sp,
+                        )
+                    }
+                    //Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        Modifier
+                            .height(Height)
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = level, onValueChange = { level = it },
+                            Modifier
+                                .width(350.dp),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                unfocusedBorderColor = PrimaryColor,
+                                backgroundColor = Color.White,
+                                cursorColor = Color.Black,
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true
+                        )
+                    }
+
                 Spacer(modifier = Modifier.height(150.dp))
             }
         }
@@ -56,7 +205,40 @@ fun Country(navController: NavController){
         Modifier
             .offset(0.dp,600.dp)
     ) {
-        Footer("   Add new Information",navController,"AddressNumber")
+        //Footer("   Add new Information",navController,"AddressNumber")
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 70.dp, horizontal = 32.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    BlueHorizontalLine()
+                }
+                Button(
+                    onClick = { navController.navigate("AddressNumber"){
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true }
+                        saveCountry()
+                              },
+                    modifier = Modifier
+                        .offset(90.dp, 0.dp)
+                        //.background(MaterialTheme.colors.primary)
+                        .height(35.dp),
+                    shape = InputBoxShape.medium,
+                ) {
+                    Text(
+                        text = "Save & Continue",
+                        color = Color.White,
+                    )
+                }
+
+            }
+
     }
 }
 
@@ -110,140 +292,5 @@ private fun TopTitleBar(){
                 fontSize = 25.sp,
             )
         }
-    }
-}
-@Composable
-private fun EnterInfo() {
-    var country by remember{ mutableStateOf("") }
-    var city by remember{ mutableStateOf("") }
-    var language by remember{ mutableStateOf("") }
-    var level by remember{ mutableStateOf("") }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "your Country",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = country, onValueChange = { country = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "your City",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = city, onValueChange = { city = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "your Language",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = language, onValueChange = { language = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "your Level in this language",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = level, onValueChange = { level = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
     }
 }
