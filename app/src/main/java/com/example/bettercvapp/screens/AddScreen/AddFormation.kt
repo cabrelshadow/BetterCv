@@ -309,8 +309,4 @@ private fun EnterInfo() {
             singleLine = true
         )
     }
-
-
-
-
 }
