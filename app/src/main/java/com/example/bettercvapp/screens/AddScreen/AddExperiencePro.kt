@@ -237,7 +237,7 @@ fun ProfessionalExpScreen(navController: NavController) {
     }
     Box(
         Modifier
-            .offset(0.dp,400.dp)
+            .offset(0.dp,600.dp)
     ) {
         //Footer(" Add new Experiences",navController,"AddProject")
 
@@ -253,11 +253,17 @@ fun ProfessionalExpScreen(navController: NavController) {
                 ) {
                     BlueHorizontalLine()
                 }
+                val showDialog = remember { mutableStateOf(false) }
+                val sucess = remember { mutableStateOf(false) }
                 Button(
-                    onClick = { navController.navigate("AddProject"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true }
-                        saveExpro()
+                    onClick = {
+                        if(organisation.isEmpty() || status.isEmpty()
+                            || function.isEmpty() || startDate.isEmpty() || endDate.isEmpty()){
+                            showDialog.value = true
+                        }else{
+                            saveExpro()
+                            sucess.value=true
+                        }
                               },
                     modifier = Modifier
                         .offset(90.dp, 0.dp)
@@ -270,6 +276,40 @@ fun ProfessionalExpScreen(navController: NavController) {
                         color = Color.White,
                     )
                 }
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "veuillez remplir tout les champs") },
+                        confirmButton = {
+                            Button(
+                                onClick = { showDialog.value = false },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
+                if (sucess.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "enregistrer avec succes") },
+                        confirmButton = {
+                            Button(
+                                onClick = {  navController.navigate("AddProject"){
+                                    popUpTo(navController.graph.startDestinationId)
+                                    launchSingleTop = true } },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
 
             }
         }
@@ -327,178 +367,3 @@ private fun TopTitleBar(){
         }
     }
 }
-
-/*
-@Composable
-private fun EnterInfo(){
-    val notification = remember{ mutableStateOf("") }
-    if(notification.value.isNotEmpty()){
-        Toast.makeText(LocalContext.current, notification.value, Toast.LENGTH_LONG).show()
-        notification.value=""
-    }
-    var organisation by remember { mutableStateOf("") }
-    var status by remember { mutableStateOf("") }
-    var function by remember{ mutableStateOf("") }
-    var startDate by remember{ mutableStateOf("") }
-    var endDate by remember{ mutableStateOf("") }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Name of Organisation",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = organisation, onValueChange = { organisation = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Status",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = status, onValueChange = { status = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "Function",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = function, onValueChange = { function = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "StartDate",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = startDate, onValueChange = { startDate = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)
-    ) {
-        Text(
-            text = "EndDate",
-            fontFamily = Poppins,
-            fontSize =16.sp,
-        )
-    }
-    //Spacer(modifier = Modifier.height(8.dp))
-    Row(
-        Modifier
-            .height(Height)
-            .padding(horizontal = 18.dp)
-    ) {
-        OutlinedTextField(
-            value = endDate, onValueChange = { endDate = it },
-            Modifier
-                .width(350.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = Color.Black,
-                unfocusedBorderColor = PrimaryColor,
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-            ),
-            shape = InputBoxShape.medium,
-            singleLine = true
-        )
-    }
-    Spacer(modifier = Modifier.height(150.dp))
-}*/

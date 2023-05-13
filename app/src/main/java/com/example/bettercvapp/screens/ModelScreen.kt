@@ -1,16 +1,21 @@
 package com.example.bettercvapp.screens
 
 import android.annotation.SuppressLint
+import android.service.autofill.OnClickAction
+import android.view.View.OnClickListener
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,15 +24,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.SemanticsActions.OnClick
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
 
+@OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun ModelScreen(navController: NavController) {
@@ -60,14 +68,13 @@ fun ModelScreen(navController: NavController) {
                         style = MaterialTheme.typography.h3
                     )
 
-                    Spacer(Modifier.weight(1f))
-
                 }
 
             }
         },
 
-        content = { Column(modifier = Modifier.padding(16.dp))
+        content = {
+            Column(modifier = Modifier.padding(10.dp))
         {
 
             Text("Choisissez votre modele",
@@ -82,7 +89,7 @@ fun ModelScreen(navController: NavController) {
                 fontFamily = ReemKufi,
                 style = MaterialTheme.typography.h3
             )
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(5.dp))
 
             // Paragraphe
             Text("Better cv vous offre la possibilite de choisir un modele de cv en fonction de proffession ",
@@ -95,9 +102,7 @@ fun ModelScreen(navController: NavController) {
                 textAlign = TextAlign.Center,
                 fontFamily = ReemKufi,
                 style = MaterialTheme.typography.h5)
-            Spacer(modifier = Modifier.height(50.dp))
-
-
+            Spacer(modifier = Modifier.height(5.dp))
             // Barre de recherche
             OutlinedTextField(
                 value = search, onValueChange = {
@@ -134,24 +139,7 @@ fun ModelScreen(navController: NavController) {
 
             // Cartes clickable
 
-            CardList()
-
-            Spacer(modifier = Modifier.height(60.dp))
-            // Bouton
-            Button(
-                onClick = { /* action lors du clic */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 20.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = PrimaryColor,
-                    contentColor = Color.White
-                ),
-                contentPadding = PaddingValues(vertical = 14.dp)
-            ) {
-                Text("Commencer a rediger votre cv",fontFamily = Poppins)
-            }
+            CardList(navController)
         }
         }
     )
@@ -160,7 +148,7 @@ fun ModelScreen(navController: NavController) {
 
 
 @Composable
-fun CardList() {
+fun CardList(navController: NavController) {
     Column(
         Modifier
             .fillMaxWidth()
@@ -176,25 +164,30 @@ fun CardList() {
             Card(
                 Modifier
                     .width(150.dp)
-                    .clickable { /* Action à définir */ },
-                backgroundColor = LightTextColor
+                    .clickable {},
+                backgroundColor = Color.White
             ) {
                 Column(Modifier.padding(8.dp)) {
                     Image(
-                        painterResource(R.drawable.devellopeur),
+                        painterResource(R.drawable.cv1),
                         contentDescription = "Photo 1",
                         modifier = Modifier
                             .height(100.dp)
                             .fillMaxWidth()
+                            .clickable {}
                             .clip(shape = RoundedCornerShape(8.dp)),
                         contentScale = ContentScale.Crop
                     )
-                    Text("Devellopeur",
-                        color = Textcolor,
-                        modifier = Modifier.padding(top = 12.dp),
-                        fontSize =14.sp,
-                        fontFamily = ReemKufi,
-                        style = MaterialTheme.typography.h3)
+                    TextButton(onClick = {
+                        navController.navigate("CvScreen"){
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true }
+                    } ){
+                        Text(text = "Developer",
+                            color = Color.Black,
+                            fontSize =14.sp,
+                        ) }
+
                 }
             }
             //Carte numero 2
@@ -202,11 +195,11 @@ fun CardList() {
                 Modifier
                     .width(150.dp)
                     .clickable { /* Action à définir */ },
-                backgroundColor = LightTextColor
+                backgroundColor = Color.White
             ) {
                 Column(Modifier.padding(8.dp)) {
                     Image(
-                        painterResource(R.drawable.projet),
+                        painterResource(R.drawable.cv2),
                         contentDescription = "Photo 2",
                         modifier = Modifier
                             .height(100.dp)
@@ -214,13 +207,17 @@ fun CardList() {
                             .clip(shape = RoundedCornerShape(8.dp)),
                         contentScale = ContentScale.Crop
                     )
-                    Text(
-                        text = "Chef de projet TI",
-                        color = Textcolor,
-                        modifier = Modifier.padding(top = 12.dp),
-                        fontSize =14.sp,
-                        fontFamily = ReemKufi,
-                        style = MaterialTheme.typography.h3)
+                    TextButton(onClick = {
+                        navController.navigate("CvScreen2"){
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true }
+                    }){
+                        Text(
+                            text ="Infographic",
+                            color = Color.Black,
+                            fontSize =14.sp,
+                        )
+                    }
                 }
             }
         }
@@ -235,11 +232,11 @@ fun CardList() {
                 Modifier
                     .width(150.dp)
                     .clickable { /* Action à définir */ },
-                backgroundColor = LightTextColor
+                backgroundColor = Color.White
             ) {
                 Column(Modifier.padding(8.dp)) {
                     Image(
-                        painterResource(R.drawable.devellopeur),
+                        painterResource(R.drawable.cv3),
                         contentDescription = "Photo 3",
                         modifier = Modifier
                             .height(100.dp)
@@ -247,13 +244,16 @@ fun CardList() {
                             .clip(shape = RoundedCornerShape(8.dp)),
                         contentScale = ContentScale.Crop
                     )
-                    Text(
-                        text = "Administrateur de bd",
-                        color = Textcolor,
-                        modifier = Modifier.padding(top = 12.dp),
-                        fontSize =14.sp,
-                        fontFamily = ReemKufi,
-                        style = MaterialTheme.typography.h3)
+                    TextButton(onClick = {
+                        navController.navigate("CvScreen3"){
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true }
+                    }){
+                        Text(
+                            text = "Administrate of bd",
+                            color = Color.Black
+                        )
+                    }
                 }
             }
             //Carte numero 4
@@ -261,30 +261,28 @@ fun CardList() {
                 Modifier
                     .width(150.dp)
                     .clickable { /* Action à définir */ },
-                backgroundColor = LightTextColor
+                backgroundColor = Color.White
             ) {
-                Column(
-                    Modifier
-                        .padding(8.dp)
-                        .wrapContentSize()
-                        .clickable { /* Action à définir */ },
-
-
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.AddCircle,
-                        contentDescription = "Ajouter une nouvelle carte",
-                        tint = MaterialTheme.colors.primary,
-                        modifier = Modifier.size(50.dp)
+                Column(Modifier.padding(8.dp)) {
+                    Image(
+                        painterResource(R.drawable.cv4),
+                        contentDescription = "Photo 3",
+                        modifier = Modifier
+                            .height(100.dp)
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
                     )
-                    Text(
-                        text = "Ajouter un Domanie de proffession",
-                        color = Textcolor,
-                        modifier = Modifier.padding(top = 12.dp),
-                        fontSize =14.sp,
-                        style = MaterialTheme.typography.h3
-                    )
+                    TextButton(onClick = {
+                        navController.navigate("CvScreen4"){
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true }
+                    }){
+                        Text(
+                            text = "Analyst",
+                            color = Color.Black
+                        )
+                    }
                 }
             }
         }

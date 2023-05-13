@@ -60,7 +60,7 @@ fun ShareCv(navController: NavController){
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.developpeur),
+                            painter = painterResource(id = R.drawable.cv1),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -70,12 +70,12 @@ fun ShareCv(navController: NavController){
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                text = "Cv devellopeur back-end",
+                                text = "Cv developer back-end",
                                 style = MaterialTheme.typography.h6
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Je devellope en Java et C#",
+                                text = "I develop in NodeJs",
                                 style = MaterialTheme.typography.body1
                             )
                         }
@@ -106,7 +106,7 @@ fun ShareCv(navController: NavController){
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.devellopeur),
+                            painter = painterResource(id = R.drawable.cv2),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -116,12 +116,12 @@ fun ShareCv(navController: NavController){
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                text = "Cv devellopeur front-end",
+                                text = "Cv developer front-end",
                                 style = MaterialTheme.typography.h6
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Je devellope en Java et C#",
+                                text = "I develop in JavaScript",
                                 style = MaterialTheme.typography.body1
                             )
                         }
@@ -151,7 +151,7 @@ fun ShareCv(navController: NavController){
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.analyste),
+                            painter = painterResource(id = R.drawable.cv3),
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -161,12 +161,12 @@ fun ShareCv(navController: NavController){
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
                             Text(
-                                text = "Chef De Projet",
+                                text = "Cv Project manager",
                                 style = MaterialTheme.typography.h6
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Apte a gerer plusieur projet",
+                                text = "I worked on several projects",
                                 style = MaterialTheme.typography.body1
                             )
                         }

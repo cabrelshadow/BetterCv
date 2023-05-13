@@ -311,7 +311,7 @@ fun AddProject(navController: NavController) {
     }
     Box(
         Modifier
-            .offset(0.dp,400.dp)
+            .offset(0.dp,600.dp)
     ) {
         //Footer(" Add new project",navController,"Recommendation")
 
@@ -327,11 +327,18 @@ fun AddProject(navController: NavController) {
                 ) {
                     BlueHorizontalLine()
                 }
+                val showDialog = remember { mutableStateOf(false) }
+                val sucess = remember { mutableStateOf(false) }
                 Button(
-                    onClick = { navController.navigate("Recommendation"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true }
+                    onClick = { if(NameProject.isEmpty() || Status.isEmpty() || StartDate.isEmpty()
+                        || EndDate.isEmpty() || UrlProject.isEmpty() || DescriptionOfProject.isEmpty()
+                        || Partner.isEmpty()
+                    ){
+                        showDialog.value = true
+                    }else{
                         saveProject()
+                        sucess.value=true
+                    }
                               },
                     modifier = Modifier
                         .offset(90.dp, 0.dp)
@@ -344,6 +351,42 @@ fun AddProject(navController: NavController) {
                         color = Color.White,
                     )
                 }
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "veuillez remplir tout les champs") },
+                        confirmButton = {
+                            Button(
+                                onClick = { showDialog.value = false },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
+                if (sucess.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "enregistrer avec succes") },
+                        confirmButton = {
+                            Button(
+                                onClick = {  navController.navigate("Recommendation"){
+                                    popUpTo(navController.graph.startDestinationId)
+                                    launchSingleTop = true } },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
+
+
 
             }
 

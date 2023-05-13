@@ -217,11 +217,16 @@ fun Country(navController: NavController){
                 ) {
                     BlueHorizontalLine()
                 }
+                val showDialog = remember { mutableStateOf(false) }
+                val sucess = remember { mutableStateOf(false) }
                 Button(
-                    onClick = { navController.navigate("AddressNumber"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true }
+                    onClick = { if(country.isEmpty() || city.isEmpty() || language.isEmpty() || level.isEmpty()){
+                        showDialog.value = true
+                    }else{
                         saveCountry()
+                        sucess.value = true
+                    }
+
                               },
                     modifier = Modifier
                         .offset(90.dp, 0.dp)
@@ -232,6 +237,40 @@ fun Country(navController: NavController){
                     Text(
                         text = "Save & Continue",
                         color = Color.White,
+                    )
+                }
+
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "veuillez remplir tout les champs") },
+                        confirmButton = {
+                            Button(
+                                onClick = { showDialog.value = false },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
+                if (sucess.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "enregistrer avec succes") },
+                        confirmButton = {
+                            Button(
+                                onClick = {  navController.navigate("AddressNumber"){
+                                    popUpTo(navController.graph.startDestinationId)
+                                    launchSingleTop = true } },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
                     )
                 }
 

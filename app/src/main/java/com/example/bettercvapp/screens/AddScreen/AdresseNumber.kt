@@ -22,6 +22,7 @@ import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.InputBoxShape
 import com.example.bettercvapp.ui.theme.Poppins
 import com.example.bettercvapp.ui.theme.PrimaryColor
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -31,7 +32,7 @@ fun AddressNumber(navController: NavController){
     var Email by remember { mutableStateOf("") }
     var urlFacebook by remember { mutableStateOf("") }
     var urlTelegram by remember { mutableStateOf("") }
-    var urlInstagram by remember { mutableStateOf("") }
+    var urlLinkedin by remember { mutableStateOf("") }
 
     val db = Firebase.firestore
     val adress = db.collection("Adress")
@@ -42,7 +43,7 @@ fun AddressNumber(navController: NavController){
             "Email" to Email,
             "urlFacebook" to urlFacebook,
             "urlTelegram" to urlTelegram,
-            "urlInstagram" to urlInstagram
+            "urlInstagram" to urlLinkedin
         )
         adress.add(newAdress)
     }
@@ -198,7 +199,7 @@ fun AddressNumber(navController: NavController){
                             .padding(horizontal = 8.dp)
                     ) {
                         Text(
-                            text = "your Url Instagram",
+                            text = "your Url LinkedIn",
                             fontFamily = Poppins,
                             fontSize =16.sp,
                         )
@@ -210,7 +211,7 @@ fun AddressNumber(navController: NavController){
                             .padding(horizontal = 18.dp)
                     ) {
                         OutlinedTextField(
-                            value = urlInstagram, onValueChange = { urlInstagram = it },
+                            value = urlLinkedin, onValueChange = { urlLinkedin = it },
                             Modifier
                                 .width(350.dp),
                             colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -246,11 +247,17 @@ fun AddressNumber(navController: NavController){
                 ) {
                     BlueHorizontalLine()
                 }
+                val showDialog = remember { mutableStateOf(false) }
+                val sucess = remember { mutableStateOf(false) }
                 Button(
-                    onClick = { navController.navigate("Formation"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true }
+                    onClick = { if(Phone.isEmpty() || Email.isEmpty() || urlLinkedin.isEmpty() ||
+                            urlTelegram.isEmpty() || urlFacebook.isEmpty()){
+                        showDialog.value = true
+                    }else{
                         saveAdressUser()
+                        sucess.value = true
+                    }
+
                               },
                     modifier = Modifier
                         .offset(90.dp, 0.dp)
@@ -261,6 +268,40 @@ fun AddressNumber(navController: NavController){
                     Text(
                         text = "Save & Continue",
                         color = Color.White,
+                    )
+                }
+
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "veuillez remplir tout les champs") },
+                        confirmButton = {
+                            Button(
+                                onClick = { showDialog.value = false },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
+                if (sucess.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "enregistrer avec succes") },
+                        confirmButton = {
+                            Button(
+                                onClick = {  navController.navigate("Formation"){
+                                    popUpTo(navController.graph.startDestinationId)
+                                    launchSingleTop = true } },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
                     )
                 }
 

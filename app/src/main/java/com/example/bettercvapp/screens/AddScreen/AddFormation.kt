@@ -263,7 +263,7 @@ fun Formation(navController: NavController){
     }
     Box(
         Modifier
-            .offset(0.dp,560.dp)
+            .offset(0.dp,600.dp)
     ) {
             Column(
                 modifier = Modifier
@@ -277,11 +277,17 @@ fun Formation(navController: NavController){
                 ) {
                     BlueHorizontalLine()
                 }
+                val showDialog = remember { mutableStateOf(false) }
+                val sucess = remember { mutableStateOf(false) }
                 Button(
-                    onClick = { navController.navigate("ProfessionalExpScreen"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true }
+                    onClick = { if(school.isEmpty() || domainOfStudy.isEmpty() || diploma.isEmpty()
+                        || obtainresult.isEmpty() || startdate.isEmpty() || enddate.isEmpty()
+                    ){
+                        showDialog.value = true
+                    }else{
                         saveformation()
+                        sucess.value=true
+                    }
                               },
                     modifier = Modifier
                         .offset(90.dp, 0.dp)
@@ -292,6 +298,40 @@ fun Formation(navController: NavController){
                     Text(
                         text = "Save & Continue",
                         color = Color.White,
+                    )
+                }
+
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "veuillez remplir tout les champs") },
+                        confirmButton = {
+                            Button(
+                                onClick = { showDialog.value = false },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
+                if (sucess.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "enregistrer avec succes") },
+                        confirmButton = {
+                            Button(
+                                onClick = {  navController.navigate("ProfessionalExpScreen"){
+                                    popUpTo(navController.graph.startDestinationId)
+                                    launchSingleTop = true } },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
                     )
                 }
 

@@ -25,6 +25,7 @@ import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.InputBoxShape
 import com.example.bettercvapp.ui.theme.Poppins
 import com.example.bettercvapp.ui.theme.PrimaryColor
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -238,7 +239,7 @@ fun Recommendation(navController: NavController) {
     }
     Box(
         Modifier
-            .offset(0.dp,400.dp)
+            .offset(0.dp,600.dp)
     ) {
         //Footer("Add new Recommendation",navController,"HomeScreens")
 
@@ -254,11 +255,17 @@ fun Recommendation(navController: NavController) {
                 ) {
                     BlueHorizontalLine()
                 }
+                val showDialog = remember { mutableStateOf(false) }
+                val sucess = remember { mutableStateOf(false) }
                 Button(
-                    onClick = { navController.navigate("HomeScreens"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true }
+                    onClick = { if(PersonName.isEmpty() || Relationship.isEmpty()
+                        || ResearchPost.isEmpty() || Message.isEmpty() || Number.isEmpty()
+                    ){
+                        showDialog.value = true
+                    }else{
                         saveRecom()
+                        sucess.value=true
+                    }
                               },
                     modifier = Modifier
                         .offset(90.dp, 0.dp)
@@ -269,6 +276,40 @@ fun Recommendation(navController: NavController) {
                     Text(
                         text = "Save & Continue",
                         color = Color.White,
+                    )
+                }
+
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "veuillez remplir tout les champs") },
+                        confirmButton = {
+                            Button(
+                                onClick = { showDialog.value = false },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
+                if (sucess.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "enregistrer avec succes") },
+                        confirmButton = {
+                            Button(
+                                onClick = {  navController.navigate("HomeScreens"){
+                                    popUpTo(navController.graph.startDestinationId)
+                                    launchSingleTop = true } },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
                     )
                 }
 

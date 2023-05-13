@@ -310,10 +310,19 @@ fun ProfileScreen(navController: NavController) {
                 ) {
                     BlueHorizontalLine()
                 }
+
+                val showDialog = remember { mutableStateOf(false) }
+                val sucess = remember { mutableStateOf(false) }
                 Button(
-                    onClick = { navController.navigate("Country"){
-                        popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true }
+                    onClick = { if(firstname.isEmpty() || lastname.isEmpty() || borndate.isEmpty() ||
+                                    bornat.isEmpty() || drivinglicence.isEmpty() || numberChild.isEmpty()
+                        || maritalstatus.isEmpty()
+                            ){
+                        showDialog.value = true
+                    }else{
+                        saveProfile()
+                        sucess.value = true
+                    }
                         saveProfile()
                     },
                     modifier = Modifier
@@ -325,6 +334,40 @@ fun ProfileScreen(navController: NavController) {
                     Text(
                         text = "Save & Continue",
                         color = Color.White,
+                    )
+                }
+
+                if (showDialog.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "veuillez remplir tout les champs") },
+                        confirmButton = {
+                            Button(
+                                onClick = { showDialog.value = false },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
+                    )
+                }
+
+                if (sucess.value) {
+                    AlertDialog(
+                        onDismissRequest = { showDialog.value = false },
+                        title = { Text(text = "Information") },
+                        text = { Text(text = "enregistrer avec succes") },
+                        confirmButton = {
+                            Button(
+                                onClick = {  navController.navigate("Country"){
+                                    popUpTo(navController.graph.startDestinationId)
+                                    launchSingleTop = true } },
+                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
+                            ) {
+                                Text(text = "OK")
+                            }
+                        }
                     )
                 }
 
@@ -385,40 +428,6 @@ fun TopTitleBar(){
     }
 }
 
-
-@Composable
-fun Footer( navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(vertical = 70.dp, horizontal = 32.dp)
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            BlueHorizontalLine()
-        }
-        Button(
-            onClick = { navController.navigate("Country"){
-                popUpTo(navController.graph.startDestinationId)
-                launchSingleTop = true }
-                      },
-            modifier = Modifier
-                .offset(90.dp, 0.dp)
-                //.background(MaterialTheme.colors.primary)
-                .height(35.dp),
-            shape = InputBoxShape.medium,
-        ) {
-            Text(
-                text = "Save & Continue",
-                color = Color.White,
-            )
-        }
-
-    }
-}
 
 @Composable
 fun BlueHorizontalLine() {

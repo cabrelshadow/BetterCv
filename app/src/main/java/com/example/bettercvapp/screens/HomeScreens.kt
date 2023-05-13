@@ -1,5 +1,6 @@
 package com.example.bettercvapp.screens
 
+import android.media.Image
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,8 +69,18 @@ fun HomeScreens(navController: NavController) {
                     }
                 }
             }
-            items(9) {
-                RoundedCard()
+            items(1) {
+                RoundedCard("Cv developer back-end",
+                    "I develop in NodeJs",
+                painterResource(id =R.drawable.cv1 ))
+
+                RoundedCard("Cv developer front-end"
+                    ,"I develop in JavaScript",
+                    painterResource(id =R.drawable.cv2 ))
+
+                RoundedCard("Cv Project manager"
+                    ,"I worked on several projects",
+                    painterResource(id =R.drawable.cv3 ))
             }
             item { Spacer(modifier = Modifier.height(80.dp)) }
         }
@@ -155,7 +167,7 @@ fun ScrollableImage(){
 
 
 @Composable
-fun RoundedCard() {
+fun RoundedCard(titre : String ,Description : String, painter : Painter) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -165,22 +177,23 @@ fun RoundedCard() {
             modifier = Modifier.padding(16.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.ko),
+                painter = painter,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(96.dp)
                     .clip(RoundedCornerShape(8.dp))
+                    .clickable { }
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    text = "Titre de la carte",
-                    style = MaterialTheme.typography.h6
+                    text = "$titre",
+                    style = MaterialTheme.typography.h5
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text =  "Description de la carte",
+                    text = "$Description",
                     style = MaterialTheme.typography.body1
                 )
             }

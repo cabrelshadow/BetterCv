@@ -1,16 +1,24 @@
 package com.example.bettercvapp
 
+import CvScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.better_cv.screens.ProfileScreen
+import com.example.bettercvapp.data.MyCV
 import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.screens.AddScreen.*
 import com.example.bettercvapp.ui.theme.BackgroundColor
@@ -18,7 +26,6 @@ import com.example.bettercvapp.ui.theme.BetterCvAppTheme
 import com.example.expprofessionelle.ProfessionalExpScreen
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,28 +35,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
 
                 ) {
-                   LogApplication()
+                    BackHandler {
+                        onBackPressedDispatcher
+                    }
+                    LogApplication()
                 }
             }
         }
     }
+
+
+
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
+        NavHost(navController = navController, startDestination = "ProfessionalExpScreen", builder = {
 
-<<<<<<< HEAD
-        NavHost(navController = navController, startDestination = "Recommendation", builder = {
-=======
-<<<<<<< HEAD
-        NavHost(navController = navController, startDestination = "ShareCv", builder = {
-=======
-<<<<<<< HEAD
-        NavHost(navController = navController, startDestination = "EditCv", builder = {
-=======
-        NavHost(navController = navController, startDestination = "Recommendation", builder = {
->>>>>>> 4e3a5417f47f68452e9de19d070ea9111e59f739
->>>>>>> 6fa811a2343e8acfcba8dd56ab5a1192f72c362f
->>>>>>> f9d529343ae2498513d15fb81a00ea737bf7481b
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
             composable("ForgotPasswordScreen", content = { ForgotPasswordScreen(navController = navController) })
@@ -65,8 +66,36 @@ class MainActivity : ComponentActivity() {
             composable("ShareCv", content = { ShareCv(navController = navController)})
             composable("ModelScreen", content = { ModelScreen(navController = navController)})
             composable("Splashscreen",){ Splashscreen(navController = navController) }
+            composable("percentage",){ percentage(navController = navController) }
+            composable("MyCV",){ MyCV()}
+            composable("CvScreen",){ CvScreen(navController = navController)}
+            composable("CvScreen2",){ CvScreen2(navController = navController)}
+            composable("CvScreen3",){ CvScreen3(navController = navController)}
+            composable("CvScreen4",){ CvScreen4(navController = navController)}
+            composable("LettreMotivationScreen",){ LettreMotivationScreen(navController = navController)}
         })
     }
-}
 
+
+    @Composable
+    fun BackHandler(onBackPressed: () -> Unit) {
+        val backCallback = remember {
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackPressed()
+                }
+            }
+        }
+
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val dispatcher = LocalOnBackPressedDispatcherOwner.current!!.onBackPressedDispatcher
+
+        DisposableEffect(lifecycleOwner, dispatcher) {
+            dispatcher.addCallback(backCallback)
+            onDispose {
+                backCallback.remove()
+            }
+        }
+    }
+}
 
