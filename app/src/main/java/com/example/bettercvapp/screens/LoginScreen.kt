@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.bettercvapp.R
-import com.example.bettercvapp.screens.AddScreen.LoadingButton
 import com.example.bettercvapp.ui.theme.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

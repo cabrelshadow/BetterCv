@@ -302,7 +302,7 @@ fun Recommendation(navController: NavController) {
                         text = { Text(text = "enregistrer avec succes") },
                         confirmButton = {
                             Button(
-                                onClick = {  navController.navigate("HomeScreens"){
+                                onClick = {  navController.navigate("percentage"){
                                     popUpTo(navController.graph.startDestinationId)
                                     launchSingleTop = true } },
                                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
