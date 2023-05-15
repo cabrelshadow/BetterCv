@@ -308,7 +308,7 @@ fun Country(navController: NavController){
                 },
                 modifier = Modifier
                     .offset((200).dp, (38).dp)
-                    .height(35.dp),
+                    .height(34.dp),
                 shape = InputBoxShape.medium,
             ) {
                 Text(
