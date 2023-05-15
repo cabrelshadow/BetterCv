@@ -1,6 +1,7 @@
 package com.example.bettercvapp
 
 import CvScreen
+import ProfileScreen1
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
@@ -38,7 +39,8 @@ class MainActivity : ComponentActivity() {
                     BackHandler {
                         onBackPressedDispatcher
                     }
-                    LogApplication()
+                    val navController = rememberNavController()
+                    ProfileScreen1()
                 }
             }
         }
