@@ -24,21 +24,21 @@ import androidx.navigation.NavController
 @Composable
 fun percentage(navController: NavController){
 
-    Scaffold(bottomBar = { Bac()}, content = ({ content()}))
+    Scaffold(bottomBar = { Bac(navController)}, content = ({ content()}))
 }
 
 @Composable
-fun Bac(){
+fun Bac(navController : NavController){
     Row(modifier = Modifier) {
 
-        Button(onClick = { /*TODO*/ }, modifier = Modifier
+        Button(onClick = { navController.navigate("HomeScreens"){
+            popUpTo(navController.graph.startDestinationId)
+            launchSingleTop = true } }, modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .padding(10.dp)
         ) {
-
             Text(text = "Bac to home")
-
         }
     }
 }
@@ -113,7 +113,7 @@ fun content(){
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Column() {
-                        Text(text = "Education")
+                        Text(text = "Competence")
                     }
 
                     Column() {

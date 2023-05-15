@@ -14,11 +14,11 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.better_cv.screens.ProfileScreen
+import com.example.bettercvapp.data.Country1
 import com.example.bettercvapp.data.MyCV
 import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.screens.AddScreen.*
@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = "ProfessionalExpScreen", builder = {
+        NavHost(navController = navController, startDestination = "Country", builder = {
 
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
             composable("ProfessionalExpScreen", content = { ProfessionalExpScreen(navController = navController)})
             composable("Recommendation", content = { Recommendation(navController = navController)})
             composable("Formation", content = { Formation(navController = navController) })
-            composable("Country", content = { Country(navController = navController)})
+            composable("Country", content = { Country(navController = navController) })
             composable("ProfileScreen", content = { ProfileScreen(navController = navController)})
             composable("AddressNumber", content = { AddressNumber(navController = navController)})
             composable("EditCv", content = { EditCv(navController = navController)})
@@ -75,6 +75,8 @@ class MainActivity : ComponentActivity() {
             composable("CvScreen3",){ CvScreen3(navController = navController)}
             composable("CvScreen4",){ CvScreen4(navController = navController)}
             composable("LettreMotivationScreen",){ LettreMotivationScreen(navController = navController)}
+            composable("Competence",){ Competence(navController = navController)}
+            composable("Country1",){ Country1()}
         })
     }
 
