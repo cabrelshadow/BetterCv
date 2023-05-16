@@ -226,7 +226,7 @@ fun BottomNavigation(navController: NavController) {
 @Composable
 fun create(navController: NavController){
     Row(Modifier.offset()) {
-        Button(onClick = { navController.navigate("ProfileScreen"){
+        Button(onClick = { navController.navigate("MenuForm"){
             popUpTo(navController.graph.startDestinationId)
             launchSingleTop = true } },
             Modifier.height(55.dp),

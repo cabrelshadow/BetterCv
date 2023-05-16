@@ -199,7 +199,7 @@ private fun Header(navController: NavController){
                 .background(com.example.bettercvapp.ui.theme.head),
         ) {
             TextButton(
-                onClick = {navController.navigate("ProfileScreen"){
+                onClick = {navController.navigate("MenuForm"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }},
             ) {

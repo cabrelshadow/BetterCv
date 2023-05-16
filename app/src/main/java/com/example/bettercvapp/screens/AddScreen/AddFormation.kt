@@ -489,7 +489,7 @@ private fun Header(navController: NavController){
                 .background(head),
         ) {
             TextButton(
-                onClick = {navController.navigate("ProfileScreen"){
+                onClick = {navController.navigate("MenuForm"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }},
             ) {
