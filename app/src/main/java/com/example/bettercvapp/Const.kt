@@ -1,5 +1,8 @@
 package com.example.bettercvapp
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.widget.DatePicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -9,6 +12,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -16,52 +22,48 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.bettercvapp.ui.theme.InputBoxShape
+import java.util.*
 
 val MyShape = RoundedCornerShape(50)
 val Height = 55.dp
 
+
+
 @Composable
-fun Footer(nom : String, navController: NavController, route:String) {
+fun ShowDataPicker(context: Context){
+    val year : Int
+    val month: Int
+    val day :Int
+
+    val calendar = Calendar.getInstance()
+    year = calendar.get(Calendar.YEAR)
+    month = calendar.get(Calendar.MONTH)
+    day = calendar.get(Calendar.DAY_OF_MONTH)
+    calendar.time = Date()
+
+    val date = remember { mutableStateOf("") }
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/$month/$yeah"
+        },year,month,day
+    )
+
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(vertical = 70.dp, horizontal = 32.dp)
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            BlueHorizontalLine()
+        Text(text = "Selected Date : ${date.value}")
+        Spacer(modifier = Modifier.size(16.dp))
+        Button(onClick = {
+            datePickerDialog.show()
+        }) {
+            Text(text = "Open date picker")
         }
-        Button(
-            onClick = { navController.navigate("$route"){
-                popUpTo(navController.graph.startDestinationId)
-                launchSingleTop = true } },
-            modifier = Modifier
-                .offset(90.dp, 0.dp)
-                //.background(MaterialTheme.colors.primary)
-                .height(35.dp),
-            shape = InputBoxShape.medium,
-        ) {
-            Text(
-                text = "Save & Continue",
-                color = Color.White,
-            )
-        }
-
     }
 }
 
-@Composable
-fun BlueHorizontalLine() {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth(1f)
-            .height(2.dp)
-            .offset(0.dp, (-50).dp)
-            .border(width = 1.dp, color = MaterialTheme.colors.primary),
-        color = MaterialTheme.colors.primary
-    ){
-    }
-}
+
+
+

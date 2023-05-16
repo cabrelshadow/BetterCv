@@ -1,443 +1,547 @@
 package com.example.better_cv.screens
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.widget.DatePicker
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.bettercvapp.Height
+import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
-import com.example.bettercvapp.data.DataProfil
 import com.example.bettercvapp.ui.theme.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, context : Context) {
+
+    //function pour le calendrier
+    val year : Int
+    val month: Int
+    val day :Int
+
+    val calendar = Calendar.getInstance()
+    year = calendar.get(Calendar.YEAR)
+    month = calendar.get(Calendar.MONTH)
+    day = calendar.get(Calendar.DAY_OF_MONTH)
+    calendar.time = Date()
+
+    val date = remember { mutableStateOf("") }
+    val date2 = remember { mutableStateOf("") }
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/$month/$yeah"
+        },year,month,day
+    )
+
     var firstname by remember { mutableStateOf("") }
     var lastname by remember { mutableStateOf("") }
     var borndate by remember { mutableStateOf("") }
     var bornat by remember { mutableStateOf("") }
     var maritalstatus by remember { mutableStateOf("") }
-    var numberChild by remember { mutableStateOf("") }
     var drivinglicence by remember { mutableStateOf("") }
 
     val db = Firebase.firestore
     val profil = db.collection("Profile")
 
-    fun saveProfile(){
+    fun saveProfile() {
         val newProfil = hashMapOf(
             "firstname" to firstname,
             "lastname" to lastname,
             "borndate" to borndate,
+            "bornat" to bornat,
             "maritalstatus" to maritalstatus,
-            "numberChild" to numberChild,
             "drivinglicence" to drivinglicence,
 
-        )
+            )
         profil.add(newProfil)
     }
-    Box(
-        Modifier
-            .background(Color.White)
-            .fillMaxSize()
-    ) {
-        LazyColumn(
-            contentPadding = PaddingValues(bottom = 40.dp)
-        ) {
-            stickyHeader {
-                TopBar(navController)
-                TopTitleBar()
-            }
-            items(1) {
-                Spacer(modifier = Modifier.height(30.dp))
-                //EnterInfo()
 
-
+    Scaffold(
+        bottomBar = { BottomBarPr() },
+        content = {it
+            LazyColumn( contentPadding = PaddingValues(bottom = 40.dp)){
+                stickyHeader {
+                    Header(navController)
+                }
+                items(1) {
+                    //Champ a remplir numero 1
+                    Spacer(modifier = Modifier.height(60.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Your First Name",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
+                        TextField(
                             value = firstname,
                             onValueChange = { firstname = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Rounded.Person,
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your firstname",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
 
+                    //Champ a remplir numero 2
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Your Last Name",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = lastname, onValueChange = { lastname = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = lastname ,
+                            onValueChange = { lastname = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Rounded.Person,
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your lastname",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
 
+                    //Champ a remplir numero 3
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Your Born Date",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = borndate, onValueChange = { borndate = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = bornat ,
+                            onValueChange = { bornat = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                      Icons.Rounded.Place,
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your born place",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
+                        )
+                    }
+                    //Champ a remplir numero 4
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Row(
+                        Modifier
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        TextField(
+                            value = maritalstatus,
+                            onValueChange = { maritalstatus = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp)
+                                .weight(1f),
+
+                            colors = TextFieldDefaults.textFieldColors(
+                                textColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                       Icons.Rounded.Person,
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter Your Marital status",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
 
+                    //Champ a remplir numero 5
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Place Of Birth",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = bornat, onValueChange = { bornat = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
-                            ),
-                            shape = InputBoxShape.medium,
-                            singleLine = true
-                        )
-                    }
+                        TextField(
+                            value = borndate,
+                            onValueChange = { borndate = it },
+                            enabled = false,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp)
+                                .weight(1f),
 
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Your Marital Status",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
-                            .padding(horizontal = 18.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = maritalstatus, onValueChange = { maritalstatus = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                        .weight(1f),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icons8_pay_date_50px),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Born Date : ${date.value}",
+                                    color = Color.Black,
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            ),
                         )
+                        IconButton(onClick = {
+                            datePickerDialog.show()
+                        }) {
+                            Icon(Icons.Rounded.DateRange,
+                                contentDescription = "Date Start",
+                                Modifier.size(40.dp)
+                                    .align(Alignment.Bottom)
+                                    .offset((-13).dp,10.dp)
+                            )
+                        }
                     }
+                    //Champ a remplir numero 4
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Row(
+                        Modifier
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        TextField(
+                            value = drivinglicence,
+                            onValueChange = { drivinglicence = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp)
+                                .weight(1f),
 
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Number of your Child",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
-                            .padding(horizontal = 18.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = numberChild, onValueChange = { numberChild = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icon_elevation),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter Your driving licence type",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
-
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Your Type Of Driving License",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
-                            .padding(horizontal = 18.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = drivinglicence, onValueChange = { drivinglicence = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
-                            ),
-                            shape = InputBoxShape.medium,
-                            singleLine = true
-                        )
-                    }
-                Spacer(modifier = Modifier.height(150.dp))
+                    Spacer(modifier = Modifier.height(65.dp))
+                }
             }
         }
-    }
-    Box(
-        Modifier
-            .offset(0.dp,600.dp)
-    ) {
-        //Footer(navController)
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(vertical = 70.dp, horizontal = 32.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    BlueHorizontalLine()
-                }
-
-                val showDialog = remember { mutableStateOf(false) }
-                val sucess = remember { mutableStateOf(false) }
-                Button(
-                    onClick = { if(firstname.isEmpty() || lastname.isEmpty() || borndate.isEmpty() ||
-                                    bornat.isEmpty() || drivinglicence.isEmpty() || numberChild.isEmpty()
-                        || maritalstatus.isEmpty()
-                            ){
-                        showDialog.value = true
-                    }else{
-                        saveProfile()
-                        sucess.value = true
-                    }
-                        saveProfile()
-                    },
-                    modifier = Modifier
-                        .offset(90.dp, 0.dp)
-                        //.background(MaterialTheme.colors.primary)
-                        .height(35.dp),
-                    shape = InputBoxShape.medium,
-                ) {
-                    Text(
-                        text = "Save & Continue",
-                        color = Color.White,
-                    )
-                }
-
-                if (showDialog.value) {
-                    AlertDialog(
-                        onDismissRequest = { showDialog.value = false },
-                        title = { Text(text = "Information") },
-                        text = { Text(text = "veuillez remplir tout les champs") },
-                        confirmButton = {
-                            Button(
-                                onClick = { showDialog.value = false },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-                            ) {
-                                Text(text = "OK")
-                            }
-                        }
-                    )
-                }
-
-                if (sucess.value) {
-                    AlertDialog(
-                        onDismissRequest = { showDialog.value = false },
-                        title = { Text(text = "Information") },
-                        text = { Text(text = "enregistrer avec succes") },
-                        confirmButton = {
-                            Button(
-                                onClick = {  navController.navigate("Country"){
-                                    popUpTo(navController.graph.startDestinationId)
-                                    launchSingleTop = true } },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-                            ) {
-                                Text(text = "OK")
-                            }
-                        }
-                    )
-                }
-
-            }
-        }
-    }
-
-@Composable
-fun TopTitleBar(){
-    Surface() {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-        ) {
-            Text(
-                text = "Profile",
-                fontFamily = Poppins,
-                color = Color.Black,
-                fontSize = 25.sp,
-            )
-        }
-    }
+    )
 }
 
-@Composable
- fun TopBar(navController: NavController){
-    Surface{
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
 
+//entete de page
+@Composable
+private fun Header(navController: NavController){
+    Surface(
+        Modifier
+            .height(200.dp)
+            .clip(
+                shape = RoundedCornerShape(
+                    bottomEnd = 35.dp,
+                    bottomStart = 35.dp
+                )
+            )
+    ) {
+        Column(
+            Modifier
+                .background(head),
         ) {
             TextButton(
-                onClick = {navController.navigate("HomeScreens"){
+                onClick = {navController.navigate("ProfileScreen"){
                     popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true } },
-                //contentPadding = PaddingValues(vertical = 0.dp)
+                    launchSingleTop = true }},
             ) {
                 Icon(
                     Icons.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.app_name)
+                    contentDescription = stringResource(R.string.app_name),
+                    Modifier.size(30.dp),
+                    tint = Color.White
                 )
-                Text(
-                    text = "back",
-                    color = Color.Black,
-                    fontFamily = Poppins,
-                    fontSize = 15.sp,
-                )
-                Spacer(Modifier.weight(1f))
-
             }
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 50.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = "Profile",
+                    fontFamily = Poppins,
+                    color = Color.White,
+                    fontSize = 40.sp,
+                )
+            }
+
         }
     }
 }
-
-
+//pied de page
 @Composable
-fun BlueHorizontalLine() {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth(1f)
-            .height(2.dp)
-            .offset(0.dp, (-50).dp)
-            .border(width = 1.dp, color = MaterialTheme.colors.primary),
-        color = MaterialTheme.colors.primary
-    ){
+fun BottomBarPr() {
+    Surface(color = Color.White,
+        elevation = 10.dp) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(100.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier
+                    .height(40.dp)
+                    .width(115.dp)
+                    .align(Alignment.CenterVertically),
+                //shape = InputBoxShape.medium,
+                shape = MyShape,
+            )
+            {
+                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
+                Text(
+                    text = "Save",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = Poppins
+                )
+            }
+            //add button
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier
+                    .height(40.dp)
+                    .width(115.dp)
+                    .align(Alignment.CenterVertically),
+                shape = MyShape
+            )
+            {
+                Icon(Icons.Rounded.Add, contentDescription = "")
+                Text(
+                    text = "Add",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = Poppins
+                )
+            }
+        }
     }
 }

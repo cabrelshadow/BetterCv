@@ -1,32 +1,68 @@
 package com.example.bettercvapp.screens.AddScreen
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.widget.DatePicker
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.bettercvapp.BlueHorizontalLine
-import com.example.bettercvapp.Footer
-import com.example.bettercvapp.Height
+import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Formation(navController: NavController){
+fun Formation(navController: NavController,context : Context){
+
+    //function pour le calendrier
+    val year : Int
+    val month: Int
+    val day :Int
+
+    val calendar = Calendar.getInstance()
+    year = calendar.get(Calendar.YEAR)
+    month = calendar.get(Calendar.MONTH)
+    day = calendar.get(Calendar.DAY_OF_MONTH)
+    calendar.time = Date()
+
+    val date = remember { mutableStateOf("") }
+    val date2 = remember { mutableStateOf("") }
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
+            date.value = "$dayOfMonth/$month/$yeah"
+        },year,month,day
+    )
+    val datePickerDialog2 = DatePickerDialog(
+        context,
+        { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
+            date2.value = "$dayOfMonth/$month/$yeah"
+        },year,month,day
+    )
+
+    //variable pour stocker les données
     var school by remember{ mutableStateOf("") }
     var domainOfStudy by remember{ mutableStateOf("") }
     var diploma by remember{ mutableStateOf("") }
@@ -34,8 +70,10 @@ fun Formation(navController: NavController){
     var enddate by remember{ mutableStateOf("") }
     var obtainresult by remember{ mutableStateOf("") }
 
+    //variable de manipulation de fire store
     val db = Firebase.firestore
     val formation = db.collection("formation")
+
     //fonction d'ajout a la base de donne fire store
     fun saveformation(){
         val newformation = hashMapOf(
@@ -49,348 +87,489 @@ fun Formation(navController: NavController){
         formation.add(newformation)
     }
 
-    Box(
-        Modifier
-            .background(Color.White)
-            .fillMaxSize()
-    ) {
-        LazyColumn(
-            contentPadding = PaddingValues(bottom = 40.dp)
-        ) {
-            stickyHeader {
-                TopBar(navController)
-                TopTitleBar()
-            }
-            items(1) {
-                Spacer(modifier = Modifier.height(30.dp))
-                //EnterInfo()
+    //Partir pour enter les données(Champs de texte)
+
+    Scaffold (
+        bottomBar = {BottomBarF() },
+        content = {it
+            LazyColumn( contentPadding = PaddingValues(bottom = 40.dp)){
+                stickyHeader {
+                    Header(navController)
+                }
+                items(1) {
+                    //Champ a remplir numero 1
+                    Spacer(modifier = Modifier.height(60.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "School of Your Formation",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
+                        TextField(
                             value = school,
                             onValueChange = { school = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icon_appartment),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter the name of your school",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
 
+                    //Champ a remplir numero 2
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Domain of your study",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = domainOfStudy, onValueChange = { domainOfStudy = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = domainOfStudy ,
+                            onValueChange = { domainOfStudy = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Rounded.Info,
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your Domain of studie",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
 
+                    //Champ a remplir numero 3
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Diploma",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = diploma, onValueChange = { diploma = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = diploma ,
+                            onValueChange = { diploma = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Filled.Done,
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your Diploma",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
-                    }
-
+                    }//Champ a remplir numero 4
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Start Date",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = startdate, onValueChange = { startdate = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = obtainresult ,
+                            onValueChange = { obtainresult = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icons8_school_26px),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your obtain result",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
-
+                    //Champ a remplir numero 5
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "End Date",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = enddate, onValueChange = { enddate = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = startdate,
+                            onValueChange = { startdate = it },
+                            enabled = false,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp)
+                                .weight(1f),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                //unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                        .weight(1f),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icons8_pay_date_50px),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "start Date : ${date.value}",
+                                    color = Color.Black,
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            ),
                         )
+                        IconButton(onClick = {
+                            datePickerDialog.show()
+                        }) {
+                            Icon(Icons.Rounded.DateRange,
+                                contentDescription = "Date Start",
+                                Modifier.size(40.dp)
+                                    .align(Alignment.Bottom)
+                                    .offset((-13).dp,10.dp)
+                            )
+                        }
                     }
 
+                    //Champ a remplir numero 6
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "Mention of your Diploma",
-                            fontFamily = Poppins,
-                            fontSize =14.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = obtainresult, onValueChange = { obtainresult = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = enddate,
+                            onValueChange = { enddate = it },
+                            enabled = false,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp)
+                                .weight(1f),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                        .weight(1f),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icons8_pay_date_50px),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "End Date : ${date2.value}",
+                                    color = Color.Black,
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            ),
                         )
+                        IconButton(onClick = {
+                            datePickerDialog2.show()
+                        }) {
+                            Icon(Icons.Rounded.DateRange,
+                                contentDescription = "Date Start",
+                                Modifier.size(40.dp)
+                                    .align(Alignment.Bottom)
+                                    .offset((-13).dp,10.dp)
+                            )
+                        }
                     }
+                    Spacer(modifier = Modifier.height(65.dp))
 
-                Spacer(modifier = Modifier.height(150.dp))
+                }
             }
         }
-    }
-    Box(
-        Modifier
-            .offset(0.dp,600.dp)
-    ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(vertical = 70.dp, horizontal = 32.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    BlueHorizontalLine()
-                }
-                val showDialog = remember { mutableStateOf(false) }
-                val sucess = remember { mutableStateOf(false) }
-                Button(
-                    onClick = { if(school.isEmpty() || domainOfStudy.isEmpty() || diploma.isEmpty()
-                        || obtainresult.isEmpty() || startdate.isEmpty() || enddate.isEmpty()
-                    ){
-                        showDialog.value = true
-                    }else{
-                        saveformation()
-                        sucess.value=true
-                    }
-                              },
-                    modifier = Modifier
-                        .offset(90.dp, 0.dp)
-                        //.background(MaterialTheme.colors.primary)
-                        .height(35.dp),
-                    shape = InputBoxShape.medium,
-                ) {
-                    Text(
-                        text = "Save & Continue",
-                        color = Color.White,
-                    )
-                }
+    )
 
-                if (showDialog.value) {
-                    AlertDialog(
-                        onDismissRequest = { showDialog.value = false },
-                        title = { Text(text = "Information") },
-                        text = { Text(text = "veuillez remplir tout les champs") },
-                        confirmButton = {
-                            Button(
-                                onClick = { showDialog.value = false },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-                            ) {
-                                Text(text = "OK")
-                            }
-                        }
-                    )
-                }
-
-                if (sucess.value) {
-                    AlertDialog(
-                        onDismissRequest = { showDialog.value = false },
-                        title = { Text(text = "Information") },
-                        text = { Text(text = "enregistrer avec succes") },
-                        confirmButton = {
-                            Button(
-                                onClick = {  navController.navigate("ProfessionalExpScreen"){
-                                    popUpTo(navController.graph.startDestinationId)
-                                    launchSingleTop = true } },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-                            ) {
-                                Text(text = "OK")
-                            }
-                        }
-                    )
-                }
-
-            }
-    }
 
 }
 
-
-
+//entete de page
 @Composable
-private fun TopBar(navController: NavController){
-    Surface{
-        Row(
+private fun Header(navController: NavController){
+    Surface(
+        Modifier
+            .height(200.dp)
+            .clip(
+                shape = RoundedCornerShape(
+                    bottomEnd = 35.dp,
+                    bottomStart = 35.dp
+                )
+            )
+    ) {
+        Column(
             Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-
+                .background(head),
         ) {
             TextButton(
-                onClick = {navController.navigate("AddressNumber"){
+                onClick = {navController.navigate("ProfileScreen"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }},
-                //contentPadding = PaddingValues(vertical = 0.dp)
             ) {
                 Icon(
                     Icons.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.app_name)
+                    contentDescription = stringResource(R.string.app_name),
+                    Modifier.size(30.dp),
+                    tint = Color.White
                 )
+            }
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 50.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
                 Text(
-                    text = "back",
-                    color = Color.Black,
+                    text = "Formation",
                     fontFamily = Poppins,
-                    fontSize = 15.sp,
+                    color = Color.White,
+                    fontSize = 35.sp,
                 )
-                Spacer(Modifier.weight(1f))
             }
 
         }
     }
 }
 
+
+
+
+//pied de page
 @Composable
-private fun TopTitleBar(){
-    Surface() {
+fun BottomBarF() {
+    Surface(color = Color.White,
+        elevation = 10.dp) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+                .height(100.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Formation",
-                fontFamily = Poppins,
-                color = Color.Black,
-                fontSize = 25.sp,
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier
+                    .height(40.dp)
+                    .width(115.dp)
+                    .align(Alignment.CenterVertically),
+                //shape = InputBoxShape.medium,
+                shape = MyShape,
             )
+            {
+                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
+                Text(
+                    text = "Save",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = Poppins
+                )
+            }
+            //add button
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier
+                    .height(40.dp)
+                    .width(115.dp)
+                    .align(Alignment.CenterVertically),
+                shape = MyShape
+            )
+            {
+                Icon(Icons.Rounded.Add, contentDescription = "")
+                Text(
+                    text = "Add",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = Poppins
+                )
+            }
         }
     }
 }

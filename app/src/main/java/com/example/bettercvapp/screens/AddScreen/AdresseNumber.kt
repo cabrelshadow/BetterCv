@@ -4,24 +4,30 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.ArrowDropDown
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.bettercvapp.BlueHorizontalLine
-import com.example.bettercvapp.Footer
 import com.example.bettercvapp.Height
+import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
-import com.example.bettercvapp.ui.theme.InputBoxShape
-import com.example.bettercvapp.ui.theme.Poppins
-import com.example.bettercvapp.ui.theme.PrimaryColor
+import com.example.bettercvapp.screens.AddScreen.BottomBar
+import com.example.bettercvapp.ui.theme.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -30,7 +36,6 @@ import com.google.firebase.ktx.Firebase
 fun AddressNumber(navController: NavController){
     var Phone by remember { mutableStateOf("") }
     var Email by remember { mutableStateOf("") }
-    var urlFacebook by remember { mutableStateOf("") }
     var urlTelegram by remember { mutableStateOf("") }
     var urlLinkedin by remember { mutableStateOf("") }
 
@@ -41,325 +46,353 @@ fun AddressNumber(navController: NavController){
         val newAdress = hashMapOf(
             "Phone" to Phone,
             "Email" to Email,
-            "urlFacebook" to urlFacebook,
             "urlTelegram" to urlTelegram,
             "urlInstagram" to urlLinkedin
         )
         adress.add(newAdress)
     }
-    Box(
-        Modifier
-            .background(Color.White)
-            .fillMaxSize()
-    ) {
-        LazyColumn(
-            contentPadding = PaddingValues(bottom = 40.dp)
-        ) {
-            stickyHeader {
-                TopBar(navController)
-                TopTitleBar()
-            }
-            items(1) {
-                Spacer(modifier = Modifier.height(30.dp))
-                //EnterInfo()
 
-
-
+    Scaffold(
+        bottomBar = { BottomBarA() },
+        content = {it
+            LazyColumn( contentPadding = PaddingValues(bottom = 40.dp)){
+                stickyHeader {
+                    Header(navController)
+                }
+                items(1) {
+                    //Champ a remplir numero 1
+                    Spacer(modifier = Modifier.height(60.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "your Phone Number",
-                            fontFamily = Poppins,
-                            fontSize =16.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = Phone, onValueChange = { Phone = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = Phone,
+                            onValueChange = { Phone = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        Icons.Rounded.Phone,
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your Number",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
 
+                    //Champ a remplir numero 2
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "your Email",
-                            fontFamily = Poppins,
-                            fontSize =16.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = Email, onValueChange = { Email = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = Email ,
+                            onValueChange = { Email = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_email),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your Email",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
 
+                    //Champ a remplir numero 3
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "your Url Facebook",
-                            fontFamily = Poppins,
-                            fontSize =16.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = urlFacebook, onValueChange = { urlFacebook = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = urlTelegram ,
+                            onValueChange = { urlTelegram = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = android.R.drawable.ic_menu_send),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter your Telegram Link",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
                     }
-
+                    //Champ a remplir numero 4
+                    Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "your Url Telegram",
-                            fontFamily = Poppins,
-                            fontSize =16.sp,
-                        )
-                    }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
                             .padding(horizontal = 18.dp)
                     ) {
-                        OutlinedTextField(
-                            value = urlTelegram, onValueChange = { urlTelegram = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                        TextField(
+                            value = urlLinkedin,
+                            onValueChange = { urlLinkedin = it },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp)
+                                .weight(1f),
+
+                            colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
                             ),
                             shape = InputBoxShape.medium,
-                            singleLine = true
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier.padding(start = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icon_language),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Enter Your LinkedIn",
+                                    color = Color.Black
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            )
                         )
-                    }
 
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                    ) {
-                        Text(
-                            text = "your Url LinkedIn",
-                            fontFamily = Poppins,
-                            fontSize =16.sp,
-                        )
                     }
-                    //Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        Modifier
-                            .height(Height)
-                            .padding(horizontal = 18.dp)
-                    ) {
-                        OutlinedTextField(
-                            value = urlLinkedin, onValueChange = { urlLinkedin = it },
-                            Modifier
-                                .width(350.dp),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                textColor = Color.Black,
-                                unfocusedBorderColor = PrimaryColor,
-                                backgroundColor = Color.White,
-                                cursorColor = Color.Black,
-                            ),
-                            shape = InputBoxShape.medium,
-                            singleLine = true
-                        )
-                    }
+                    Spacer(modifier = Modifier.height(65.dp))
 
-                Spacer(modifier = Modifier.height(150.dp))
+                }
             }
         }
-    }
-    Box(
-        Modifier
-            .offset(0.dp,600.dp)
-    ) {
-        //Footer("   Add new Information",navController,"Formation")
+    )
 
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)
-                    .padding(vertical = 70.dp, horizontal = 32.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    BlueHorizontalLine()
-                }
-                val showDialog = remember { mutableStateOf(false) }
-                val sucess = remember { mutableStateOf(false) }
-                Button(
-                    onClick = { if(Phone.isEmpty() || Email.isEmpty() || urlLinkedin.isEmpty() ||
-                            urlTelegram.isEmpty() || urlFacebook.isEmpty()){
-                        showDialog.value = true
-                    }else{
-                        saveAdressUser()
-                        sucess.value = true
-                    }
 
-                              },
-                    modifier = Modifier
-                        .offset(90.dp, 0.dp)
-                        //.background(MaterialTheme.colors.primary)
-                        .height(35.dp),
-                    shape = InputBoxShape.medium,
-                ) {
-                    Text(
-                        text = "Save & Continue",
-                        color = Color.White,
-                    )
-                }
-
-                if (showDialog.value) {
-                    AlertDialog(
-                        onDismissRequest = { showDialog.value = false },
-                        title = { Text(text = "Information") },
-                        text = { Text(text = "veuillez remplir tout les champs") },
-                        confirmButton = {
-                            Button(
-                                onClick = { showDialog.value = false },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-                            ) {
-                                Text(text = "OK")
-                            }
-                        }
-                    )
-                }
-
-                if (sucess.value) {
-                    AlertDialog(
-                        onDismissRequest = { showDialog.value = false },
-                        title = { Text(text = "Information") },
-                        text = { Text(text = "enregistrer avec succes") },
-                        confirmButton = {
-                            Button(
-                                onClick = {  navController.navigate("Formation"){
-                                    popUpTo(navController.graph.startDestinationId)
-                                    launchSingleTop = true } },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Blue)
-                            ) {
-                                Text(text = "OK")
-                            }
-                        }
-                    )
-                }
-
-            }
-
-    }
 }
 
-@Composable
-private fun TopBar(navController: NavController){
-    Surface{
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
 
+@Composable
+private fun Header(navController: NavController){
+    Surface(
+        Modifier
+            .height(200.dp)
+            .clip(
+                shape = RoundedCornerShape(
+                    bottomEnd = 35.dp,
+                    bottomStart = 35.dp
+                )
+            )
+    ) {
+        Column(
+            Modifier
+                .background(head),
         ) {
             TextButton(
-                onClick = {navController.navigate("Country"){
+                onClick = {navController.navigate("ProfileScreen"){
                     popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true }
-
-                          },
-                //contentPadding = PaddingValues(vertical = 0.dp)
+                    launchSingleTop = true }},
             ) {
                 Icon(
                     Icons.Rounded.ArrowBack,
-                    contentDescription = stringResource(R.string.app_name)
+                    contentDescription = stringResource(R.string.app_name),
+                    Modifier.size(30.dp),
+                    tint = Color.White
                 )
+            }
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 50.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
                 Text(
-                    text = "back",
-                    color = Color.Black,
+                    text = "Address and Number",
                     fontFamily = Poppins,
-                    fontSize = 15.sp,
+                    color = Color.White,
+                    fontSize = 25.sp,
                 )
-                Spacer(Modifier.weight(1f))
             }
 
         }
     }
 }
+
 @Composable
-private fun TopTitleBar(){
-    Surface() {
+fun BottomBarA() {
+    Surface(color = Color.White,
+        elevation = 10.dp) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+                .height(100.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Social Address",
-                fontFamily = Poppins,
-                color = Color.Black,
-                fontSize = 25.sp,
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier
+                    .height(50.dp)
+                    .width(115.dp)
+                    .align(Alignment.CenterVertically),
+                //shape = InputBoxShape.medium,
+                shape = MyShape,
             )
+            {
+                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
+                Text(
+                    text = "Save",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontFamily = Poppins
+                )
+            }
+            //add button
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier
+                    .height(50.dp)
+                    .width(115.dp)
+                    .align(Alignment.CenterVertically),
+                shape = MyShape
+            )
+            {
+                Icon(Icons.Rounded.Add, contentDescription = "")
+                Text(
+                    text = "Add",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontFamily = Poppins
+                )
+            }
         }
     }
 }
