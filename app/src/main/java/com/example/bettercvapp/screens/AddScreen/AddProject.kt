@@ -99,7 +99,60 @@ fun AddProject(navController: NavController, context: Context) {
     }
 
     //Partir pour enter les données(Champs de texte)
-    Scaffold(bottomBar = { BottomBarP()},
+    Scaffold(bottomBar = {
+            Surface(color = Color.White,
+                elevation = 10.dp) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = {
+                            StartDate = date.value
+                            EndDate = date2.value
+                            saveProject()
+                        },
+                        Modifier
+                            .height(40.dp)
+                            .width(115.dp)
+                            .align(Alignment.CenterVertically),
+                        //shape = InputBoxShape.medium,
+                        shape = MyShape,
+                    )
+                    {
+                        Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
+                        Text(
+                            text = "Save",
+                            color = Color.White,
+                            fontSize = 15.sp,
+                            fontFamily = Poppins
+                        )
+                    }
+                    //add button
+                    Button(
+                        onClick = { /*TODO*/ },
+                        Modifier
+                            .height(40.dp)
+                            .width(115.dp)
+                            .align(Alignment.CenterVertically),
+                        shape = MyShape
+                    )
+                    {
+                        Icon(Icons.Rounded.Add, contentDescription = "")
+                        Text(
+                            text = "Add",
+                            color = Color.White,
+                            fontSize = 15.sp,
+                            fontFamily = Poppins
+                        )
+                    }
+                }
+            }
+
+    },
         content = {it
             LazyColumn( contentPadding = PaddingValues(bottom = 40.dp)){
                 stickyHeader {

@@ -60,7 +60,59 @@ fun Recommendation(navController: NavController) {
     }
 
     Scaffold(
-        bottomBar = { BottomBarR() },
+        bottomBar = {
+
+                Surface(color = Color.White,
+                    elevation = 10.dp) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(100.dp),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Button(
+                            onClick = {
+                                saveRecom()
+                            },
+                            Modifier
+                                .height(50.dp)
+                                .width(115.dp)
+                                .align(Alignment.CenterVertically),
+                            //shape = InputBoxShape.medium,
+                            shape = MyShape,
+                        )
+                        {
+                            Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
+                            Text(
+                                text = "Save",
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontFamily = Poppins
+                            )
+                        }
+                        //add button
+                        Button(
+                            onClick = { /*TODO*/ },
+                            Modifier
+                                .height(50.dp)
+                                .width(115.dp)
+                                .align(Alignment.CenterVertically),
+                            shape = MyShape
+                        )
+                        {
+                            Icon(Icons.Rounded.Add, contentDescription = "")
+                            Text(
+                                text = "Add",
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontFamily = Poppins
+                            )
+                        }
+                    }
+                }
+
+        },
         content = {it
             LazyColumn( contentPadding = PaddingValues(bottom = 40.dp)){
                 stickyHeader {
