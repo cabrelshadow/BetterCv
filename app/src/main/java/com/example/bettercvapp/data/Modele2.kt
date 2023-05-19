@@ -108,7 +108,7 @@ fun CvScreen2(navController: NavController) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(text = "Telecharger")
+            Text(text = "Appliquer ce Model")
         }
     }
 }

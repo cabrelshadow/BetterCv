@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.better_cv.screens.ProfileScreen
+import com.example.bettercvapp.data.CvScreen50
 import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.screens.AddScreen.*
 import com.example.bettercvapp.ui.theme.BackgroundColor
@@ -28,6 +29,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
 
                 ) {
+                    //CvScreen50()
                     LogApplication()
                 }
             }

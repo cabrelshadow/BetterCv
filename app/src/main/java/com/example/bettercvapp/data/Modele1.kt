@@ -97,7 +97,7 @@ fun CvScreen(navController:NavController) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(text = "VALIDER")
+            Text(text = "Appliquer ce Model")
         }
     }
 }
