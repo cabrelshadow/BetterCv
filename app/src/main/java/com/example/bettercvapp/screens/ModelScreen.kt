@@ -152,7 +152,7 @@ fun CardList(navController: NavController) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = 30.dp)
     ) {
         Row(
             modifier = Modifier
@@ -280,6 +280,72 @@ fun CardList(navController: NavController) {
                     }){
                         Text(
                             text = "Analyst",
+                            color = Color.Black
+                        )
+                    }
+                }
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            //Carte numero 5
+            Card(
+                Modifier
+                    .width(150.dp)
+                    .clickable { /* Action à définir */ },
+                backgroundColor = Color.White
+            ) {
+                Column(Modifier.padding(8.dp)) {
+                    Image(
+                        painterResource(R.drawable.cv6),
+                        contentDescription = "Photo 3",
+                        modifier = Modifier
+                            .height(100.dp)
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                    TextButton(onClick = {
+                        navController.navigate("CvScreen3"){
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true }
+                    }){
+                        Text(
+                            text = "Genie Securite",
+                            color = Color.Black
+                        )
+                    }
+                }
+            }
+            //Carte numero 6
+            Card(
+                Modifier
+                    .width(150.dp)
+                    .clickable { /* Action à définir */ },
+                backgroundColor = Color.White
+            ) {
+                Column(Modifier.padding(8.dp)) {
+                    Image(
+                        painterResource(R.drawable.cv5),
+                        contentDescription = "Photo 3",
+                        modifier = Modifier
+                            .height(100.dp)
+                            .fillMaxWidth()
+                            .clip(shape = RoundedCornerShape(8.dp)),
+                        contentScale = ContentScale.Crop
+                    )
+                    TextButton(onClick = {
+                        navController.navigate("CvScreen4"){
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true }
+                    }){
+                        Text(
+                            text = "DEA",
                             color = Color.Black
                         )
                     }
