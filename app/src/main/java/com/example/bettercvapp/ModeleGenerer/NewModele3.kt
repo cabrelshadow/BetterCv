@@ -13,10 +13,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.bettercvapp.showdata.DataViewModel
+import com.example.bettercvapp.showdata.Recommendation
 
 @Composable
-fun CvScreen3(navController: NavController) {
+fun NewCvScreen3(navController: NavController,
+                 dataViewModel: DataViewModel = viewModel()
+                 ) {
+    val getData = dataViewModel.state.value
+    val getData1 = dataViewModel.state1.value
+    val getData2 = dataViewModel.state2.value
+    val getData3 = dataViewModel.state3.value
+    val getData4 = dataViewModel.state4.value
+    val getData5 = dataViewModel.state5.value
+    val getData6 = dataViewModel.state6.value
+    val getData7 = dataViewModel.state7.value
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text(text = "Administrate BD") },
@@ -49,7 +63,7 @@ fun CvScreen3(navController: NavController) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Nom Prénom",
+                            text = getData.firstname+" * "+getData.lastname,
                             style = MaterialTheme.typography.h4,
                             fontWeight = FontWeight.Bold,
                             color = Color.Blue,
@@ -58,22 +72,27 @@ fun CvScreen3(navController: NavController) {
                             )
                         Column(modifier = Modifier.padding(start = 8.dp)) {
                             Text(
-                                text = "Adresse",
+                                text = "Address: "+getData7.city,
                                 style = MaterialTheme.typography.body1,
                                 color = Color.Black
                             )
                             Text(
-                                text = "Numéro de téléphone",
+                                text = getData5.Email+" \n"+getData5.Phone,
                                 style = MaterialTheme.typography.body1,
                                 color = Color.Black
                             )
                             Text(
-                                text = "Adresse e-mail",
+                                text = "Date de naissace: "+getData.borndate,
                                 style = MaterialTheme.typography.body1,
                                 color = Color.Black
                             )
                             Text(
-                                text = "Staut matrimonial",
+                                text = "Staut matrimonial: "+getData.maritalstatus,
+                                style = MaterialTheme.typography.body1,
+                                color = Color.Black
+                            )
+                            Text(
+                                text = "Permis de conduire: "+getData.drivinglicence,
                                 style = MaterialTheme.typography.body1,
                                 color = Color.Black
                             )
@@ -88,19 +107,19 @@ fun CvScreen3(navController: NavController) {
 
                     SectionTitle(title = "Expérience professionnelle")
 
-                    ExperiencePro3()
+                    ExperiencePro3(getData1.organisation,getData1.function,getData1.startDate,getData1.endDate)
 
                     SectionTitle(title = "Compétences professionnelles")
 
-                    Competences3()
+                    Competences3(getData6.competence,getData6.level)
 
                     SectionTitle(title = "Formation")
 
-                    Formation3()
+                    Formation3(getData2.diploma,getData2.school,getData2.startdate,getData2.enddate,getData2.domainOfStudy,getData2.obtainresult)
 
                     SectionTitle(title = "Langues")
 
-                    Langues3()
+                    Langues3(getData7.language,getData7.level)
 
                     SectionTitle(title = "Centres d'intérêt")
 
@@ -108,7 +127,11 @@ fun CvScreen3(navController: NavController) {
 
                     SectionTitle(title = "Projets personnels")
 
-                    ProjetsPersonnels3()
+                    ProjetsPersonnels3(getData3.NameProject,getData3.Status,getData3.Partner,getData3.UrlProject,getData3.DescriptionOfProject,getData3.StartDate,getData3.StartDate)
+
+                    SectionTitle(title = "Recommandation")
+
+                    Recommandation(getData4.PersonName,getData4.ResearchPost,getData4.Number)
                 }
             }
         }
@@ -119,7 +142,7 @@ fun CvScreen3(navController: NavController) {
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(text = "Appliquer ce Model")
+            Text(text = "Telecharger ce Model")
         }
     }
 }
@@ -148,13 +171,13 @@ fun SectionTitle(title: String) {
 }
 
 @Composable
-fun ExperiencePro3() {
+fun ExperiencePro3(nameets:String, post:String, dtdeb:String, datfin:String) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Nom de l'entreprise", fontWeight = FontWeight.Bold)
-        Text(text = "Poste occupé, Dates de début et de fin")
+        Text(text = "$nameets", fontWeight = FontWeight.Bold)
+        Text(text = "Poste occupé: $post,\n Date debut-fin: $dtdeb - $datfin")
         Text(text = "Missions effectuées :", fontWeight = FontWeight.Bold)
         Text(text = "- Mission 1")
         Text(text = "- Mission 2")
@@ -164,50 +187,42 @@ fun ExperiencePro3() {
 
 //Formation :
 @Composable
-fun Formation3() {
+fun Formation3(dip:String,school:String,Start:String,end:String,filiere:String,obtainresult:String) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Nom du diplôme obtenu", fontWeight = FontWeight.Bold)
-        Text(text = "Nom de l'établissement, Dates de début et de fin")
-        Text(text = "Matieres étudiées :", fontWeight = FontWeight.Bold)
-        Text(text = "- Matiere 1")
-        Text(text = "- Matiere 2")
+        Text(text = "Diplôme obtenu: $dip", fontWeight = FontWeight.Bold)
+        Text(text = "Nom de l'établissement: $school" +  "\nDates debut $Start Dates fin $end")
+        Text(text = "Filieres Choisies :$filiere", fontWeight = FontWeight.Bold)
+        Text(text = "Mention :$obtainresult", fontWeight = FontWeight.Bold)
 // Ajoutez d'autres éléments en fonction de votre formation
     }
 }
 
 //Compétences :
 @Composable
-fun Competences3() {
+fun Competences3(comp:String,niv:String) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Compétences techniques :", fontWeight = FontWeight.Bold)
-        Text(text = "- Compétence 1")
-        Text(text = "- Compétence 2")
-        Text(text = "Logiciels maîtrisés :", fontWeight = FontWeight.Bold)
-        Text(text = "- Logiciel 1")
-        Text(text = "- Logiciel 2")
+        Text(text = "- Compétence: $comp")
+        Text(text = "- Niveau: $niv")
 // Ajoutez d'autres éléments en fonction de vos compétences
     }
 }
 
 //Langues :
 @Composable
-fun Langues3() {
+fun Langues3(lang:String,niv:String) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text ="Langues étrangères :", fontWeight = FontWeight.Bold)
-        Text(text = "- Langue 1 : Niveau de maîtrise")
-        Text(text = "- Langue 2 : Niveau de maîtrise")
-        Text(text = "Certifications obtenues :", fontWeight = FontWeight.Bold)
-        Text(text = "- Certification 1")
-        Text(text = "- Certification 2")
+        Text(text = "Langues étrangères :", fontWeight = FontWeight.Bold)
+        Text(text = "- Langue: $lang \n-Niveau: $niv")
 // Ajoutez d'autres éléments en fonction de vos compétences linguistiques
     }
 }
@@ -231,18 +246,32 @@ fun CentresInteret3() {
 
 //Projets personnels :
 @Composable
-fun ProjetsPersonnels3() {
+fun ProjetsPersonnels3(NameProject:String,Status: String,Partner: String
+    ,UrlProject: String,DescriptionOfProject: String,StartDate: String,enddate: String) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Projets personnels :", fontWeight = FontWeight.Bold)
-        Text(text = "- Projet 1")
-        Text(text = "- Projet 2")
-        Text(text = "Contributions à des projets communautaires :", fontWeight = FontWeight.Bold)
-        Text(text = "- Projet communautaire 1")
-        Text(text = "- Projet communautaire 2")
+        Text(text = "Projets personnels: $NameProject", fontWeight = FontWeight.Bold)
+        Text(text = " Staut: $Status")
+        Text(text = " Partenaire ou associe: $Partner", fontWeight = FontWeight.Bold)
+        Text(text = "URL du projet: $UrlProject", fontWeight = FontWeight.Medium)
+        Text(text = "Description du Project: $DescriptionOfProject")
+        Text(text = "- Date : $StartDate---$enddate")
 // Ajoutez d'autres éléments en fonction de vos projets personnels
+    }
+}
+
+@Composable
+fun Recommandation(PersonName:String,ResearchPost:String,Number:String) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(text = "Nom du Representant : $PersonName ", fontWeight = FontWeight.Bold)
+        Text(text = "Poste : $ResearchPost")
+        Text(text = "Numero de telephone : $Number")
+// Ajoutez d'autres éléments en fonction de vos compétences linguistiques
     }
 }
 
