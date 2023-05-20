@@ -96,7 +96,11 @@ fun CvScreen4(navController: NavController) {
         }
 
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate("NewCvScreen4"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)

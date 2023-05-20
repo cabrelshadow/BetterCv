@@ -13,6 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.better_cv.screens.ProfileScreen
 import com.example.bettercvapp.ModeleGenerer.NewCvScreen
+import com.example.bettercvapp.ModeleGenerer.NewCvScreen2
+import com.example.bettercvapp.ModeleGenerer.NewCvScreen3
+import com.example.bettercvapp.ModeleGenerer.NewCvScreen4
 import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.screens.AddScreen.*
 import com.example.bettercvapp.ui.theme.BackgroundColor
@@ -40,7 +43,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = "NewCvScreen", builder = {
+        NavHost(navController = navController, startDestination = "ModelScreen", builder = {
 
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
@@ -61,6 +64,9 @@ class MainActivity : ComponentActivity() {
             composable("percentage",content ={ percentage(navController = navController) })
             composable("CvScreen",content = { CvScreen(navController = navController)})
             composable("NewCvScreen",content = { NewCvScreen(navController = navController)})
+            composable("NewCvScreen2",content = { NewCvScreen2(navController = navController)})
+            composable("NewCvScreen3",content = { NewCvScreen3(navController = navController)})
+            composable("NewCvScreen4",content = { NewCvScreen4(navController = navController)})
             composable("CvScreen2",content = { CvScreen2(navController = navController)})
             composable("CvScreen3", content = { CvScreen3(navController = navController)})
             composable("CvScreen4", content = { CvScreen4(navController = navController)})
