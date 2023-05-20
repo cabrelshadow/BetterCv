@@ -40,14 +40,14 @@ fun AddressNumber(navController: NavController){
     var urlLinkedin by remember { mutableStateOf("") }
 
     val db = Firebase.firestore
-    val adress = db.collection("Adress")
+    val adress = db.collection("ElectronicAddress")
 
     fun saveAdressUser(){
         val newAdress = hashMapOf(
             "Phone" to Phone,
             "Email" to Email,
             "urlTelegram" to urlTelegram,
-            "urlInstagram" to urlLinkedin
+            "urlLinkedin" to urlLinkedin
         )
         adress.add(newAdress)
     }
@@ -366,7 +366,7 @@ private fun Header(navController: NavController){
                 .background(head),
         ) {
             TextButton(
-                onClick = {navController.navigate("ProfileScreen"){
+                onClick = {navController.navigate("MenuForm"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }},
             ) {

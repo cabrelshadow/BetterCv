@@ -101,7 +101,11 @@ fun Formation(navController: NavController,context : Context){
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            startdate = date.value
+                            enddate = date2.value
+                            saveformation()
+                                  },
                         Modifier
                             .height(40.dp)
                             .width(115.dp)
@@ -120,11 +124,7 @@ fun Formation(navController: NavController,context : Context){
                     }
                     //add button
                     Button(
-                        onClick = {
-                            startdate = date.value
-                            enddate = date2.value
-                            saveformation()
-                        },
+                        onClick = {/*TODO*/},
                         Modifier
                             .height(40.dp)
                             .width(115.dp)

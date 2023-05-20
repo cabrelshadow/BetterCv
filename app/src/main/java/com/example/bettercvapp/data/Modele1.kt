@@ -9,10 +9,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.bettercvapp.showdata.DataViewModel
+
 
 @Composable
-fun CvScreen(navController:NavController) {
+fun CvScreen(navController:NavController,
+            dataViewModel: DataViewModel = viewModel()
+) {
+    val getData = dataViewModel.state.value
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text(text = "Cv Dev") },
@@ -43,23 +49,23 @@ fun CvScreen(navController:NavController) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Nom Prénom",
+                        text =  getData.firstname+" "+getData.lastname,
                         style = MaterialTheme.typography.h3,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Adresse",
+                        text = "Date de Naissance: "+getData.borndate,
                         style = MaterialTheme.typography.subtitle1,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Numéro de téléphone",
+                        text = "Lieu de naissance: "+getData.bornat,
                         style = MaterialTheme.typography.subtitle1,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Adresse e-mail",
+                        text =  "stutus: "+getData.maritalstatus,
                         style = MaterialTheme.typography.subtitle1,
                         modifier = Modifier.padding(bottom = 24.dp)
                     )

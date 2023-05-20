@@ -70,6 +70,7 @@ dependencies {
     //datapiker
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
     implementation 'com.afollestad.material-dialogs:datetime:3.3.0'
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_ui_version"
 
 
     //splash API

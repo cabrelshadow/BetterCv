@@ -46,7 +46,6 @@ fun ProfileScreen(navController: NavController, context : Context) {
     calendar.time = Date()
 
     val date = remember { mutableStateOf("") }
-    val date2 = remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
@@ -91,6 +90,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                     ) {
                         Button(
                             onClick = {
+                                borndate = date.value
                                 saveProfile()
                             },
                             Modifier
