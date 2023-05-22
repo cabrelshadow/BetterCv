@@ -1,4 +1,4 @@
-package com.example.bettercvapp.screens
+  package com.example.bettercvapp.screens
 
 import android.app.AlertDialog
 import android.content.ContentValues

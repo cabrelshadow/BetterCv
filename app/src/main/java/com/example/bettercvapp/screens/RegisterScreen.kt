@@ -27,6 +27,7 @@
  import com.google.firebase.auth.ktx.auth
  import com.google.firebase.ktx.Firebase
 
+
  @Composable
  fun RegisterScreen(navController: NavController) {
      var isPasswordOpen by remember { mutableStateOf(false) }
@@ -380,10 +381,12 @@
          }
 
          Button(
-             onClick = {},
+             onClick = {  },
+
              colors = ButtonDefaults.buttonColors(
                  backgroundColor = Color.White,
              ),
+
              elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
              modifier = Modifier.clip(shape = Shapes.large),
              contentPadding = PaddingValues(horizontal = 26.dp, vertical = 10.dp)
@@ -404,6 +407,10 @@
          }
      }
  }
+
+
+
+
 
  fun createUser(
      email: String,
