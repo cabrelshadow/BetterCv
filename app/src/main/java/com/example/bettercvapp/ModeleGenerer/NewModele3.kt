@@ -63,7 +63,7 @@ fun NewCvScreen3(navController: NavController,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = getData.firstname+" * "+getData.lastname,
+                            text = getData.firstname+" "+getData.lastname,
                             style = MaterialTheme.typography.h4,
                             fontWeight = FontWeight.Bold,
                             color = Color.Blue,
@@ -82,7 +82,7 @@ fun NewCvScreen3(navController: NavController,
                                 color = Color.Black
                             )
                             Text(
-                                text = "Date de naissace: "+getData.borndate,
+                                text = getData.borndate,
                                 style = MaterialTheme.typography.body1,
                                 color = Color.Black
                             )
@@ -178,9 +178,9 @@ fun ExperiencePro3(nameets:String, post:String, dtdeb:String, datfin:String) {
     ) {
         Text(text = "$nameets", fontWeight = FontWeight.Bold)
         Text(text = "Poste occupé: $post,\n Date debut-fin: $dtdeb - $datfin")
-        Text(text = "Missions effectuées :", fontWeight = FontWeight.Bold)
-        Text(text = "- Mission 1")
-        Text(text = "- Mission 2")
+        Text(text = "Missions effectuées:", fontWeight = FontWeight.Bold)
+        Text(text = "Mission 1")
+        Text(text = "Mission 2")
 // Ajoutez d'autres éléments en fonction de vos expériences
     }
 }
@@ -193,9 +193,9 @@ fun Formation3(dip:String,school:String,Start:String,end:String,filiere:String,o
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Diplôme obtenu: $dip", fontWeight = FontWeight.Bold)
-        Text(text = "Nom de l'établissement: $school" +  "\nDates debut $Start Dates fin $end")
-        Text(text = "Filieres Choisies :$filiere", fontWeight = FontWeight.Bold)
-        Text(text = "Mention :$obtainresult", fontWeight = FontWeight.Bold)
+        Text(text = "Nom de l'établissement: $school" + "\nDates debut $Start Dates fin $end")
+        Text(text = "Specialite:$filiere", fontWeight = FontWeight.Bold)
+        Text(text = "Mention:$obtainresult", fontWeight = FontWeight.Bold)
 // Ajoutez d'autres éléments en fonction de votre formation
     }
 }
@@ -207,9 +207,9 @@ fun Competences3(comp:String,niv:String) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Compétences techniques :", fontWeight = FontWeight.Bold)
-        Text(text = "- Compétence: $comp")
-        Text(text = "- Niveau: $niv")
+        Text(text = "Compétences techniques:", fontWeight = FontWeight.Bold)
+        Text(text = "Compétence: $comp")
+        Text(text = "Niveau: $niv")
 // Ajoutez d'autres éléments en fonction de vos compétences
     }
 }
@@ -222,7 +222,7 @@ fun Langues3(lang:String,niv:String) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Langues étrangères :", fontWeight = FontWeight.Bold)
-        Text(text = "- Langue: $lang \n-Niveau: $niv")
+        Text(text = "Langue: $lang \nNiveau: $niv")
 // Ajoutez d'autres éléments en fonction de vos compétences linguistiques
     }
 }
@@ -235,11 +235,11 @@ fun CentresInteret3() {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Activités pratiquées :", fontWeight = FontWeight.Bold)
-        Text(text = "- Activité 1")
-        Text(text = "- Activité 2")
+        Text(text = "Activité 1")
+        Text(text = "Activité 2")
         Text(text = "Bénévolat :", fontWeight = FontWeight.Bold)
-        Text(text = "- Association 1")
-        Text(text = "- Association 2")
+        Text(text = "Association 1")
+        Text(text = "Association 2")
 // Ajoutez d'autres éléments en fonction de vos centres d'intérêt
     }
 }
@@ -253,11 +253,11 @@ fun ProjetsPersonnels3(NameProject:String,Status: String,Partner: String
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Projets personnels: $NameProject", fontWeight = FontWeight.Bold)
-        Text(text = " Staut: $Status")
-        Text(text = " Partenaire ou associe: $Partner", fontWeight = FontWeight.Bold)
-        Text(text = "URL du projet: $UrlProject", fontWeight = FontWeight.Medium)
-        Text(text = "Description du Project: $DescriptionOfProject")
-        Text(text = "- Date : $StartDate---$enddate")
+        Text(text = "Staut: $Status")
+        Text(text = "Contrubiteur(s): $Partner", fontWeight = FontWeight.Bold)
+        Text(text = "URL: $UrlProject")
+        Text(text = "Description: $DescriptionOfProject")
+        Text(text = "Date: $StartDate**$enddate")
 // Ajoutez d'autres éléments en fonction de vos projets personnels
     }
 }
@@ -268,9 +268,9 @@ fun Recommandation(PersonName:String,ResearchPost:String,Number:String) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Nom du Representant : $PersonName ", fontWeight = FontWeight.Bold)
-        Text(text = "Poste : $ResearchPost")
-        Text(text = "Numero de telephone : $Number")
+        Text(text = "Nom: $PersonName ", fontWeight = FontWeight.Bold)
+        Text(text = "Poste: $ResearchPost")
+        Text(text = "Numero de telephone: $Number")
 // Ajoutez d'autres éléments en fonction de vos compétences linguistiques
     }
 }

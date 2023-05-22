@@ -144,8 +144,8 @@ fun Competences4(comp:String,niv:String) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Compétences techniques :", fontWeight = FontWeight.Bold)
-        Text(text = "- Compétence: $comp")
-        Text(text = "- Niveau: $niv")
+        Text(text = "Compétence: $comp")
+        Text(text = "Niveau: $niv")
 // Ajoutez d'autres éléments en fonction de vos compétences
     }
 }
@@ -157,9 +157,9 @@ fun Formation4(dip:String,school:String,Start:String,end:String,filiere:String,o
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Diplôme obtenu: $dip", fontWeight = FontWeight.Bold)
-        Text(text = "Nom de l'établissement: $school" +  "\nDates debut-fin $Start - $end")
-        Text(text = "Filieres Choisies :$filiere", fontWeight = FontWeight.Bold)
-        Text(text = "Mention :$obtainresult", fontWeight = FontWeight.Bold)
+        Text(text = "Nom de l'établissement: $school" + "\nDates debut-fin $Start - $end")
+        Text(text = "Filieres Choisies:$filiere", fontWeight = FontWeight.Bold)
+        Text(text = "Mention: $obtainresult", fontWeight = FontWeight.Bold)
 // Ajoutez d'autres éléments en fonction de votre formation
     }
 }
@@ -170,8 +170,8 @@ fun Langues4(lang:String,niv:String) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Langues étrangères :", fontWeight = FontWeight.Bold)
-        Text(text = "- Langue: $lang \n-Niveau: $niv")
+        Text(text = "Langues étrangères:", fontWeight = FontWeight.Bold)
+        Text(text = "Langue: $lang \nNiveau: $niv")
 // Ajoutez d'autres éléments en fonction de vos compétences linguistiques
     }
 }
@@ -184,11 +184,11 @@ fun ProjetAcademique(NameProject:String,Status: String,Partner: String
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Projets personnels: $NameProject", fontWeight = FontWeight.Bold)
-        Text(text = " Staut: $Status")
-        Text(text = " Partenaire ou associe: $Partner", fontWeight = FontWeight.Bold)
-        Text(text = "URL du projet: $UrlProject", fontWeight = FontWeight.Medium)
-        Text(text = "Description du Project: $DescriptionOfProject")
-        Text(text = "- Date : $StartDate---$enddate")
+        Text(text = "Staut: $Status")
+        Text(text = "Contibuteur(s): $Partner", fontWeight = FontWeight.Bold)
+        Text(text = "URL: $UrlProject")
+        Text(text = "Description: $DescriptionOfProject")
+        Text(text = "Date: $StartDate**$enddate")
     }}
 
 @Composable

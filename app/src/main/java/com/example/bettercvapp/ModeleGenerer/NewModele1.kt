@@ -136,9 +136,7 @@ fun NewExperiencePro(nameets : String,post:String,dtdeb:String,datfin:String) {
     ) {
         Text(text = "Entreprise $nameets", fontWeight = FontWeight.Bold)
         Text(text = "Poste occupé: $post,\n Date debut-fin: $dtdeb - $datfin")
-        Text(text = "Missions effectuées :", fontWeight = FontWeight.Bold)
-        Text(text = "- Mission 1: -- RAS")
-        Text(text = "- Mission 2: -- RAS")
+        Text(text = "Missions effectuées:", fontWeight = FontWeight.Bold)
 // Ajoutez d'autres éléments en fonction de vos expériences
     }
 }
@@ -153,7 +151,7 @@ fun NewFormation(dip:String,school:String,Start:String,end:String,filiere:String
         Text(text = "diplôme obtenu: $dip", fontWeight = FontWeight.Bold)
         Text(text = "Nom de l'établissement: $school" +
                 "\nDates debut-fin $Start - $end")
-        Text(text = "Filiere étudiées: $filiere", fontWeight = FontWeight.Bold)
+        Text(text = "Specialite: $filiere", fontWeight = FontWeight.Bold)
 // Ajoutez d'autres éléments en fonction de votre formation
     }
 }
@@ -166,8 +164,8 @@ fun NewCompetences(comp:String,niv:String) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Compétences techniques :", fontWeight = FontWeight.Bold)
-        Text(text = "- Compétence: $comp")
-        Text(text = "- Niveau: $niv")
+        Text(text = "Compétence: $comp")
+        Text(text = "Niveau: $niv")
         /*Text(text = "Logiciels maîtrisés :", fontWeight = FontWeight.Bold)
         Text(text = "- Logiciel 1 - RAS")
         Text(text = "- Logiciel 2 - RAS")*/
@@ -182,12 +180,8 @@ fun NewLangues(lang:String,niv:String) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Langues étrangères :", fontWeight = FontWeight.Bold)
+        Text(text = "Langues:", fontWeight = FontWeight.Bold)
         Text(text = "- Langue: $lang \n-Niveau: $niv")
-        //Text(text = "- Langue 2 : Niveau de maîtrise")
-        //Text(text = "Certifications obtenues :", fontWeight = FontWeight.Bold)
-        //Text(text = "- Certification 1")
-        //Text(text = "- Certification 2")
 // Ajoutez d'autres éléments en fonction de vos compétences linguistiques
     }
 }
@@ -216,9 +210,9 @@ fun NewProjetsPersonnels(projet:String,datfin: String,dtdeb: String,) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Projets personnels: $projet", fontWeight = FontWeight.Bold)
-        Text(text = "- Date debut: $dtdeb")
-        Text(text = "- Date fin: $datfin")
+        Text(text = "Projets: $projet", fontWeight = FontWeight.Bold)
+        Text(text = "Date debut: $dtdeb")
+        Text(text = "Date fin: $datfin")
         /*Text(text = "Contributions à des projets communautaires :", fontWeight = FontWeight.Bold)
         Text(text = "- Projet communautaire 1")
         Text(text = "- Projet communautaire 2")*/

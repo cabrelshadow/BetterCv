@@ -159,8 +159,6 @@ fun ExperiencePro(nameets:String, post:String, dtdeb:String, datfin:String) {
         Text(text = "$nameets", fontWeight = FontWeight.Bold)
         Text(text = "Poste occupé: $post,\n Date debut-fin: $dtdeb - $datfin")
         Text(text = "Missions effectuées :", fontWeight = FontWeight.Bold)
-        Text(text = "- Mission 1")
-        Text(text = "- Mission 2")
 // Ajoutez d'autres éléments en fonction de vos expériences
     }
 }
@@ -174,8 +172,8 @@ fun Formation(dip:String,school:String,Start:String,end:String,filiere:String,ob
     ) {
         Text(text = "Diplôme obtenu: $dip", fontWeight = FontWeight.Bold)
         Text(text = "Nom de l'établissement: $school" +  "\nDates debut-fin $Start - $end")
-        Text(text = "Filieres Choisies :$filiere", fontWeight = FontWeight.Bold)
-        Text(text = "Mention :$obtainresult", fontWeight = FontWeight.Bold)
+        Text(text = "Specialite:$filiere", fontWeight = FontWeight.Bold)
+        Text(text = "Mention:$obtainresult", fontWeight = FontWeight.Bold)
 // Ajoutez d'autres éléments en fonction de votre formation
     }
 }
@@ -187,9 +185,9 @@ fun Competences(comp:String,niv:String) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Compétences techniques :", fontWeight = FontWeight.Bold)
-        Text(text = "- Compétence: $comp")
-        Text(text = "- Niveau: $niv")
+        Text(text = "Compétences techniques:", fontWeight = FontWeight.Bold)
+        Text(text = "Compétence: $comp")
+        Text(text = "Niveau: $niv")
 // Ajoutez d'autres éléments en fonction de vos compétences
     }
 }
@@ -201,8 +199,8 @@ fun Langues(lang:String,niv:String) {
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Langues étrangères :", fontWeight = FontWeight.Bold)
-        Text(text = "- Langue: $lang \n-Niveau: $niv")
+        Text(text = "Langues:", fontWeight = FontWeight.Bold)
+        Text(text = "Langue: $lang \n-Niveau: $niv")
 // Ajoutez d'autres éléments en fonction de vos compétences linguistiques
     }
 }
@@ -215,11 +213,11 @@ fun CentresInteret() {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Activités pratiquées :", fontWeight = FontWeight.Bold)
-        Text(text = "- Activité 1")
-        Text(text = "- Activité 2")
+        Text(text = "Activité 1")
+        Text(text = "Activité 2")
         Text(text = "Bénévolat :", fontWeight = FontWeight.Bold)
-        Text(text = "- Association 1")
-        Text(text = "- Association 2")
+        Text(text = "Association 1")
+        Text(text = "Association 2")
 // Ajoutez d'autres éléments en fonction de vos centres d'intérêt
     }
 }
@@ -232,8 +230,8 @@ fun ProjetsPersonnels(projet:String,datfin: String,dtdeb: String) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Projets personnels: $projet", fontWeight = FontWeight.Bold)
-        Text(text = "- Date debut: $dtdeb")
-        Text(text = "- Date fin: $datfin")
+        Text(text = "Date debut: $dtdeb")
+        Text(text = "Date fin: $datfin")
 // Ajoutez d'autres éléments en fonction de vos projets personnels
     }
 }
