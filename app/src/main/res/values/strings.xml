@@ -5,4 +5,8 @@
     <string name="add_another_formation">Add another formation</string>
     <string name="arrow">arrow</string>
     <string name="add_another_professionalExp">Add experience Pro</string>
+
+    <string name="facebook_app_id">941958463674893</string>
+    <string name="fb_login_protocol_scheme">fb941958463674893</string>
+    <string name="facebook_client_token">9f59fb4295a5584987b62886205c2462</string>
 </resources>
