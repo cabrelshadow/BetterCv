@@ -19,6 +19,7 @@ import com.example.bettercvapp.ModeleGenerer.NewCvScreen3
 import com.example.bettercvapp.ModeleGenerer.NewCvScreen4
 import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.screens.AddScreen.*
+import com.example.bettercvapp.screens.UpdateScreen.UpCompetence
 import com.example.bettercvapp.ui.theme.BackgroundColor
 import com.example.bettercvapp.ui.theme.BetterCvAppTheme
 import com.example.expprofessionelle.ProfessionalExpScreen
@@ -44,7 +45,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = "UpProfileScreen", builder = {
+        NavHost(navController = navController, startDestination = "UpAddressNumber", builder = {
 
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
@@ -74,6 +75,9 @@ class MainActivity : ComponentActivity() {
             composable("LettreMotivationScreen", content = { LettreMotivationScreen(navController = navController)})
             composable("Competence", content = { Competence(navController = navController)})
             composable("UpProfileScreen", content = { UpProfileScreen(navController = navController,this@MainActivity)})
+            composable("UpRecommendation", content = { UpRecommendation(navController = navController,this@MainActivity)})
+            composable("UpAddressNumber", content = { UpAddressNumber(navController = navController,this@MainActivity)})
+            composable("UpCompetence", content = { UpCompetence(navController = navController,this@MainActivity) })
         })
     }
 }
