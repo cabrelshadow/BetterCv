@@ -147,7 +147,7 @@ suspend fun getData6FromFirestore():Competence{
     return competence
 }
 
-//recuperer les données du address
+//recuperer les données de l'address
 suspend fun getData7FromFirestore():Address{
     val db = FirebaseFirestore.getInstance()
     var address = Address()

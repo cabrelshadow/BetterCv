@@ -3,6 +3,7 @@ package com.example.better_cv.screens
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,9 +22,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
+import com.example.bettercvapp.showdata.DataViewModel
 import com.example.bettercvapp.ui.theme.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -32,8 +35,12 @@ import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ProfileScreen(navController: NavController, context : Context) {
-
+fun UpProfileScreen(navController: NavController,
+                    context : Context,
+                    dataViewModel: DataViewModel = viewModel()
+) {
+    //declaration pour obtenir les valeurs du profil
+    val getData = dataViewModel.state.value
     //function pour le calendrier
     val year : Int
     val month: Int
@@ -59,26 +66,62 @@ fun ProfileScreen(navController: NavController, context : Context) {
     var bornat by remember { mutableStateOf("") }
     var maritalstatus by remember { mutableStateOf("") }
     var drivinglicence by remember { mutableStateOf("") }
-
-    val db = Firebase.firestore
-    val profil = db.collection("Profile")
+    var change by remember { mutableStateOf("") }
 
 
-    fun saveProfile() {
-        val newProfil = hashMapOf(
-            "firstname" to firstname,
-            "lastname" to lastname,
-            "borndate" to borndate,
-            "bornat" to bornat,
-            "maritalstatus" to maritalstatus,
-            "drivinglicence" to drivinglicence,
-            )
-        profil.add(newProfil)
+
+    //modificateur pour les valeurs de la date
+    if(date.value.isNullOrEmpty()){
+        change = getData.borndate
+    }else{
+        change = date.value
     }
 
-    Scaffold(
-        bottomBar = {
+    val db = Firebase.firestore
+    val docRef = db.collection("Profile").document("SjdCWJUPMOywH0jupaW8")
+    //condition pour modification des eléments du profil Cv
+    fun modif(){
+        if(firstname.isEmpty()){
+            firstname=getData.firstname
+        }
+        if (lastname.isEmpty()){
+            lastname = getData.lastname
+        }
+        if(borndate.isEmpty()){
+            borndate = getData.borndate
+        }
+        if(bornat.isEmpty()){
+            bornat = getData.bornat
+        }
+        if(maritalstatus.isEmpty()){
+            maritalstatus = getData.maritalstatus
+        }
+        if(drivinglicence.isEmpty()){
+            drivinglicence = getData.drivinglicence
+        }
+    }
+    //fonction pour la mise a jour des champs du profile du Cv
+    fun UpdatePro(){
+            val updateProfile = hashMapOf<String, Any>(
+                "firstname" to firstname,
+                "lastname" to lastname,
+                "borndate" to borndate,
+                "bornat" to bornat,
+                "maritalstatus" to maritalstatus,
+                "drivinglicence" to drivinglicence,
+            )
+        docRef.update(updateProfile)
+            .addOnSuccessListener {
+                Toast.makeText(context, "La mise à jour a été effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "La mise à jour a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
+    //debut du formulaire
+    Scaffold(
+            bottomBar = {
                 Surface(color = Color.White,
                     elevation = 10.dp) {
                     Row(
@@ -90,38 +133,20 @@ fun ProfileScreen(navController: NavController, context : Context) {
                     ) {
                         Button(
                             onClick = {
-                                borndate = date.value
-                                saveProfile()
+                                modif()
+                                UpdatePro()
                             },
                             Modifier
                                 .height(40.dp)
-                                .width(115.dp)
+                                .width(120.dp)
                                 .align(Alignment.CenterVertically),
                             //shape = InputBoxShape.medium,
                             shape = MyShape,
                         )
                         {
-                            Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
+                            Icon(Icons.Rounded.KeyboardArrowUp, contentDescription = "")
                             Text(
-                                text = "Save",
-                                color = Color.White,
-                                fontSize = 15.sp,
-                                fontFamily = Poppins
-                            )
-                        }
-                        //add button
-                        Button(
-                            onClick = { /*TODO*/ },
-                            Modifier
-                                .height(40.dp)
-                                .width(115.dp)
-                                .align(Alignment.CenterVertically),
-                            shape = MyShape
-                        )
-                        {
-                            Icon(Icons.Rounded.Add, contentDescription = "")
-                            Text(
-                                text = "Add",
+                                text = "Update",
                                 color = Color.White,
                                 fontSize = 15.sp,
                                 fontFamily = Poppins
@@ -129,8 +154,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                         }
                     }
                 }
-
-        },
+            },
         content = {it
             LazyColumn( contentPadding = PaddingValues(bottom = 40.dp)){
                 stickyHeader {
@@ -150,7 +174,6 @@ fun ProfileScreen(navController: NavController, context : Context) {
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp)
                                 .padding(top = 10.dp),
-
                             colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
                                 backgroundColor = PlaceholderColor,
@@ -182,7 +205,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                             },
                             placeholder = {
                                 Text(
-                                    text = "Enter your firstname",
+                                    text = getData.firstname,
                                     color = Color.Black
                                 )
                             },
@@ -239,7 +262,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                             },
                             placeholder = {
                                 Text(
-                                    text = "Enter your lastname",
+                                    text = getData.lastname,
                                     color = Color.Black
                                 )
                             },
@@ -296,7 +319,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                             },
                             placeholder = {
                                 Text(
-                                    text = "Enter your born place",
+                                    text = getData.bornat,
                                     color = Color.Black
                                 )
                             },
@@ -353,7 +376,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                             },
                             placeholder = {
                                 Text(
-                                    text = "Enter Your Marital status",
+                                    text = getData.maritalstatus,
                                     color = Color.Black
                                 )
                             },
@@ -413,7 +436,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                             },
                             placeholder = {
                                 Text(
-                                    text = "Born Date : ${date.value}",
+                                    text = "Born Date: $change",
                                     color = Color.Black,
                                 )
                             },
@@ -428,9 +451,10 @@ fun ProfileScreen(navController: NavController, context : Context) {
                         }) {
                             Icon(Icons.Rounded.DateRange,
                                 contentDescription = "Date Start",
-                                Modifier.size(40.dp)
+                                Modifier
+                                    .size(40.dp)
                                     .align(Alignment.Bottom)
-                                    .offset((-13).dp,10.dp)
+                                    .offset((-13).dp, 10.dp)
                             )
                         }
                     }
@@ -480,7 +504,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                             },
                             placeholder = {
                                 Text(
-                                    text = "Enter Your driving licence type",
+                                    text = getData.drivinglicence,
                                     color = Color.Black
                                 )
                             },
@@ -540,58 +564,6 @@ private fun Header(navController: NavController){
                     fontFamily = Poppins,
                     color = Color.White,
                     fontSize = 40.sp,
-                )
-            }
-
-        }
-    }
-}
-//pied de page
-@Composable
-fun BottomBarPr() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
                 )
             }
         }

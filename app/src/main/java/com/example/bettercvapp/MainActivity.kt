@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.better_cv.screens.ProfileScreen
+import com.example.better_cv.screens.UpProfileScreen
 import com.example.bettercvapp.ModeleGenerer.NewCvScreen
 import com.example.bettercvapp.ModeleGenerer.NewCvScreen2
 import com.example.bettercvapp.ModeleGenerer.NewCvScreen3
@@ -43,7 +44,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = "ModelScreen", builder = {
+        NavHost(navController = navController, startDestination = "UpProfileScreen", builder = {
 
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
@@ -72,6 +73,7 @@ class MainActivity : ComponentActivity() {
             composable("CvScreen4", content = { CvScreen4(navController = navController)})
             composable("LettreMotivationScreen", content = { LettreMotivationScreen(navController = navController)})
             composable("Competence", content = { Competence(navController = navController)})
+            composable("UpProfileScreen", content = { UpProfileScreen(navController = navController,this@MainActivity)})
         })
     }
 }
