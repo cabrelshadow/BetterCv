@@ -1,15 +1,17 @@
-package com.example.better_cv.screens
+package com.example.bettercvapp.screens.UpdateScreen
 
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
 import android.widget.Toast
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,15 +34,16 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun UpProfileScreen(navController: NavController,
-                    context : Context,
-                    dataViewModel: DataViewModel = viewModel()
+fun UpFormationScreen(navController: NavController,
+              context : Context,
+              dataViewModel: DataViewModel = viewModel()
 ) {
+
     //declaration pour obtenir les valeurs du profil
-    val getData = dataViewModel.state.value
+    val getData = dataViewModel.state2.value
+
     //function pour le calendrier
     val year : Int
     val month: Int
@@ -53,63 +56,77 @@ fun UpProfileScreen(navController: NavController,
     calendar.time = Date()
 
     val date = remember { mutableStateOf("") }
+    val date2 = remember { mutableStateOf("") }
+    var change by remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
             date.value = "$dayOfMonth/$month/$yeah"
         },year,month,day
     )
+    val datePickerDialog2 = DatePickerDialog(
+        context,
+        { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
+            date2.value = "$dayOfMonth/$month/$yeah"
+        },year,month,day
+    )
 
-    var firstname by remember { mutableStateOf("") }
-    var lastname by remember { mutableStateOf("") }
-    var borndate by remember { mutableStateOf("") }
-    var bornat by remember { mutableStateOf("") }
-    var maritalstatus by remember { mutableStateOf("") }
-    var drivinglicence by remember { mutableStateOf("") }
-    var change by remember { mutableStateOf("") }
-
-
-
-    //modificateur pour les valeurs de la date
     if(date.value.isNullOrEmpty()){
-        change = getData.borndate
+        change = getData.startdate
     }else{
         change = date.value
     }
 
+    if(date.value.isNullOrEmpty()){
+        change = getData.enddate
+    }else{
+        change = date.value
+    }
+
+    //variable pour stocker les données
+    var school by remember{ mutableStateOf("") }
+    var domainOfStudy by remember{ mutableStateOf("") }
+    var diploma by remember{ mutableStateOf("") }
+    var startdate by remember{ mutableStateOf("") }
+    var enddate by remember{ mutableStateOf("") }
+    var obtainresult by remember{ mutableStateOf("") }
+
+    //variable de manipulation de fire store
     val db = Firebase.firestore
-    val docRef = db.collection("Profile").document("SjdCWJUPMOywH0jupaW8")
+    val docRef = db.collection("Formation").document("")
+
     //condition pour modification des eléments du profil Cv
     fun modif(){
-        if(firstname.isEmpty()){
-            firstname=getData.firstname
+        if(school.isEmpty()){
+            school=getData.school
         }
-        if (lastname.isEmpty()){
-            lastname = getData.lastname
+        if (domainOfStudy.isEmpty()){
+            domainOfStudy = getData.domainOfStudy
         }
-        if(borndate.isEmpty()){
-            borndate = getData.borndate
+        if(diploma.isEmpty()){
+            diploma = getData.diploma
         }
-        if(bornat.isEmpty()){
-            bornat = getData.bornat
+        if(startdate.isEmpty()){
+            startdate = getData.startdate
         }
-        if(maritalstatus.isEmpty()){
-            maritalstatus = getData.maritalstatus
+        if(enddate.isEmpty()){
+            enddate = getData.enddate
         }
-        if(drivinglicence.isEmpty()){
-            drivinglicence = getData.drivinglicence
+        if(obtainresult.isEmpty()){
+            obtainresult = getData.obtainresult
         }
     }
+
     //fonction pour la mise a jour des champs du profile du Cv
-    fun UpdatePro(){
-            val updateProfile = hashMapOf<String, Any>(
-                "firstname" to firstname,
-                "lastname" to lastname,
-                "borndate" to borndate,
-                "bornat" to bornat,
-                "maritalstatus" to maritalstatus,
-                "drivinglicence" to drivinglicence,
-            )
+    fun UpdateFor(){
+        val updateProfile = hashMapOf<String, Any>(
+            "school" to school,
+            "domainOfStudy" to domainOfStudy,
+            "diploma" to diploma,
+            "startdate" to startdate,
+            "enddate" to enddate,
+            "obtainresult" to obtainresult,
+        )
         docRef.update(updateProfile)
             .addOnSuccessListener {
                 Toast.makeText(context, "La mise à jour a été effectuée avec succès", Toast.LENGTH_SHORT).show()
@@ -119,42 +136,43 @@ fun UpProfileScreen(navController: NavController,
             }
     }
 
-    //debut du formulaire
-    Scaffold(
-            bottomBar = {
-                Surface(color = Color.White,
-                    elevation = 10.dp) {
-                    Row(
+    //Partir pour enter les données(Champs de texte)
+
+    Scaffold (
+        bottomBar = {
+            Surface(color = Color.White,
+                elevation = 10.dp) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(100.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = {
+                            modif()
+                            UpdateFor()
+                        },
                         Modifier
-                            .fillMaxWidth()
-                            .height(100.dp),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Button(
-                            onClick = {
-                                modif()
-                                UpdatePro()
-                            },
-                            Modifier
-                                .height(40.dp)
-                                .width(120.dp)
-                                .align(Alignment.CenterVertically),
-                            //shape = InputBoxShape.medium,
-                            shape = MyShape,
+                            .height(40.dp)
+                            .width(115.dp)
+                            .align(Alignment.CenterVertically),
+                        //shape = InputBoxShape.medium,
+                        shape = MyShape,
+                    )
+                    {
+                        Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
+                        Text(
+                            text = "Update",
+                            color = Color.White,
+                            fontSize = 15.sp,
+                            fontFamily = Poppins
                         )
-                        {
-                            Icon(Icons.Rounded.KeyboardArrowUp, contentDescription = "")
-                            Text(
-                                text = "Update",
-                                color = Color.White,
-                                fontSize = 15.sp,
-                                fontFamily = Poppins
-                            )
-                        }
                     }
                 }
-            },
+            }
+        },
         content = {it
             LazyColumn( contentPadding = PaddingValues(bottom = 40.dp)){
                 stickyHeader {
@@ -168,12 +186,13 @@ fun UpProfileScreen(navController: NavController,
                             .padding(horizontal = 18.dp)
                     ) {
                         TextField(
-                            value = firstname,
-                            onValueChange = { firstname = it },
+                            value = school,
+                            onValueChange = { school = it },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp)
                                 .padding(top = 10.dp),
+
                             colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
                                 backgroundColor = PlaceholderColor,
@@ -189,7 +208,7 @@ fun UpProfileScreen(navController: NavController,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
-                                        Icons.Rounded.Person,
+                                        painter = painterResource(id = R.drawable.icon_appartment),
                                         contentDescription = "",
                                         tint = PrimaryColor,
                                         modifier = Modifier.size(20.dp)
@@ -205,7 +224,7 @@ fun UpProfileScreen(navController: NavController,
                             },
                             placeholder = {
                                 Text(
-                                    text = getData.firstname,
+                                    text = getData.school,
                                     color = Color.Black
                                 )
                             },
@@ -224,8 +243,8 @@ fun UpProfileScreen(navController: NavController,
                             .padding(horizontal = 18.dp)
                     ) {
                         TextField(
-                            value = lastname ,
-                            onValueChange = { lastname = it },
+                            value = domainOfStudy ,
+                            onValueChange = { domainOfStudy = it },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp)
@@ -246,7 +265,7 @@ fun UpProfileScreen(navController: NavController,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
-                                        Icons.Rounded.Person,
+                                        Icons.Rounded.Info,
                                         contentDescription = "",
                                         tint = PrimaryColor,
                                         modifier = Modifier.size(20.dp)
@@ -262,7 +281,7 @@ fun UpProfileScreen(navController: NavController,
                             },
                             placeholder = {
                                 Text(
-                                    text = getData.lastname,
+                                    text = getData.domainOfStudy,
                                     color = Color.Black
                                 )
                             },
@@ -281,8 +300,8 @@ fun UpProfileScreen(navController: NavController,
                             .padding(horizontal = 18.dp)
                     ) {
                         TextField(
-                            value = bornat ,
-                            onValueChange = { bornat = it },
+                            value = diploma ,
+                            onValueChange = { diploma = it },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp)
@@ -303,7 +322,7 @@ fun UpProfileScreen(navController: NavController,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
-                                      Icons.Rounded.Place,
+                                        Icons.Filled.Done,
                                         contentDescription = "",
                                         tint = PrimaryColor,
                                         modifier = Modifier.size(20.dp)
@@ -319,7 +338,7 @@ fun UpProfileScreen(navController: NavController,
                             },
                             placeholder = {
                                 Text(
-                                    text = getData.bornat,
+                                    text = getData.diploma,
                                     color = Color.Black
                                 )
                             },
@@ -329,21 +348,19 @@ fun UpProfileScreen(navController: NavController,
                                 fontFamily = Poppins
                             )
                         )
-                    }
-                    //Champ a remplir numero 4
+                    }//Champ a remplir numero 4
                     Spacer(modifier = Modifier.height(30.dp))
                     Row(
                         Modifier
                             .padding(horizontal = 18.dp)
                     ) {
                         TextField(
-                            value = maritalstatus,
-                            onValueChange = { maritalstatus = it },
+                            value = obtainresult ,
+                            onValueChange = { obtainresult = it },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp)
-                                .padding(top = 10.dp)
-                                .weight(1f),
+                                .padding(top = 10.dp),
 
                             colors = TextFieldDefaults.textFieldColors(
                                 textColor = Color.Black,
@@ -360,7 +377,7 @@ fun UpProfileScreen(navController: NavController,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Icon(
-                                       Icons.Rounded.Person,
+                                        painter = painterResource(id = R.drawable.icons8_school_26px),
                                         contentDescription = "",
                                         tint = PrimaryColor,
                                         modifier = Modifier.size(20.dp)
@@ -376,7 +393,7 @@ fun UpProfileScreen(navController: NavController,
                             },
                             placeholder = {
                                 Text(
-                                    text = getData.maritalstatus,
+                                    text = getData.obtainresult,
                                     color = Color.Black
                                 )
                             },
@@ -387,7 +404,6 @@ fun UpProfileScreen(navController: NavController,
                             )
                         )
                     }
-
                     //Champ a remplir numero 5
                     Spacer(modifier = Modifier.height(30.dp))
                     Row(
@@ -395,8 +411,78 @@ fun UpProfileScreen(navController: NavController,
                             .padding(horizontal = 18.dp)
                     ) {
                         TextField(
-                            value = borndate,
-                            onValueChange = { borndate = it },
+                            value = startdate,
+                            onValueChange = { startdate = it },
+                            enabled = false,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 20.dp)
+                                .padding(top = 10.dp)
+                                .weight(1f),
+
+                            colors = TextFieldDefaults.textFieldColors(
+                                textColor = Color.Black,
+                                backgroundColor = PlaceholderColor,
+                                cursorColor = PrimaryColor,
+                                //focusedIndicatorColor = Color.Transparent,
+                                //unfocusedIndicatorColor = Color.Transparent
+                            ),
+                            shape = InputBoxShape.medium,
+                            singleLine = true,
+                            leadingIcon = {
+                                Row(
+                                    modifier = Modifier
+                                        .padding(start = 8.dp)
+                                        .weight(1f),
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.icons8_pay_date_50px),
+                                        contentDescription = "",
+                                        tint = PrimaryColor,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Spacer(
+                                        modifier = Modifier
+                                            .width(1.dp)
+                                            .height(24.dp)
+                                            .background(BackgroundColor)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "start Date : $change",
+                                    color = Color.Black,
+                                )
+                            },
+                            textStyle = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                fontFamily = Poppins
+                            ),
+                        )
+                        IconButton(onClick = {
+                            datePickerDialog.show()
+                        }) {
+                            Icon(Icons.Rounded.DateRange,
+                                contentDescription = "Date Start",
+                                Modifier.size(40.dp)
+                                    .align(Alignment.Bottom)
+                                    .offset((-13).dp,10.dp)
+                            )
+                        }
+                    }
+
+                    //Champ a remplir numero 6
+                    Spacer(modifier = Modifier.height(30.dp))
+                    Row(
+                        Modifier
+                            .padding(horizontal = 18.dp)
+                    ) {
+                        TextField(
+                            value = enddate,
+                            onValueChange = { enddate = it },
                             enabled = false,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -436,7 +522,7 @@ fun UpProfileScreen(navController: NavController,
                             },
                             placeholder = {
                                 Text(
-                                    text = "Born Date: $change",
+                                    text = "End Date : $change",
                                     color = Color.Black,
                                 )
                             },
@@ -447,81 +533,25 @@ fun UpProfileScreen(navController: NavController,
                             ),
                         )
                         IconButton(onClick = {
-                            datePickerDialog.show()
+                            datePickerDialog2.show()
                         }) {
                             Icon(Icons.Rounded.DateRange,
                                 contentDescription = "Date Start",
-                                Modifier
-                                    .size(40.dp)
+                                Modifier.size(40.dp)
                                     .align(Alignment.Bottom)
-                                    .offset((-13).dp, 10.dp)
+                                    .offset((-13).dp,10.dp)
                             )
                         }
                     }
-                    //Champ a remplir numero 4
-                    Spacer(modifier = Modifier.height(30.dp))
-                    Row(
-                        Modifier
-                            .padding(horizontal = 18.dp)
-                    ) {
-                        TextField(
-                            value = drivinglicence,
-                            onValueChange = { drivinglicence = it },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 20.dp)
-                                .padding(top = 10.dp)
-                                .weight(1f),
-
-                            colors = TextFieldDefaults.textFieldColors(
-                                textColor = Color.Black,
-                                backgroundColor = PlaceholderColor,
-                                cursorColor = PrimaryColor,
-                                //focusedIndicatorColor = Color.Transparent,
-                                unfocusedIndicatorColor = Color.Transparent
-                            ),
-                            shape = InputBoxShape.medium,
-                            singleLine = true,
-                            leadingIcon = {
-                                Row(
-                                    modifier = Modifier.padding(start = 8.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.icon_elevation),
-                                        contentDescription = "",
-                                        tint = PrimaryColor,
-                                        modifier = Modifier.size(20.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(6.dp))
-                                    Spacer(
-                                        modifier = Modifier
-                                            .width(1.dp)
-                                            .height(24.dp)
-                                            .background(BackgroundColor)
-                                    )
-                                }
-                            },
-                            placeholder = {
-                                Text(
-                                    text = getData.drivinglicence,
-                                    color = Color.Black
-                                )
-                            },
-                            textStyle = TextStyle(
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                fontFamily = Poppins
-                            )
-                        )
-                    }
                     Spacer(modifier = Modifier.height(65.dp))
+
                 }
             }
         }
     )
-}
 
+
+}
 
 //entete de page
 @Composable
@@ -560,10 +590,66 @@ private fun Header(navController: NavController){
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = "Profile",
+                    text = "Formation",
                     fontFamily = Poppins,
                     color = Color.White,
-                    fontSize = 40.sp,
+                    fontSize = 35.sp,
+                )
+            }
+
+        }
+    }
+}
+
+
+
+
+//pied de page
+@Composable
+fun BottomBarF() {
+    Surface(color = Color.White,
+        elevation = 10.dp) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .height(100.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier
+                    .height(40.dp)
+                    .width(115.dp)
+                    .align(Alignment.CenterVertically),
+                //shape = InputBoxShape.medium,
+                shape = MyShape,
+            )
+            {
+                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
+                Text(
+                    text = "Save",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = Poppins
+                )
+            }
+            //add button
+            Button(
+                onClick = { /*TODO*/ },
+                Modifier
+                    .height(40.dp)
+                    .width(115.dp)
+                    .align(Alignment.CenterVertically),
+                shape = MyShape
+            )
+            {
+                Icon(Icons.Rounded.Add, contentDescription = "")
+                Text(
+                    text = "Add",
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontFamily = Poppins
                 )
             }
         }

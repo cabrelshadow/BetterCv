@@ -63,3 +63,10 @@ data class Address(
     val level : String = "",
 )
 
+data class Hobbies(
+    val type_hobbies : String = "",
+    val title_hobbies : String = "",
+)
+
+
+

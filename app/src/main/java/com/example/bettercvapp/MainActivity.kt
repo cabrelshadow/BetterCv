@@ -19,6 +19,9 @@ import com.example.bettercvapp.ModeleGenerer.NewCvScreen3
 import com.example.bettercvapp.ModeleGenerer.NewCvScreen4
 import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.screens.AddScreen.*
+import com.example.bettercvapp.screens.UpdateScreen.UPMenuForm
+import com.example.bettercvapp.screens.UpdateScreen.UpFormationScreen
+import com.example.bettercvapp.screens.UpdateScreen.UpProfessionalExpScreen
 import com.example.bettercvapp.ui.theme.BackgroundColor
 import com.example.bettercvapp.ui.theme.BetterCvAppTheme
 import com.example.expprofessionelle.ProfessionalExpScreen
@@ -54,12 +57,14 @@ class MainActivity : ComponentActivity() {
             composable("Recommendation", content = { Recommendation(navController = navController)})
             composable("Formation", content = { Formation(navController = navController,this@MainActivity) })
             composable("Country", content = { Country(navController = navController) })
+            composable("Hobbies", content = { Hobbies(navController = navController) })
             composable("ProfileScreen", content = { ProfileScreen(navController = navController,this@MainActivity)})
             composable("AddressNumber", content = { AddressNumber(navController = navController)})
             composable("EditCv", content = { EditCv(navController = navController)})
             composable("HomeScreens", content = { HomeScreens(navController = navController)})
             composable("ShareCv", content = { ShareCv(navController = navController)})
             composable("MenuForm", content = { MenuForm(navController = navController)})
+            composable("UPMenuForm", content = { UPMenuForm(navController = navController)})
             composable("ModelScreen", content = { ModelScreen(navController = navController)})
             composable("Splashscreen",content = {Splashscreen(navController = navController) })
             composable("percentage",content ={ percentage(navController = navController) })
@@ -74,6 +79,8 @@ class MainActivity : ComponentActivity() {
             composable("LettreMotivationScreen", content = { LettreMotivationScreen(navController = navController)})
             composable("Competence", content = { Competence(navController = navController)})
             composable("UpProfileScreen", content = { UpProfileScreen(navController = navController,this@MainActivity)})
+            composable("UpProfessionalExpScreen", content = { UpProfessionalExpScreen(navController = navController,this@MainActivity)})
+            composable("UpFormationScreen", content = { UpFormationScreen(navController = navController,this@MainActivity)})
         })
     }
 }

@@ -20,6 +20,8 @@ class DataViewModel : ViewModel(){
     val state5 = mutableStateOf(Contact())
     val state6 = mutableStateOf(Competence())
     val state7 = mutableStateOf(Address())
+    val state8 = mutableStateOf(Hobbies())
+
 
 
     init {
@@ -35,6 +37,7 @@ class DataViewModel : ViewModel(){
             state5.value = getData5FromFirestore()
             state6.value = getData6FromFirestore()
             state7.value = getData7FromFirestore()
+            state8.value = getData8FromFirestore()
         }
     }
 }
@@ -161,3 +164,19 @@ suspend fun getData7FromFirestore():Address{
     }
     return address
 }
+
+//recuperer les données de Hobbies
+suspend fun getData8FromFirestore():Hobbies{
+    val db = FirebaseFirestore.getInstance()
+    var hobbies = Hobbies()
+    try{
+        db.collection("Hobbies").get().await().map{
+            val result = it.toObject(Hobbies::class.java)
+            hobbies = result
+        }
+    }catch (e: FirebaseFirestoreException ){
+        Log.d("error","getDataFromFirestore: $e")
+    }
+    return hobbies
+}
+
