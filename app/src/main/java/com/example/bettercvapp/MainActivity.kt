@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
 
                 ) {
                     LogApplication()
+
                 }
             }
         }
@@ -45,7 +46,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
-        NavHost(navController = navController, startDestination = "UpAddressNumber", builder = {
+        NavHost(navController = navController, startDestination = "UserModelScreen", builder = {
 
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
             composable("RegisterScreen", content = { RegisterScreen(navController = navController) })
@@ -72,6 +73,7 @@ class MainActivity : ComponentActivity() {
             composable("CvScreen2",content = { CvScreen2(navController = navController)})
             composable("CvScreen3", content = { CvScreen3(navController = navController)})
             composable("CvScreen4", content = { CvScreen4(navController = navController)})
+            composable("UserModelScreen", content = { UserModelScreen(navController = navController)})
             composable("LettreMotivationScreen", content = { LettreMotivationScreen(navController = navController)})
             composable("Competence", content = { Competence(navController = navController)})
             composable("UpProfileScreen", content = { UpProfileScreen(navController = navController,this@MainActivity)})
