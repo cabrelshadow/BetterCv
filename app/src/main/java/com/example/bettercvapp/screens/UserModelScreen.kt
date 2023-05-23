@@ -126,7 +126,7 @@ fun CardList2(navController: NavController) {
             ) {
                 Column(Modifier.padding(8.dp)) {
                     Image(
-                        painterResource(R.drawable.cv1),
+                        painterResource(R.drawable.designer1),
                         contentDescription = "Photo 1",
                         modifier = Modifier
                             .height(130.dp)
@@ -136,11 +136,11 @@ fun CardList2(navController: NavController) {
                         contentScale = ContentScale.Crop
                     )
                     TextButton(onClick = {
-                        navController.navigate("CvScreen"){
+                        navController.navigate("NewUserModel"){
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true }
                     } ){
-                        Text(text = "Developeur",
+                        Text(text = "UI/UX Designer",
                             color = Color.Black,
                             fontSize =14.sp,
                         ) }
@@ -165,12 +165,12 @@ fun CardList2(navController: NavController) {
                         contentScale = ContentScale.Crop
                     )
                     TextButton(onClick = {
-                        navController.navigate("CvScreen2"){
+                        navController.navigate(" "){
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true }
                     }){
                         Text(
-                            text ="UI/UX Designer",
+                            text ="Developeur",
                             color = Color.Black,
                             fontSize =14.sp,
                         )
@@ -202,7 +202,7 @@ fun CardList2(navController: NavController) {
                         contentScale = ContentScale.Crop
                     )
                     TextButton(onClick = {
-                        navController.navigate("CvScreen3"){
+                        navController.navigate(" "){
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true }
                     }){
@@ -231,7 +231,7 @@ fun CardList2(navController: NavController) {
                         contentScale = ContentScale.Crop
                     )
                     TextButton(onClick = {
-                        navController.navigate("CvScreen4"){
+                        navController.navigate(" "){
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true }
                     }){

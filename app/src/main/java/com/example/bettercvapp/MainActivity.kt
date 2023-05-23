@@ -13,10 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.better_cv.screens.ProfileScreen
 import com.example.better_cv.screens.UpProfileScreen
-import com.example.bettercvapp.ModeleGenerer.NewCvScreen
-import com.example.bettercvapp.ModeleGenerer.NewCvScreen2
-import com.example.bettercvapp.ModeleGenerer.NewCvScreen3
-import com.example.bettercvapp.ModeleGenerer.NewCvScreen4
+import com.example.bettercvapp.ModeleGenerer.*
 import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.screens.AddScreen.*
 import com.example.bettercvapp.screens.UpdateScreen.UpCompetence
@@ -73,6 +70,7 @@ class MainActivity : ComponentActivity() {
             composable("CvScreen2",content = { CvScreen2(navController = navController)})
             composable("CvScreen3", content = { CvScreen3(navController = navController)})
             composable("CvScreen4", content = { CvScreen4(navController = navController)})
+            composable("NewUserModel", content = { NewUserModel(navController = navController)})
             composable("UserModelScreen", content = { UserModelScreen(navController = navController)})
             composable("LettreMotivationScreen", content = { LettreMotivationScreen(navController = navController)})
             composable("Competence", content = { Competence(navController = navController)})
