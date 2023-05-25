@@ -29,6 +29,7 @@ import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.showdata.DataViewModel
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -39,7 +40,19 @@ fun UPCountryScreen (navController: NavController,
                      dataViewModel: DataViewModel = viewModel()
 ){
 
-    //declaration pour obtenir les valeurs du profil
+    val db = Firebase.firestore
+    var documentCount by remember { mutableStateOf(0) }
+
+    FirebaseFirestore.getInstance().collection("Country")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
+    val compet=db.collection("Country").document("coun$documentCount")
+
+
+    //declaration pour obtenir les valeurs du profil Country
     val getData = dataViewModel.state7.value
     //variable pour stocker les données
     var country by remember{ mutableStateOf("") }
@@ -49,19 +62,7 @@ fun UPCountryScreen (navController: NavController,
 
 
     //variacle de manipulation de fire store
-    val db = Firebase.firestore
-    val docRef = db.collection("Address").document("")
 
-    //Fonction de sauvegade de donné dans la base de données
-    /*fun saveCountry(){
-        val newCountry = hashMapOf(
-            "country" to country,
-            "city" to city,
-            "language" to language,
-            "level" to level
-        )
-        count.add(newCountry)
-    }*/
 
     fun modif(){
         if(country.isEmpty()){
@@ -81,13 +82,12 @@ fun UPCountryScreen (navController: NavController,
 
     fun Updatecoun(){
         val updateProfile = hashMapOf<String, Any>(
-            "firstname" to country,
-            "lastname" to city,
-            "borndate" to language,
-            "bornat" to level,
-
+            "country" to country,
+            "city" to city,
+            "language" to language,
+            "level" to level,
         )
-        docRef.update(updateProfile)
+        compet.update(updateProfile)
             .addOnSuccessListener {
                 Toast.makeText(context, "La mise à jour a été effectuée avec succès", Toast.LENGTH_SHORT).show()
             }
@@ -118,7 +118,7 @@ fun UPCountryScreen (navController: NavController,
                         },
                         Modifier
                             .height(40.dp)
-                            .width(120.dp)
+                            .width(150.dp)
                             .align(Alignment.CenterVertically),
                         //shape = InputBoxShape.medium,
                         shape = MyShape,
@@ -133,10 +133,8 @@ fun UPCountryScreen (navController: NavController,
                         )
                     }
                     //add button
-
                 }
             }
-
         },
         content = {it
             LazyColumn( contentPadding = PaddingValues(bottom = 40.dp)){
@@ -397,7 +395,7 @@ private fun Header(navController: NavController){
                 .background(head),
         ) {
             TextButton(
-                onClick = {navController.navigate("MenuForm"){
+                onClick = {navController.navigate("UPMenuForm"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }},
             ) {

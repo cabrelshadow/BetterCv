@@ -3,6 +3,7 @@ package com.example.better_cv.screens
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,6 +26,7 @@ import androidx.navigation.NavController
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -60,12 +62,29 @@ fun ProfileScreen(navController: NavController, context : Context) {
     var maritalstatus by remember { mutableStateOf("") }
     var drivinglicence by remember { mutableStateOf("") }
 
+    var documentCount by remember { mutableStateOf(0) }
+    FirebaseFirestore.getInstance().collection("Profile")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
     val db = Firebase.firestore
-    val profil = db.collection("Profile")
+    fun AddPIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
+    borndate = date.value
 
-    fun saveProfile() {
-        val newProfil = hashMapOf(
+        val newProfil = mapOf(
             "firstname" to firstname,
             "lastname" to lastname,
             "borndate" to borndate,
@@ -73,8 +92,6 @@ fun ProfileScreen(navController: NavController, context : Context) {
             "maritalstatus" to maritalstatus,
             "drivinglicence" to drivinglicence,
             )
-        profil.add(newProfil)
-    }
 
     Scaffold(
         bottomBar = {
@@ -90,8 +107,8 @@ fun ProfileScreen(navController: NavController, context : Context) {
                     ) {
                         Button(
                             onClick = {
-                                borndate = date.value
-                                saveProfile()
+                                val id = documentCount+1
+                             AddPIdDocument("Profile","Profile$id",newProfil)
                             },
                             Modifier
                                 .height(40.dp)

@@ -32,6 +32,7 @@ import com.example.bettercvapp.R
 import com.example.bettercvapp.screens.AddScreen.BottomBar
 import com.example.bettercvapp.showdata.DataViewModel
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -41,17 +42,24 @@ fun UpAddressNumber(navController: NavController,
                     context: Context,
                     dataViewModel: DataViewModel = viewModel()
 ){
+    val db = Firebase.firestore
+    var documentCount by remember { mutableStateOf(0) }
+
+    FirebaseFirestore.getInstance().collection("ElectronicAddress")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
+    val compet=db.collection("ElectronicAddress").document("Adress$documentCount")
     //declaration pour obtenir les valeurs de l'adresse
     val getData = dataViewModel.state5.value
-
-
     var Phone by remember { mutableStateOf("") }
     var Email by remember { mutableStateOf("") }
     var urlTelegram by remember { mutableStateOf("") }
     var urlLinkedin by remember { mutableStateOf("") }
 
-    val db = Firebase.firestore
-    val userAdress=db.collection("ElectronicAddress").document("iHvMU1rvQsVvsj7JLR6v")
+
 
     fun modif(){
         if(Phone.isEmpty()){
@@ -77,7 +85,7 @@ fun UpAddressNumber(navController: NavController,
             "urlLinkedin" to urlLinkedin,
 
         )
-        userAdress.update(updateAdd)
+        compet.update(updateAdd)
             .addOnSuccessListener{
                 Toast.makeText(context,"La mise a jour a ete effectuee avec succes", Toast.LENGTH_SHORT).show()
             }
@@ -105,7 +113,7 @@ fun UpAddressNumber(navController: NavController,
                           },
                             Modifier
                                 .height(50.dp)
-                                .width(115.dp)
+                                .width(150.dp)
                                 .align(Alignment.CenterVertically),
                             //shape = InputBoxShape.medium,
                             shape = MyShape,
@@ -385,7 +393,7 @@ private fun Header(navController: NavController){
                 .background(head),
         ) {
             TextButton(
-                onClick = {navController.navigate("MenuForm"){
+                onClick = {navController.navigate("UPMenuForm"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }},
             ) {
@@ -410,7 +418,6 @@ private fun Header(navController: NavController){
                     fontSize = 25.sp,
                 )
             }
-
         }
     }
 }

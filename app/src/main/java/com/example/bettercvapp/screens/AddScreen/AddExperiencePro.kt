@@ -4,6 +4,7 @@ package com.example.expprofessionelle
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,6 +28,7 @@ import androidx.navigation.NavController
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -61,30 +63,46 @@ fun ProfessionalExpScreen(navController: NavController, context : Context) {
             date2.value = "$dayOfMonth/$month/$yeah"
         },year,month,day
     )
-    
-
     //variable pour stocker les données
     var organisation by remember { mutableStateOf("") }
     var status by remember { mutableStateOf("") }
     var function by remember { mutableStateOf("") }
     var startDate by remember { mutableStateOf("") }
     var endDate by remember { mutableStateOf("") }
-
     //variacle de manipulation de fire store
+
+    var documentCount by remember { mutableStateOf(0) }
+    FirebaseFirestore.getInstance().collection("ExperiencePro")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
     val db = Firebase.firestore
-    val expro = db.collection("ExperiencePro")
+    fun AddExpIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     //Fonction de sauvegade de donné dans la base de données
-    fun saveExpro() {
-        val newExpro = hashMapOf(
+
+    startDate = date.value
+    endDate = date2.value
+        val Experience = mapOf(
             "organisation" to organisation,
             "status" to status,
             "function" to function,
             "startDate" to startDate,
             "endDate" to endDate
         )
-        expro.add(newExpro)
-    }
+
     ///Partir pour enter les données(Champs de texte)
     
     Scaffold(
@@ -101,9 +119,9 @@ fun ProfessionalExpScreen(navController: NavController, context : Context) {
                 ) {
                     Button(
                         onClick = {
-                            startDate = date.value
-                            endDate = date2.value
-                            saveExpro()
+
+                            val id = documentCount+1
+                            AddExpIdDocument("ExperiencePro","Expro$id",Experience)
                         },
                         Modifier
                             .height(40.dp)
@@ -511,57 +529,6 @@ private fun Header(navController: NavController){
                 )
             }
 
-        }
-    }
-}
-//pied de page
-@Composable
-fun BottomBar() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
-                )
-            }
         }
     }
 }

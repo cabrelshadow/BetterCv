@@ -24,12 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.bettercvapp.Height
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
-import com.example.bettercvapp.screens.BottomBarA
 import com.example.bettercvapp.showdata.DataViewModel
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -41,14 +40,21 @@ fun UpCompetence(navController: NavController,
                  dataViewModel: DataViewModel = viewModel()
 
 ) {
-    val getData = dataViewModel.state6.value
+    val db = Firebase.firestore
+    var documentCount by remember { mutableStateOf(0) }
 
+    FirebaseFirestore.getInstance().collection("Competence")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
+    val compet=db.collection("Competence").document("Com$documentCount")
+
+    //////////separation YJ8Ic85Zh9fbGPygZQtm
+    val getData = dataViewModel.state6.value
     var NomCompetence by remember { mutableStateOf("") }
     var level by remember { mutableStateOf("") }
-
-
-    val db = Firebase.firestore
-    val compet = db.collection("Competence").document("YJ8Ic85Zh9fbGPygZQtm")
 
     fun modif(){
         if(NomCompetence.isEmpty()){
@@ -62,7 +68,7 @@ fun UpCompetence(navController: NavController,
 
     fun UpdateCom(){
         val updateCom = hashMapOf<String, Any>(
-            "NomCompetence" to NomCompetence,
+            "competence" to NomCompetence,
             "level" to level,
 
         )
@@ -91,7 +97,6 @@ fun UpCompetence(navController: NavController,
                             onClick = {
                                 modif()
                                 UpdateCom()
-
                               },
                             Modifier
                                 .height(50.dp)
@@ -260,7 +265,7 @@ private fun Header(navController: NavController){
                 .background(com.example.bettercvapp.ui.theme.head),
         ) {
             TextButton(
-                onClick = {navController.navigate("MenuForm"){
+                onClick = {navController.navigate("UPMenuForm"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }},
             ) {
@@ -286,57 +291,6 @@ private fun Header(navController: NavController){
                 )
             }
 
-        }
-    }
-}
-
-@Composable
-fun BottomBarC() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(50.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(50.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins
-                )
-            }
         }
     }
 }

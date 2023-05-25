@@ -29,6 +29,7 @@ import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.showdata.DataViewModel
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -39,6 +40,17 @@ fun UpProfessionalExpScreen(navController: NavController,
                             context : Context,
                             dataViewModel: DataViewModel = viewModel()
 ) {
+
+    val db = Firebase.firestore
+    var documentCount by remember { mutableStateOf(0) }
+
+    FirebaseFirestore.getInstance().collection("ExperiencePro")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+    val compet=db.collection("ExperiencePro").document("Expro$documentCount")
+
 
     //declaration pour obtenir les valeurs du profil
     val getData = dataViewModel.state1.value
@@ -57,6 +69,7 @@ fun UpProfessionalExpScreen(navController: NavController,
     val date = remember { mutableStateOf("") }
     val date2 = remember { mutableStateOf("") }
     var change by remember { mutableStateOf("") }
+    var change1 by remember { mutableStateOf("") }
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
@@ -76,10 +89,10 @@ fun UpProfessionalExpScreen(navController: NavController,
         change = date.value
     }
 
-    if(date.value.isNullOrEmpty()){
-        change = getData.endDate
+    if(date2.value.isNullOrEmpty()){
+        change1 = getData.endDate
     }else{
-        change = date.value
+        change1 = date2.value
     }
 
 
@@ -91,8 +104,7 @@ fun UpProfessionalExpScreen(navController: NavController,
     var endDate by remember { mutableStateOf("") }
 
     //variacle de manipulation de fire store
-    val db = Firebase.firestore
-    val docRef = db.collection("ExperiencePro").document("")
+
     //condition pour modification des eléments du profil Cv
     fun modif(){
         if(organisation.isEmpty()){
@@ -118,10 +130,10 @@ fun UpProfessionalExpScreen(navController: NavController,
             "organisation" to organisation,
             "status" to status,
             "function" to function,
-            "startDate" to startDate,
-            "endDate" to endDate,
+            "startDate" to change,
+            "endDate" to change1,
         )
-        docRef.update(updateExp)
+        compet.update(updateExp)
             .addOnSuccessListener {
                 Toast.makeText(context, "La mise à jour a été effectuée avec succès", Toast.LENGTH_SHORT).show()
             }
@@ -133,7 +145,6 @@ fun UpProfessionalExpScreen(navController: NavController,
     ///Partir pour enter les données(Champs de texte)
 
     Scaffold(
-
         bottomBar = {
             Surface(color = Color.White,
                 elevation = 10.dp) {
@@ -393,7 +404,7 @@ fun UpProfessionalExpScreen(navController: NavController,
                             },
                             placeholder = {
                                 Text(
-                                    text = getData.startDate,
+                                    text = change,
                                     color = Color.Black,
                                 )
                             },
@@ -464,7 +475,7 @@ fun UpProfessionalExpScreen(navController: NavController,
                             },
                             placeholder = {
                                 Text(
-                                    text = getData.endDate,
+                                    text = change1,
                                     color = Color.Black,
                                 )
                             },

@@ -1,5 +1,7 @@
 package com.example.bettercvapp.screens.AddScreen
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -14,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -22,34 +23,44 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.bettercvapp.Height
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
-import com.example.bettercvapp.screens.BottomBarA
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Competence(navController: NavController) {
-    var NomCompetence by remember { mutableStateOf("") }
+fun Competence(navController: NavController, context: Context) {
+    var Competence by remember { mutableStateOf("") }
     var level by remember { mutableStateOf("") }
 
-
-
+    var documentCount by remember { mutableStateOf(0) }
+            FirebaseFirestore.getInstance().collection("Competence")
+                .get()
+                .addOnSuccessListener { documents ->
+                    documentCount = documents.size()
+                }
     val db = Firebase.firestore
-    val recom = db.collection("Competence")
-
-    fun saveComp(){
-        val newRecom = hashMapOf(
-            "competence" to NomCompetence,
-            "level" to level,
-        )
-        recom.add(newRecom)
+    fun AddComIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+                            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 
+    val competence = mapOf(
+        "competence" to Competence,
+        "level" to level,
+    )
 
     Scaffold(
         bottomBar = {
@@ -65,7 +76,8 @@ fun Competence(navController: NavController) {
                     ) {
                         Button(
                             onClick = {
-                                saveComp()
+                                val id = documentCount+1
+                                AddComIdDocument("Competence","Com$id",competence)
                               },
                             Modifier
                                 .height(50.dp)
@@ -118,8 +130,8 @@ fun Competence(navController: NavController) {
                             .padding(horizontal = 18.dp)
                     ) {
                         TextField(
-                            value = NomCompetence,
-                            onValueChange = { NomCompetence = it },
+                            value = Competence,
+                            onValueChange = { Competence = it },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp)

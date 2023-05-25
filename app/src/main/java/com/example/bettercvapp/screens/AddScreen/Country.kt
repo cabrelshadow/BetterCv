@@ -1,5 +1,7 @@
 package com.example.bettercvapp.screens.AddScreen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,6 +27,7 @@ import androidx.navigation.NavController
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -32,7 +35,7 @@ import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Country(navController: NavController){
+fun Country(navController: NavController,context : Context){
 
     //variable pour stocker les données
     var country by remember{ mutableStateOf("") }
@@ -42,19 +45,34 @@ fun Country(navController: NavController){
 
 
     //variacle de manipulation de fire store
+    var documentCount by remember { mutableStateOf(0) }
+    FirebaseFirestore.getInstance().collection("Country")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
     val db = Firebase.firestore
-    val count = db.collection("Country")
+    fun AddCounIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     //Fonction de sauvegade de donné dans la base de données
-    fun saveCountry(){
-        val newCountry = hashMapOf(
+        val newCountry = mapOf(
             "country" to country,
             "city" to city,
             "language" to language,
             "level" to level
         )
-        count.add(newCountry)
-    }
+
 
     //Partie pour entrer les données (champ de texte)
 
@@ -72,7 +90,8 @@ fun Country(navController: NavController){
                     ) {
                         Button(
                             onClick = {
-                                           saveCountry()
+                                val id = documentCount+1
+                                AddCounIdDocument("Country","coun$id",newCountry)
                                       },
                             Modifier
                                 .height(50.dp)

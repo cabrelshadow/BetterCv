@@ -31,60 +31,68 @@ import com.example.bettercvapp.ui.theme.Poppins
 @Composable
 fun HomeScreens(navController: NavController) {
 
-    Box(Modifier.background(color = Color.White)) {
-        LazyColumn(){
-            stickyHeader {
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)){
-                    Row(modifier = Modifier.padding(5.dp)) {
-                        TopBarApp()
-                    }
-                }
 
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)){
-                    Row(modifier = Modifier.padding(5.dp)) {
-                        Text(text = "Cv Template",
-                            fontFamily = Poppins,
-                            modifier = Modifier.offset(18.dp,10.dp)
-                        )
+    Scaffold(
+        bottomBar = {BottomNavigation(navController)},
+        content = {it
+            LazyColumn(){
+                stickyHeader {
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)){
+                        Row(modifier = Modifier.padding(5.dp)) {
+                            TopBarApp()
+                        }
                     }
-                }
 
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)){
-                    Row(modifier = Modifier.padding(0.dp)) {
-                        ScrollableImage()
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)){
+                        Row(modifier = Modifier.padding(5.dp)) {
+                            Text(text = "Cv Template",
+                                fontFamily = Poppins,
+                                modifier = Modifier.offset(18.dp,10.dp)
+                            )
+                        }
+                    }
+
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)){
+                        Row(modifier = Modifier.padding(0.dp)) {
+                            ScrollableImage()
+                        }
+                    }
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)){
+                        Row(modifier = Modifier.padding(3.dp)) {
+                            Text(text = "Your CV", fontFamily = Poppins,
+                                modifier = Modifier.offset(18.dp,0.dp))
+                        }
                     }
                 }
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color.White)){
-                    Row(modifier = Modifier.padding(3.dp)) {
-                        Text(text = "Your CV", fontFamily = Poppins,
-                            modifier = Modifier.offset(18.dp,0.dp))
-                    }
+                items(1) {
+                    RoundedCard("Cv developer back-end",
+                        "I develop in NodeJs",
+                        painterResource(id =R.drawable.cv1 ))
+
+                    RoundedCard("Cv developer front-end"
+                        ,"I develop in JavaScript",
+                        painterResource(id =R.drawable.cv2 ))
+
+                    RoundedCard("Cv Project manager"
+                        ,"I worked on several projects",
+                        painterResource(id =R.drawable.cv3 ))
                 }
+                item { Spacer(modifier = Modifier.height(80.dp)) }
             }
-            items(1) {
-                RoundedCard("Cv developer back-end",
-                    "I develop in NodeJs",
-                painterResource(id =R.drawable.cv1 ))
-
-                RoundedCard("Cv developer front-end"
-                    ,"I develop in JavaScript",
-                    painterResource(id =R.drawable.cv2 ))
-
-                RoundedCard("Cv Project manager"
-                    ,"I worked on several projects",
-                    painterResource(id =R.drawable.cv3 ))
-            }
-            item { Spacer(modifier = Modifier.height(80.dp)) }
         }
-        BottomNavigation(navController)
+    )
+
+    Box(Modifier.background(color = Color.White)) {
+
+
 
     }
 }
@@ -215,7 +223,6 @@ fun BottomNavigation(navController: NavController) {
             .padding(top = 725.dp),
     ) {
         Deconnection(navController)
-        Share(navController)
         Model(navController)
         create(navController)
         edit(navController)
@@ -242,7 +249,7 @@ fun create(navController: NavController){
 @Composable
 fun edit(navController: NavController){
     Row(Modifier.offset()) {
-        Button(onClick = { navController.navigate("EditCv"){
+        Button(onClick = { navController.navigate("UPMenuForm"){
             popUpTo(navController.graph.startDestinationId)
             launchSingleTop = true } },
             Modifier.height(55.dp),
@@ -254,19 +261,6 @@ fun edit(navController: NavController){
 }
 
 
-@Composable
-fun Share(navController: NavController){
-    Row(Modifier.offset()) {
-        Button(onClick = { navController.navigate("ShareCv"){
-            popUpTo(navController.graph.startDestinationId)
-            launchSingleTop = true } },
-            Modifier.height(55.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)
-        ) {
-            Icon(Icons.Rounded.Share, contentDescription = "", tint = Color.Blue)
-        }
-    }
-}
 
 @Composable
 fun Model(navController: NavController){

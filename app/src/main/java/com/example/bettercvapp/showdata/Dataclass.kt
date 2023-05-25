@@ -1,5 +1,12 @@
 package com.example.bettercvapp.showdata
 
+
+
+data class ProfilList(
+    val profil : List<Profil>,
+)
+
+
 data class Profil(
     val firstname : String = "",
     val lastname : String = "",

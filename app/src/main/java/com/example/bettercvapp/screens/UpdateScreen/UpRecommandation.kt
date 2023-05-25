@@ -27,6 +27,7 @@ import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.showdata.DataViewModel
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -37,7 +38,19 @@ fun UpRecommendation(navController: NavController,
                      dataViewModel: DataViewModel= viewModel()
 ) {
 
-  val getData = dataViewModel.state4.value
+    val db = Firebase.firestore
+    var documentCount by remember { mutableStateOf(0) }
+
+    FirebaseFirestore.getInstance().collection("Recommendation")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
+    val compet=db.collection("Recommendation").document("Recom$documentCount")
+
+
+    val getData = dataViewModel.state4.value
 
     //variable pour stocker les données
     var PersonName by remember { mutableStateOf("") }
@@ -47,8 +60,7 @@ fun UpRecommendation(navController: NavController,
     var Number by remember { mutableStateOf("") }
 
     //variacle de manipulation de fire store
-    val db = Firebase.firestore
-    val docRef = db.collection("recommandation").document("iWUAy2EM9dJL9kIUL8PC")
+
 
     fun modif(){
         if(PersonName.isEmpty()){
@@ -78,7 +90,7 @@ fun UpRecommendation(navController: NavController,
             "Message" to Message,
             "Number" to Number,
         )
-        docRef.update(updateRec)
+        compet.update(updateRec)
             .addOnSuccessListener{
                 Toast.makeText(context,"La mise a jour a ete effectuee avec succes",Toast.LENGTH_SHORT).show()
             }
@@ -107,7 +119,7 @@ fun UpRecommendation(navController: NavController,
                             },
                             Modifier
                                 .height(50.dp)
-                                .width(115.dp)
+                                .width(150.dp)
                                 .align(Alignment.CenterVertically),
                             //shape = InputBoxShape.medium,
                             shape = MyShape,
@@ -445,7 +457,7 @@ private fun Header(navController: NavController){
                 .background(head),
         ) {
             TextButton(
-                onClick = {navController.navigate("MenuForm"){
+                onClick = {navController.navigate("UPMenuForm"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }},
             ) {

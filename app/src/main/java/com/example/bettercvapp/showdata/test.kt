@@ -1,42 +1,36 @@
 package com.example.bettercvapp.showdata
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Arrangement
+import android.content.ContentValues.TAG
+import android.util.Log
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Divider
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.unit.dp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
-@SuppressLint("SuspiciousIndentation")
-@Composable
-fun DataScreen(
-    dataViewModel: DataViewModel = viewModel()
-){
-  val getData = dataViewModel.state.value
-    val getData2 = dataViewModel.state1.value
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = "PROFIL")
-        Text(text = getData.firstname)
-        Text(text = getData.lastname)
-        Text(text = getData.borndate)
-        Text(text = getData.bornat)
-        Text(text = getData.maritalstatus)
-        Text(text = getData.drivinglicence)
-        Divider(Modifier.fillMaxWidth(1f))
-        Text(text = "EXPERIENCE")
-        Text(text = getData2.organisation)
-        Text(text = getData2.function)
-        Text(text = getData2.status)
-        Text(text = getData2.startDate)
-        Text(text = getData2.endDate)
+
+    @Composable
+    fun Com() {
+        var documentCount by remember { mutableStateOf(0) }
+
+        Column {
+            FirebaseFirestore.getInstance().collection("Profile")
+                .get()
+                .addOnSuccessListener { documents ->
+                    documentCount = documents.size()
+                }
+            Text(
+                text = "Nombre de documents dans la collection 'doc': $documentCount",
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
     }
-}
+
+

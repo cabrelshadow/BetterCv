@@ -23,7 +23,6 @@ fun NewCvScreen(navController:NavController,
     val getData1 = dataViewModel.state1.value
     val getData2 = dataViewModel.state2.value
     val getData3 = dataViewModel.state3.value
-    val getData4 = dataViewModel.state4.value
     val getData5 = dataViewModel.state5.value
     val getData6 = dataViewModel.state6.value
     val getData7 = dataViewModel.state7.value

@@ -3,6 +3,7 @@ package com.example.bettercvapp.screens.AddScreen
 import android.app.DatePickerDialog
 import android.content.Context
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,6 +28,7 @@ import androidx.navigation.NavController
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -71,12 +73,32 @@ fun Formation(navController: NavController,context : Context){
     var obtainresult by remember{ mutableStateOf("") }
 
     //variable de manipulation de fire store
+
+
+    var documentCount by remember { mutableStateOf(0) }
+    FirebaseFirestore.getInstance().collection("Formation")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
     val db = Firebase.firestore
-    val formation = db.collection("formation")
+    fun AddForIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     //fonction d'ajout a la base de donne fire store
-    fun saveformation(){
-        val newformation = hashMapOf(
+    startdate = date.value
+    enddate = date2.value
+        val formation = mapOf(
             "school" to school,
             "domainOfStudy" to domainOfStudy,
             "diploma" to diploma,
@@ -84,8 +106,7 @@ fun Formation(navController: NavController,context : Context){
             "enddate" to enddate,
             "obtainresult" to obtainresult
         )
-        formation.add(newformation)
-    }
+
 
     //Partir pour enter les données(Champs de texte)
 
@@ -102,9 +123,8 @@ fun Formation(navController: NavController,context : Context){
                 ) {
                     Button(
                         onClick = {
-                            startdate = date.value
-                            enddate = date2.value
-                            saveformation()
+                            val id = documentCount+1
+                            AddForIdDocument("Formation","For$id",formation)
                                   },
                         Modifier
                             .height(40.dp)
@@ -567,61 +587,6 @@ private fun Header(navController: NavController){
                 )
             }
 
-        }
-    }
-}
-
-
-
-
-//pied de page
-@Composable
-fun BottomBarF() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
-                )
-            }
         }
     }
 }

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Build
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -33,6 +34,7 @@ import com.example.bettercvapp.Height
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
@@ -81,12 +83,30 @@ fun AddProject(navController: NavController, context: Context) {
 
 
     //variable de manipulation de fire store
+    var documentCount by remember { mutableStateOf(0) }
+    FirebaseFirestore.getInstance().collection("Project")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
     val db = Firebase.firestore
-    val project = db.collection("project")
+    fun AddProIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     //fonction d'ajout a la base de donne fire store
-    fun saveProject(){
-        val newExpro = hashMapOf(
+    StartDate = date.value
+    EndDate = date2.value
+        val projet = mapOf(
             "NameProject" to NameProject,
             "Status" to Status,
             "StartDate" to StartDate,
@@ -95,8 +115,7 @@ fun AddProject(navController: NavController, context: Context) {
             "UrlProject" to UrlProject,
             "DescriptionOfProject" to DescriptionOfProject,
         )
-        project.add(newExpro)
-    }
+
 
     //Partir pour enter les données(Champs de texte)
     Scaffold(bottomBar = {
@@ -111,9 +130,8 @@ fun AddProject(navController: NavController, context: Context) {
                 ) {
                     Button(
                         onClick = {
-                            StartDate = date.value
-                            EndDate = date2.value
-                            saveProject()
+                            val id = documentCount+1
+                            AddProIdDocument("Project","Project$id",projet)
                         },
                         Modifier
                             .height(40.dp)
@@ -533,8 +551,8 @@ fun AddProject(navController: NavController, context: Context) {
                             .padding(horizontal = 18.dp)
                     ) {
                         TextField(
-                            value = NameProject,
-                            onValueChange = { NameProject = it },
+                            value = DescriptionOfProject,
+                            onValueChange = { DescriptionOfProject = it },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp)
@@ -636,57 +654,6 @@ private fun Header(navController: NavController){
                 )
             }
 
-        }
-    }
-}
-
-@Composable
-fun BottomBarP() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
-                )
-            }
         }
     }
 }

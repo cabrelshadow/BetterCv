@@ -1,5 +1,7 @@
 package com.example.bettercvapp.screens.AddScreen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -25,30 +27,45 @@ import androidx.navigation.NavController
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Hobbies(navController: NavController){
+fun Hobbies(navController: NavController,context : Context){
 
     //variable pour stocker les données
     var type_hobbies by remember{ mutableStateOf("") }
     var title_hobbies by remember{ mutableStateOf("") }
 
 
-    //variacle de manipulation de fire store
+    //variacle de manipulation de fire store Hobbies
+    var documentCount by remember { mutableStateOf(0) }
+    FirebaseFirestore.getInstance().collection("Hobbies")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
     val db = Firebase.firestore
-    val count = db.collection("Hobbies")
+    fun AddHobIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     //Fonction de sauvegade de donné dans la base de données
-    fun saveHobbies(){
-        val newHobbies = hashMapOf(
+
+        val Hobbies = mapOf(
             "type_hobbies" to type_hobbies,
             "title_hobbies" to title_hobbies
         )
-        count.add(newHobbies)
-    }
 
     //Partie pour entrer les données (champ de texte)
 
@@ -66,7 +83,8 @@ fun Hobbies(navController: NavController){
                 ) {
                     Button(
                         onClick = {
-                            saveHobbies()
+                            val id = documentCount+1
+                            AddHobIdDocument("Hobbies","Hob$id",Hobbies)
                         },
                         Modifier
                             .height(50.dp)
@@ -276,57 +294,6 @@ private fun Header(navController: NavController){
                 )
             }
 
-        }
-    }
-}
-
-@Composable
-fun BottomBarH() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(50.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(50.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins
-                )
-            }
         }
     }
 }

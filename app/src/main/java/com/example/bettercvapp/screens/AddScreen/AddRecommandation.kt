@@ -1,9 +1,9 @@
 package com.example.bettercvapp.screens
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -23,17 +22,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.bettercvapp.Height
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
-import com.example.bettercvapp.screens.AddScreen.BottomBar
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Recommendation(navController: NavController) {
+fun Recommendation(navController: NavController,context : Context) {
 
 
     //variable pour stocker les données
@@ -44,11 +42,28 @@ fun Recommendation(navController: NavController) {
     var Number by remember { mutableStateOf("") }
 
     //variacle de manipulation de fire store
+    var documentCount by remember { mutableStateOf(0) }
+    FirebaseFirestore.getInstance().collection("Recommendation")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
     val db = Firebase.firestore
-    val recom = db.collection("recommandation")
+    fun AddRecIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 
     //Fonction de sauvegade de donné dans la base de données
-    fun saveRecom() {
+
         val newRecom = hashMapOf(
             "PersonName" to PersonName,
             "Relationship" to Relationship,
@@ -56,12 +71,9 @@ fun Recommendation(navController: NavController) {
             "Message" to Message,
             "Number" to Number
         )
-        recom.add(newRecom)
-    }
 
     Scaffold(
         bottomBar = {
-
                 Surface(color = Color.White,
                     elevation = 10.dp) {
                     Row(
@@ -73,7 +85,8 @@ fun Recommendation(navController: NavController) {
                     ) {
                         Button(
                             onClick = {
-                                saveRecom()
+                                val id = documentCount+1
+                                AddRecIdDocument("Recommendation","Recom$id",newRecom)
                             },
                             Modifier
                                 .height(50.dp)
@@ -457,57 +470,6 @@ private fun Header(navController: NavController){
                 )
             }
 
-        }
-    }
-}
-
-@Composable
-fun BottomBarR() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(50.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(50.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins
-                )
-            }
         }
     }
 }

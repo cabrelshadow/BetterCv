@@ -27,7 +27,10 @@ fun UPMenuForm(navController: NavController) {
                 title = { Text("") },
                 backgroundColor = head /*Color(0xFF6B85C9)*/,
                 navigationIcon = {
-                    IconButton(onClick = { /* Handle navigation */ }) {
+                    IconButton(onClick = { navController.navigate("HomeScreens") {
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    } }) {
                         Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
@@ -38,7 +41,7 @@ fun UPMenuForm(navController: NavController) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = "MODIFIE VOS INFORMATIONS",
+                text = "  MODIFIEZ VOS INFORMATIONS",
                 style = MaterialTheme.typography.h5,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -121,7 +124,7 @@ fun UPMenuForm(navController: NavController) {
                     .height(70.dp)
                     .padding(vertical = 8.dp)
                     .clickable(onClick = {
-                        navController.navigate("Competence") {
+                        navController.navigate("UpCompetence") {
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
@@ -154,7 +157,7 @@ fun UPMenuForm(navController: NavController) {
                     .height(70.dp)
                     .padding(vertical = 8.dp)
                     .clickable(onClick = {
-                        navController.navigate("UpFormationScreen") {
+                        navController.navigate("UpProfessionalExpScreen") {
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
@@ -187,7 +190,7 @@ fun UPMenuForm(navController: NavController) {
                     .height(70.dp)
                     .padding(vertical = 8.dp)
                     .clickable(onClick = {
-                        navController.navigate("Recommendation") {
+                        navController.navigate("UpRecommendation") {
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
@@ -204,14 +207,12 @@ fun UPMenuForm(navController: NavController) {
                         modifier = Modifier.size(24.dp)
                     )
                     Text(
-                        text = "Reference",
+                        text = "Recommendation",
                         style = MaterialTheme.typography.subtitle1,
                         modifier = Modifier.padding(start = 16.dp)
                     )
                 }
             }
-
-
 
             Card(
                 shape = RoundedCornerShape(8.dp),
@@ -221,7 +222,7 @@ fun UPMenuForm(navController: NavController) {
                     .height(70.dp)
                     .padding(vertical = 8.dp)
                     .clickable(onClick = {
-                        navController.navigate("AddProject") {
+                        navController.navigate("UpProject") {
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
@@ -255,7 +256,7 @@ fun UPMenuForm(navController: NavController) {
                     .height(70.dp)
                     .padding(vertical = 8.dp)
                     .clickable(onClick = {
-                        navController.navigate("AddressNumber") {
+                        navController.navigate("UpAddressNumber") {
                             popUpTo(navController.graph.startDestinationId)
                             launchSingleTop = true
                         }
@@ -273,6 +274,70 @@ fun UPMenuForm(navController: NavController) {
                     )
                     Text(
                         text = "Address",
+                        style = MaterialTheme.typography.subtitle1,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+
+            Card(
+                shape = RoundedCornerShape(8.dp),
+                elevation = 4.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .padding(vertical = 8.dp)
+                    .clickable(onClick = {
+                        navController.navigate("UpHobbies") {
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true
+                        }
+                    })
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null,
+                        tint = Color.Blue,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text(
+                        text = "Hobbie et centre d'intérêt",
+                        style = MaterialTheme.typography.subtitle1,
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+
+            Card(
+                shape = RoundedCornerShape(8.dp),
+                elevation = 4.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .padding(vertical = 8.dp)
+                    .clickable(onClick = {
+                        navController.navigate("UPCountryScreen") {
+                            popUpTo(navController.graph.startDestinationId)
+                            launchSingleTop = true
+                        }
+                    })
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = null,
+                        tint = Color.Blue,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Text(
+                        text = "Pays et langue",
                         style = MaterialTheme.typography.subtitle1,
                         modifier = Modifier.padding(start = 16.dp)
                     )

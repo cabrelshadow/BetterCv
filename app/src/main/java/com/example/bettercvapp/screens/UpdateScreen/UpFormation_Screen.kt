@@ -2,6 +2,7 @@ package com.example.bettercvapp.screens.UpdateScreen
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.os.Build.ID
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -30,6 +31,7 @@ import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.showdata.DataViewModel
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -40,8 +42,18 @@ fun UpFormationScreen(navController: NavController,
               context : Context,
               dataViewModel: DataViewModel = viewModel()
 ) {
+    val db = Firebase.firestore
+    var documentCount by remember { mutableStateOf(0) }
 
-    //declaration pour obtenir les valeurs du profil
+    FirebaseFirestore.getInstance().collection("Formation")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+    val compet=db.collection("Formation").document("For$documentCount")
+
+
+    //declaration pour obtenir les valeurs du profil KnM0GVz6QztY1XftOvbE
     val getData = dataViewModel.state2.value
 
     //function pour le calendrier
@@ -57,7 +69,7 @@ fun UpFormationScreen(navController: NavController,
 
     val date = remember { mutableStateOf("") }
     val date2 = remember { mutableStateOf("") }
-    var change by remember { mutableStateOf("") }
+
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, yeah:Int, month:Int, dayOfMonth: Int ->
@@ -71,18 +83,6 @@ fun UpFormationScreen(navController: NavController,
         },year,month,day
     )
 
-    if(date.value.isNullOrEmpty()){
-        change = getData.startdate
-    }else{
-        change = date.value
-    }
-
-    if(date.value.isNullOrEmpty()){
-        change = getData.enddate
-    }else{
-        change = date.value
-    }
-
     //variable pour stocker les données
     var school by remember{ mutableStateOf("") }
     var domainOfStudy by remember{ mutableStateOf("") }
@@ -90,10 +90,21 @@ fun UpFormationScreen(navController: NavController,
     var startdate by remember{ mutableStateOf("") }
     var enddate by remember{ mutableStateOf("") }
     var obtainresult by remember{ mutableStateOf("") }
+    var change by remember { mutableStateOf("") }
+    var change1 by remember { mutableStateOf("") }
 
     //variable de manipulation de fire store
-    val db = Firebase.firestore
-    val docRef = db.collection("Formation").document("")
+    if(date.value.isNullOrEmpty()){
+        change = getData.startdate
+    }else{
+        change = date.value
+    }
+
+    if(date2.value.isNullOrEmpty()){
+        change1 = getData.enddate
+    }else{
+        change1 = date2.value
+    }
 
     //condition pour modification des eléments du profil Cv
     fun modif(){
@@ -123,11 +134,11 @@ fun UpFormationScreen(navController: NavController,
             "school" to school,
             "domainOfStudy" to domainOfStudy,
             "diploma" to diploma,
-            "startdate" to startdate,
-            "enddate" to enddate,
+            "startdate" to change,
+            "enddate" to change1,
             "obtainresult" to obtainresult,
         )
-        docRef.update(updateProfile)
+        compet.update(updateProfile)
             .addOnSuccessListener {
                 Toast.makeText(context, "La mise à jour a été effectuée avec succès", Toast.LENGTH_SHORT).show()
             }
@@ -522,7 +533,7 @@ fun UpFormationScreen(navController: NavController,
                             },
                             placeholder = {
                                 Text(
-                                    text = "End Date : $change",
+                                    text = "End Date : $change1",
                                     color = Color.Black,
                                 )
                             },
@@ -594,62 +605,6 @@ private fun Header(navController: NavController){
                     fontFamily = Poppins,
                     color = Color.White,
                     fontSize = 35.sp,
-                )
-            }
-
-        }
-    }
-}
-
-
-
-
-//pied de page
-@Composable
-fun BottomBarF() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(40.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 15.sp,
-                    fontFamily = Poppins
                 )
             }
         }

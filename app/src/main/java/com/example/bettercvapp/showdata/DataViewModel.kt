@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ class DataViewModel : ViewModel(){
     val state6 = mutableStateOf(Competence())
     val state7 = mutableStateOf(Address())
     val state8 = mutableStateOf(Hobbies())
+
 
 
 
@@ -43,6 +45,28 @@ class DataViewModel : ViewModel(){
 }
 
 
+suspend fun getAllDataFromFirestore():List<Profil>{
+    val db = FirebaseFirestore.getInstance()
+    val profileList = mutableListOf<Profil>()
+
+    try {
+        val querySnapshot = db.collection("Profile").get().await()
+        for(document in querySnapshot.documents){
+            val profil = document.toObject(Profil::class.java)
+            if (profil != null) {
+                profileList.add(profil)
+            }
+        }
+    } catch (e: FirebaseFirestoreException) {
+        Log.d("error", "getAllDataFromFirestore: $e")
+    }
+    return profileList
+}
+
+
+
+
+
 
 
 //recuperer les données du profil
@@ -50,10 +74,10 @@ suspend fun getDataFromFirestore():Profil{
     val db = FirebaseFirestore.getInstance()
     var profil = Profil()
     try{
-        db.collection("Profile").get().await().map{
-           val result = it.toObject(Profil::class.java)
+            db.collection("Profile").get().await().map {
+                val result = it.toObject(Profil::class.java)
                 profil = result
-        }
+            }
     }catch (e: FirebaseFirestoreException ){
         Log.d("error","getDataFromFirestore: $e")
     }
@@ -80,7 +104,7 @@ suspend fun getData2FromFirestore():Formation{
     val db = FirebaseFirestore.getInstance()
     var formation = Formation()
     try{
-        db.collection("formation").get().await().map{
+        db.collection("Formation").get().await().map{
             val result = it.toObject(Formation::class.java)
             formation = result
         }
@@ -95,7 +119,7 @@ suspend fun getData3FromFirestore():Project{
     val db = FirebaseFirestore.getInstance()
     var project = Project()
     try{
-        db.collection("project").get().await().map{
+        db.collection("Project").get().await().map{
             val result = it.toObject(Project::class.java)
             project = result
         }
@@ -110,7 +134,7 @@ suspend fun getData4FromFirestore():Recommendation{
     val db = FirebaseFirestore.getInstance()
     var recommendation = Recommendation()
     try{
-        db.collection("recommandation").get().await().map{
+        db.collection("Recommendation").get().await().map{
             val result = it.toObject(Recommendation::class.java)
             recommendation = result
         }

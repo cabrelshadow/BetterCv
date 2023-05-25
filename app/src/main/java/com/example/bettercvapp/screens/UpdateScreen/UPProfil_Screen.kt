@@ -28,19 +28,33 @@ import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.showdata.DataViewModel
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 import java.util.*
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UpProfileScreen(navController: NavController,
-                    context : Context,
-                    dataViewModel: DataViewModel = viewModel()
+                            context : Context,
+                            dataViewModel: DataViewModel = viewModel()
 ) {
+    val db = Firebase.firestore
+    var documentCount by remember { mutableStateOf(0) }
+
+    FirebaseFirestore.getInstance().collection("Profile")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
+
+    val compet=db.collection("Profile").document("Profile$documentCount")
+
     //declaration pour obtenir les valeurs du profil
     val getData = dataViewModel.state.value
+
     //function pour le calendrier
     val year : Int
     val month: Int
@@ -77,8 +91,7 @@ fun UpProfileScreen(navController: NavController,
         change = date.value
     }
 
-    val db = Firebase.firestore
-    val docRef = db.collection("Profile").document("SjdCWJUPMOywH0jupaW8")
+
     //condition pour modification des eléments du profil Cv
     fun modif(){
         if(firstname.isEmpty()){
@@ -101,6 +114,7 @@ fun UpProfileScreen(navController: NavController,
         }
     }
     //fonction pour la mise a jour des champs du profile du Cv
+    borndate = change
     fun UpdatePro(){
             val updateProfile = hashMapOf<String, Any>(
                 "firstname" to firstname,
@@ -110,7 +124,7 @@ fun UpProfileScreen(navController: NavController,
                 "maritalstatus" to maritalstatus,
                 "drivinglicence" to drivinglicence,
             )
-        docRef.update(updateProfile)
+        compet.update(updateProfile)
             .addOnSuccessListener {
                 Toast.makeText(context, "La mise à jour a été effectuée avec succès", Toast.LENGTH_SHORT).show()
             }
@@ -138,7 +152,7 @@ fun UpProfileScreen(navController: NavController,
                             },
                             Modifier
                                 .height(40.dp)
-                                .width(120.dp)
+                                .width(150.dp)
                                 .align(Alignment.CenterVertically),
                             //shape = InputBoxShape.medium,
                             shape = MyShape,

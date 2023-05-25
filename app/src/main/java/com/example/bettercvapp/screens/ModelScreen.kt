@@ -74,73 +74,80 @@ fun ModelScreen(navController: NavController) {
         },
 
         content = {
+            LazyColumn {
+                items(1) {
             Column(modifier = Modifier.padding(10.dp))
-        {
+            {
 
-            Text("Choisissez votre modele",
-                fontSize = 28.sp,
-                color = PrimaryColor,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 20.dp),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                fontFamily = ReemKufi,
-                style = MaterialTheme.typography.h3
-            )
-            Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    "Choisissez votre modele",
+                    fontSize = 28.sp,
+                    color = PrimaryColor,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 20.dp),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = ReemKufi,
+                    style = MaterialTheme.typography.h3
+                )
+                Spacer(modifier = Modifier.height(5.dp))
 
-            // Paragraphe
-            Text("Better cv vous offre la possibilite de choisir un modele de cv en fonction de proffession ",
-                fontSize = 20.sp,
-                color = Textcolor,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 20.dp),
-                textAlign = TextAlign.Center,
-                fontFamily = ReemKufi,
-                style = MaterialTheme.typography.h5)
-            Spacer(modifier = Modifier.height(5.dp))
-            // Barre de recherche
-            OutlinedTextField(
-                value = search, onValueChange = {
-                    search = it
-                },
-                label = {
-                    Text(text = "Chercher un modele", color = Textcolor)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .padding(top = 10.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = PrimaryColor,
-                    textColor = PrimaryColor
+                // Paragraphe
+                Text(
+                    "Better cv vous offre la possibilite de choisir un modele de cv en fonction de proffession ",
+                    fontSize = 20.sp,
+                    color = Textcolor,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 20.dp),
+                    textAlign = TextAlign.Center,
+                    fontFamily = ReemKufi,
+                    style = MaterialTheme.typography.h5
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                // Barre de recherche
+                OutlinedTextField(
+                    value = search, onValueChange = {
+                        search = it
+                    },
+                    label = {
+                        Text(text = "Chercher un modele", color = Textcolor)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .padding(top = 10.dp),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        unfocusedBorderColor = PrimaryColor,
+                        textColor = PrimaryColor
 
-                ),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType =
-                    KeyboardType.Text
-                ),
-                singleLine = true,
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.search_96px),
-                        contentDescription = "",
-                        tint = PrimaryColor,
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            )
-            Spacer(modifier = Modifier.height(32.dp))
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType =
+                        KeyboardType.Text
+                    ),
+                    singleLine = true,
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.search_96px),
+                            contentDescription = "",
+                            tint = PrimaryColor,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                )
+                Spacer(modifier = Modifier.height(32.dp))
 
 
-            // Cartes clickable
+                // Cartes clickable
 
-            CardList(navController)
+                CardList(navController)
+            }
         }
+}
         }
     )
 

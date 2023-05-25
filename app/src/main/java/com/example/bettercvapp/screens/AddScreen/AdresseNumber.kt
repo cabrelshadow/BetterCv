@@ -1,5 +1,7 @@
 package com.example.bettercvapp.screens
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,34 +25,48 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.bettercvapp.Height
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
-import com.example.bettercvapp.screens.AddScreen.BottomBar
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun AddressNumber(navController: NavController){
+fun AddressNumber(navController: NavController,context: Context){
     var Phone by remember { mutableStateOf("") }
     var Email by remember { mutableStateOf("") }
     var urlTelegram by remember { mutableStateOf("") }
     var urlLinkedin by remember { mutableStateOf("") }
 
-    val db = Firebase.firestore
-    val adress = db.collection("ElectronicAddress")
+    var documentCount by remember { mutableStateOf(0) }
+    FirebaseFirestore.getInstance().collection("ElectronicAddress")
+        .get()
+        .addOnSuccessListener { documents ->
+            documentCount = documents.size()
+        }
 
-    fun saveAdressUser(){
-        val newAdress = hashMapOf(
+    val db = Firebase.firestore
+    fun AddAdrIdDocument(collectionname:String,IdDoc:String,data:Map<String, Any>){
+        val documentRef = db.collection(collectionname)
+            .document(IdDoc)
+        documentRef.set(data)
+            .addOnSuccessListener {
+                Toast.makeText(context, "Enregistrement effectuée avec succès", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "L'enregistrement a échoué : ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+        val newAdress = mapOf(
             "Phone" to Phone,
             "Email" to Email,
             "urlTelegram" to urlTelegram,
             "urlLinkedin" to urlLinkedin
         )
-        adress.add(newAdress)
-    }
+
 
     Scaffold(
         bottomBar = {
@@ -65,7 +81,10 @@ fun AddressNumber(navController: NavController){
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Button(
-                            onClick = { saveAdressUser() },
+                            onClick = {
+                                val id = documentCount+1
+                                AddAdrIdDocument("ElectronicAddress","Adress$id",newAdress)
+                                      },
                             Modifier
                                 .height(50.dp)
                                 .width(115.dp)
@@ -392,57 +411,6 @@ private fun Header(navController: NavController){
                 )
             }
 
-        }
-    }
-}
-
-@Composable
-fun BottomBarA() {
-    Surface(color = Color.White,
-        elevation = 10.dp) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .height(100.dp),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(50.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                //shape = InputBoxShape.medium,
-                shape = MyShape,
-            )
-            {
-                Icon(Icons.Rounded.ArrowDropDown, contentDescription = "")
-                Text(
-                    text = "Save",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins
-                )
-            }
-            //add button
-            Button(
-                onClick = { /*TODO*/ },
-                Modifier
-                    .height(50.dp)
-                    .width(115.dp)
-                    .align(Alignment.CenterVertically),
-                shape = MyShape
-            )
-            {
-                Icon(Icons.Rounded.Add, contentDescription = "")
-                Text(
-                    text = "Add",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = Poppins
-                )
-            }
         }
     }
 }
