@@ -416,12 +416,8 @@ fun NewUserModel(navController: NavController){
                             .align(Alignment.CenterHorizontally),
 
                         ) {
-                        Text(text = "Télechager votre Cv")
-
+                        Text(text = "Enregister votre Cv")
                     }
-
-
-
 
                 }
 

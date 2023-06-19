@@ -113,7 +113,7 @@ fun NewCvScreen4(navController: NavController,
                         horizontalAlignment = Alignment.End
                     ) {
                         Image(
-                            painter = painterResource(id = com.example.bettercvapp.R.drawable.usetr),
+                            painter = painterResource(id = com.example.bettercvapp.R.drawable.infographe),
                             contentDescription = "Photo de profil",
                             modifier = Modifier
                                 .size(152.dp, 152.dp)
@@ -125,12 +125,16 @@ fun NewCvScreen4(navController: NavController,
         }
 
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate("HomeScreens"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(text = "Telecharger ce Model")
+            Text(text = "Enregistrer le CV")
         }
     }
 }

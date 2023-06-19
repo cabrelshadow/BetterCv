@@ -1,7 +1,9 @@
  package com.example.bettercvapp.screens
 
  import android.content.ContentValues.TAG
+ import android.content.Context
  import android.util.Log
+ import android.widget.Toast
  import androidx.compose.foundation.Image
  import androidx.compose.foundation.background
  import androidx.compose.foundation.layout.*
@@ -326,7 +328,7 @@
              )
          }
 
-         SocialMediaSignInButtons()
+         //SocialMediaSignInButtons()
 
          TextButton(onClick = {
              navController.navigate("LoginScreen"){
@@ -427,8 +429,6 @@
                  if (task.isSuccessful) {
                      Log.d(TAG, "createUserWithEmail:success")
                      navController.navigate("LoginScreen") // naviguer vers la page de connexion
-
-
                  } else {
                      Log.w(TAG, "createUserWithEmail:failure", task.exception)
                  }

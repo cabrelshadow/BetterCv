@@ -101,24 +101,6 @@ fun AddressNumber(navController: NavController,context: Context){
                                 fontFamily = Poppins
                             )
                         }
-                        //add button
-                        Button(
-                            onClick = { /*TODO*/ },
-                            Modifier
-                                .height(50.dp)
-                                .width(115.dp)
-                                .align(Alignment.CenterVertically),
-                            shape = MyShape
-                        )
-                        {
-                            Icon(Icons.Rounded.Add, contentDescription = "")
-                            Text(
-                                text = "Add",
-                                color = Color.White,
-                                fontSize = 20.sp,
-                                fontFamily = Poppins
-                            )
-                        }
                     }
                 }
 

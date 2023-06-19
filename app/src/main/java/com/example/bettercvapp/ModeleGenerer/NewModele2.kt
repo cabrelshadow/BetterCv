@@ -37,7 +37,8 @@ fun NewCvScreen2(navController: NavController,
                 IconButton(onClick ={
                     navController.navigate("ModelScreen"){
                         popUpTo(navController.graph.startDestinationId)
-                        launchSingleTop = true }}) {
+                        launchSingleTop = true }
+                }) {
                     Icon(Icons.Default.ArrowBack, contentDescription = "Retour")
                 }
             }
@@ -116,12 +117,16 @@ fun NewCvScreen2(navController: NavController,
         }
 
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate("HomeScreens"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(text = "Telecharger ce Model")
+            Text(text = "Enregistrer ce Cv")
         }
     }
 }

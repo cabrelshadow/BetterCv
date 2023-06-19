@@ -26,12 +26,13 @@ fun NewCvScreen(navController:NavController,
     val getData5 = dataViewModel.state5.value
     val getData6 = dataViewModel.state6.value
     val getData7 = dataViewModel.state7.value
+
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text(text = "Cv Developer") },
             navigationIcon = {
                 IconButton(onClick = {
-                    navController.navigate("ModelScreen"){
+                    navController.navigate("HomeScreens"){
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true }
                 }) {
@@ -93,9 +94,9 @@ fun NewCvScreen(navController:NavController,
 
                     NewLangues(getData7.language,getData7.level)
 
-                   // NewSectionTitle(title = "Centres d'intérêt")
+                    NewSectionTitle(title = "Centres d'intérêt")
 
-                    //NewCentresInteret()
+                    NewCentresInteret()
 
                     NewSectionTitle(title = "Projets personnels")
 
@@ -105,12 +106,16 @@ fun NewCvScreen(navController:NavController,
         }
 
         Button(
-            onClick = {},
+            onClick = {
+                navController.navigate("HomeScreens"){
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(text = "Telecharger ce Model")
+            Text(text = "Telecharger le CV")
         }
     }
 }

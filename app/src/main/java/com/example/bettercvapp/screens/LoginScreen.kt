@@ -36,10 +36,14 @@ fun LoginScreen(navController: NavController) {
         Image(
             painter = painterResource(id = R.drawable.ko), contentDescription = "",
             modifier = Modifier.fillMaxWidth()
+
         )
     }
+    Spacer(modifier = Modifier.height(120.dp))
     Box(contentAlignment = Alignment.BottomCenter) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Text(
                 text = "WELCOME TO BETTER CV",
                 fontSize = 28.sp,
@@ -47,51 +51,28 @@ fun LoginScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
-                    .padding(top = 20.dp),
+                    .padding(top = 20.dp)
+                    .offset(0.dp,50.dp),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 fontFamily = ReemKufi
             )
-
-            Button(
-                onClick = { },
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color.White
-                ),
-                contentPadding = PaddingValues(horizontal = 20.dp, vertical = 10.dp),
-                modifier = Modifier.padding(top = 20.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_google),
-                        contentDescription = "",
-                        tint = Color.Unspecified,
-                        modifier = Modifier.size(26.dp)
-                    )
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(text = "Continue with Google", color = PrimaryColor, fontSize = 16.sp)
-                }
-            }
-
-
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 20.dp),
+                    .padding(top = 120.dp),
                 backgroundColor = Color.White,
                 elevation = 0.dp,
                 shape = BottomBoxShape.medium
             ) {
-
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "Log In with Email",
                         color = LightTextColor,
                         fontFamily = Poppins,
-                        fontSize = 12.sp,
+                        fontSize = 20.sp,
                         modifier = Modifier.padding(top = 16.dp)
                     )
-
                     OutlinedTextField(
                         value = email, onValueChange = {
                             email = it

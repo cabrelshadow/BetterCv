@@ -142,7 +142,7 @@ fun NewCvScreen3(navController: NavController,
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(text = "Telecharger ce Model")
+            Text(text = "Enregister ce Cv")
         }
     }
 }

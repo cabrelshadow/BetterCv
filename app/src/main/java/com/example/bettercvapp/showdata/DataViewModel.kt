@@ -1,14 +1,41 @@
 package com.example.bettercvapp.showdata
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+
+
+/*class DataViewModele : ViewModel() {
+
+    private val firestore = FirebaseFirestore.getInstance()
+    private val currentUser = FirebaseAuth.getInstance().currentUser
+
+    val documents = mutableStateListOf<Profil>()
+
+    init {
+        firestore.collection("Profile")
+            .whereEqualTo("UserId", currentUser?.uid)
+            .addSnapshotListener { value, _ ->
+                value?.let { snapshot ->
+                    documents.clear()
+                    for (doc in snapshot.documents) {
+                        documents.add(doc.toObject(Profil::class.java)!!)
+                    }
+                }
+            }
+    }
+}*/
+
 
 
 
@@ -22,9 +49,6 @@ class DataViewModel : ViewModel(){
     val state6 = mutableStateOf(Competence())
     val state7 = mutableStateOf(Address())
     val state8 = mutableStateOf(Hobbies())
-
-
-
 
     init {
         getData()
@@ -44,37 +68,13 @@ class DataViewModel : ViewModel(){
     }
 }
 
-
-suspend fun getAllDataFromFirestore():List<Profil>{
-    val db = FirebaseFirestore.getInstance()
-    val profileList = mutableListOf<Profil>()
-
-    try {
-        val querySnapshot = db.collection("Profile").get().await()
-        for(document in querySnapshot.documents){
-            val profil = document.toObject(Profil::class.java)
-            if (profil != null) {
-                profileList.add(profil)
-            }
-        }
-    } catch (e: FirebaseFirestoreException) {
-        Log.d("error", "getAllDataFromFirestore: $e")
-    }
-    return profileList
-}
-
-
-
-
-
-
-
 //recuperer les données du profil
 suspend fun getDataFromFirestore():Profil{
     val db = FirebaseFirestore.getInstance()
     var profil = Profil()
     try{
-            db.collection("Profile").get().await().map {
+            db.collection("Profile")
+                .get().await().map {
                 val result = it.toObject(Profil::class.java)
                 profil = result
             }

@@ -4,7 +4,6 @@ import CvScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
@@ -18,11 +17,9 @@ import com.example.bettercvapp.ModeleGenerer.*
 import com.example.bettercvapp.screens.*
 import com.example.bettercvapp.screens.AddScreen.*
 import com.example.bettercvapp.screens.UpdateScreen.*
-import com.example.bettercvapp.showdata.Com
 import com.example.bettercvapp.ui.theme.BackgroundColor
 import com.example.bettercvapp.ui.theme.BetterCvAppTheme
 import com.example.expprofessionelle.ProfessionalExpScreen
-import com.google.firebase.firestore.FirebaseFirestore
 
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
 
                 ) {
-                        LogApplication()
+                    LogApplication()
                 }
             }
         }
@@ -45,7 +42,6 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun LogApplication() {
         val navController = rememberNavController()
-
         NavHost(navController = navController, startDestination = "Splashscreen", builder = {
 
             composable("LoginScreen", content = { LoginScreen(navController = navController) })
@@ -65,6 +61,7 @@ class MainActivity : ComponentActivity() {
             composable("CvScreen3", content = { CvScreen3(navController = navController)})
             composable("CvScreen4", content = { CvScreen4(navController = navController)})
             composable("LettreMotivationScreen", content = { LettreMotivationScreen(navController = navController)})
+            composable("MyScreen", content = { MyScreen()})
 
             composable("AddProject", content = { AddProject(navController = navController,this@MainActivity)})
             composable("ProfessionalExpScreen", content = { ProfessionalExpScreen(navController = navController,this@MainActivity)})

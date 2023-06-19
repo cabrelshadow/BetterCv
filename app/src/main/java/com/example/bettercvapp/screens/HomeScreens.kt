@@ -1,5 +1,6 @@
 package com.example.bettercvapp.screens
 
+import CvScreen
 import android.media.Image
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -8,9 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,11 +26,16 @@ import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.Gray
 import com.example.bettercvapp.ui.theme.Poppins
 
+
+
+data class MyData(val title:String, val description:String,val Route:String)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreens(navController: NavController) {
 
 
+    var mydata by remember {mutableStateOf(MyData("Curriculum vitae", "Developer", "NewCvScreen"))}
+    var showCard by remember { mutableStateOf(true) }
     Scaffold(
         bottomBar = {BottomNavigation(navController)},
         content = {it
@@ -73,17 +77,12 @@ fun HomeScreens(navController: NavController) {
                     }
                 }
                 items(1) {
-                    RoundedCard("Cv developer back-end",
-                        "I develop in NodeJs",
-                        painterResource(id =R.drawable.cv1 ))
 
-                    RoundedCard("Cv developer front-end"
-                        ,"I develop in JavaScript",
-                        painterResource(id =R.drawable.cv2 ))
+                    if (showCard){
+                        RoundedCard(titre = mydata.title , Description =  mydata.description,
+                            painter = painterResource(id = R.drawable.infographe), Route = mydata.Route,navController)
+                    }
 
-                    RoundedCard("Cv Project manager"
-                        ,"I worked on several projects",
-                        painterResource(id =R.drawable.cv3 ))
                 }
                 item { Spacer(modifier = Modifier.height(80.dp)) }
             }
@@ -91,9 +90,6 @@ fun HomeScreens(navController: NavController) {
     )
 
     Box(Modifier.background(color = Color.White)) {
-
-
-
     }
 }
 
@@ -174,41 +170,7 @@ fun ScrollableImage(){
 
 
 
-@Composable
-fun RoundedCard(titre : String ,Description : String, painter : Painter) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        elevation = 4.dp
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Image(
-                painter = painter,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(96.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable { }
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column {
-                Text(
-                    text = "$titre",
-                    style = MaterialTheme.typography.h5
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "$Description",
-                    style = MaterialTheme.typography.body1
-                )
-            }
-        }
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-}
+
 
 
 
@@ -220,7 +182,6 @@ fun BottomNavigation(navController: NavController) {
         elevation = 8.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 725.dp),
     ) {
         Deconnection(navController)
         Model(navController)
@@ -289,4 +250,50 @@ fun Deconnection(navController: NavController){
             Icon(Icons.Rounded.ExitToApp, contentDescription = "", tint = Color.Blue)
         }
     }
+}
+
+@Composable
+fun RoundedCard(titre : String,
+                Description : String,
+                painter : Painter,
+                Route: String,
+                navController: NavController) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                navController.navigate("$Route") {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            },
+        shape = RoundedCornerShape(16.dp),
+        elevation = 4.dp
+    ) {
+        Row(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Image(
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(96.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column {
+                Text(
+                    text = "$titre",
+                    style = MaterialTheme.typography.h5
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "$Description",
+                    style = MaterialTheme.typography.body1
+                )
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(16.dp))
 }

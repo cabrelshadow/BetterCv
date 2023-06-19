@@ -27,12 +27,15 @@ import androidx.navigation.NavController
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.ReemKufi
 import com.example.bettercvapp.ui.theme.head
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MenuForm(navController: NavController) {
     Scaffold(
         topBar = {
+
             TopAppBar(
                 title = { Text("") },
                 backgroundColor =head /*Color(0xFF6B85C9)*/,

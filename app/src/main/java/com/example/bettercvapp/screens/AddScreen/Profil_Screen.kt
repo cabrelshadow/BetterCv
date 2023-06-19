@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import com.example.bettercvapp.MyShape
 import com.example.bettercvapp.R
 import com.example.bettercvapp.ui.theme.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -108,7 +109,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                         Button(
                             onClick = {
                                 val id = documentCount+1
-                             AddPIdDocument("Profile","Profile$id",newProfil)
+                             AddPIdDocument("Profile","Profile$id", newProfil)
                             },
                             Modifier
                                 .height(40.dp)
@@ -124,24 +125,7 @@ fun ProfileScreen(navController: NavController, context : Context) {
                                 color = Color.White,
                                 fontSize = 15.sp,
                                 fontFamily = Poppins
-                            )
-                        }
-                        //add button
-                        Button(
-                            onClick = { /*TODO*/ },
-                            Modifier
-                                .height(40.dp)
-                                .width(115.dp)
-                                .align(Alignment.CenterVertically),
-                            shape = MyShape
-                        )
-                        {
-                            Icon(Icons.Rounded.Add, contentDescription = "")
-                            Text(
-                                text = "Add",
-                                color = Color.White,
-                                fontSize = 15.sp,
-                                fontFamily = Poppins
+
                             )
                         }
                     }

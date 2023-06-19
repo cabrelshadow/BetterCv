@@ -4,27 +4,23 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.bettercvapp.showdata.DataViewModel
+import com.example.bettercvapp.screens.HomeScreens
 
 
 @Composable
-fun CvScreen(navController:NavController,
-            dataViewModel: DataViewModel = viewModel()
-) {
-    val getData = dataViewModel.state.value
+fun CvScreen(navController:NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
             title = { Text(text = "Cv Dev") },
             navigationIcon = {
                 IconButton(onClick = {
-                    navController.navigate("ModelScreen"){
+                    navController.navigate("HomeScreens"){
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true }
                 }) {
@@ -49,23 +45,23 @@ fun CvScreen(navController:NavController,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text =  getData.firstname+" "+getData.lastname,
+                        text =  "Nom Prenom",
                         style = MaterialTheme.typography.h3,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Date de Naissance: "+getData.borndate,
+                        text = "Date de Naissance",
                         style = MaterialTheme.typography.subtitle1,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text = "Lieu de naissance: "+getData.bornat,
+                        text = "Lieu de naissance",
                         style = MaterialTheme.typography.subtitle1,
                         modifier = Modifier.padding(bottom = 8.dp)
                     )
                     Text(
-                        text =  "stutus: "+getData.maritalstatus,
+                        text =  "status marital",
                         style = MaterialTheme.typography.subtitle1,
                         modifier = Modifier.padding(bottom = 24.dp)
                     )
@@ -96,10 +92,10 @@ fun CvScreen(navController:NavController,
                 }
             }
         }
-
+        var isChecked by remember { mutableStateOf(false) }
         Button(
-            onClick = {
-                navController.navigate("NewCvScreen"){
+            onClick = { isChecked = !isChecked
+                navController.navigate("HomeScreens"){
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true }
             },
@@ -109,8 +105,10 @@ fun CvScreen(navController:NavController,
         ) {
             Text(text = "Appliquer ce Model")
         }
+
     }
 }
+
 
 
 @Composable
